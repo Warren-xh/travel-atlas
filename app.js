@@ -1229,6 +1229,7 @@ function exportMap() {
       "stroke",
       "stroke-width",
       "stroke-linejoin",
+      "vector-effect",
       "opacity",
       "font-size",
       "font-weight",
