@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="我的个人旅行地图，按大洲探索国家，用颜色记录足迹和下一站。">
+  <meta name="theme-color" content="#244c40"><title>行迹 Atlas · 我的旅行地图</title>
+  <link rel="icon" href="./assets/compass.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./style.css">
+  <script src="./assets/d3.min.js" defer></script><script src="./app.js" defer></script>
+</head>
+<body>
+  <header class="header"><a class="brand" href="#map"><img src="./assets/compass.svg" alt="" width="36" height="36"><span>行迹 <small>ATLAS</small></span></a>
+    <span class="header-caption">把世界，变成自己的地图。</span><nav class="mode-nav" aria-label="页面模式"><button id="map-mode" class="active">探索地图</button><button id="admin-mode">管理地图 <span aria-hidden="true">↗</span></button></nav>
+  </header>
+  <main class="workspace">
+    <section class="map-column">
+      <div class="intro"><div><div class="eyebrow">MY TRAVEL JOURNAL</div><h1>下一站，去哪里？</h1><p>每一种颜色，都有一段故事。</p></div><div class="passport"><span>中国普通护照</span><small id="save-status" role="status">正在加载记录…</small></div></div>
+      <nav id="continents" class="continents" aria-label="选择大洲"></nav>
+      <div class="map-card">
+        <div class="map-top"><div><span class="live-dot"></span><strong id="region-title">欧洲</strong><span id="region-count"></span></div><label class="label-toggle"><input id="show-labels" type="checkbox" checked> 国家名称</label></div>
+        <div id="map-stage" class="map-stage"><svg id="map" role="img" aria-label="可点击选择国家的旅行地图"></svg><div id="tooltip" class="tooltip" hidden></div><div id="map-error" class="map-error" hidden></div>
+          <div class="map-caption"><span id="region-english">EUROPE</span><small>点击国家查看记录 · 拖动平移</small></div>
+          <div class="zoom-controls" aria-label="地图缩放"><button id="zoom-in" aria-label="放大地图">＋</button><button id="zoom-out" aria-label="缩小地图">−</button><button id="zoom-reset" aria-label="恢复地图视角">⌂</button></div>
+        </div>
+        <div id="legend" class="legend" aria-label="地图颜色说明"></div>
+      </div>
+      <div class="map-footer"><span>透明＝其他或待整理。免签与电子签仅预填部分已核实国家，出行前请查看最新官方条件。</span><button id="credits-button" class="text-button">数据来源</button></div>
+    </section>
+    <aside class="side-panel">
+      <div class="panel-heading"><span class="eyebrow" id="panel-heading">COUNTRY NOTES</span><span class="edition">第一版</span></div>
+      <label for="country-search" class="sr-only">搜索国家</label><div class="search-box"><span aria-hidden="true">⌕</span><input id="country-search" placeholder="搜索国家 / English / ISO" autocomplete="off"><button id="clear-search" aria-label="清空搜索" hidden>×</button></div><div id="search-results" class="search-results" hidden></div>
+      <div class="country-title"><div id="country-flag" class="country-flag"></div><div><h2 id="country-name">爱尔兰</h2><p id="country-english">Ireland</p></div></div>
+      <div id="country-status" class="status-pill"></div>
+      <div id="view-fields"><div class="note-block"><span class="field-label">旅行日期</span><p id="view-date">还没有记录</p></div><div class="note-block"><span class="field-label">我的备注</span><p id="view-note" class="empty-note">旅行见闻、路线、想去的城市……<br>都可以留在这里。</p></div><button id="edit-country" class="button secondary wide">编辑这个国家 <span>↗</span></button></div>
+      <form id="editor" hidden><fieldset><legend class="field-label">国家颜色</legend><div id="color-options" class="color-options"></div></fieldset><label class="field-label" for="travel-date">旅行日期</label><input id="travel-date" type="date"><label class="field-label" for="country-note">我的备注</label><textarea id="country-note" rows="4" maxlength="5000" placeholder="写下去过的城市、想去的地方或旅行心得…"></textarea><button class="button primary wide" type="submit">保存到本机</button><p class="help">修改先保存在当前浏览器，发布后其他设备也能看到。</p><button id="publish" class="button secondary wide" type="button">发布到 GitHub <span>↑</span></button><button id="palette-button" class="text-button palette-link" type="button">调整五种颜色和名称</button></form>
+      <div id="visa-source" class="visa-source" hidden><span class="field-label">预填分类的依据</span><a id="source-link" target="_blank" rel="noopener noreferrer">查看官方来源 ↗</a><small id="source-date"></small></div>
+      <div class="stats"><div><strong id="visited-count">1</strong><span>已去过</span></div><div><strong id="free-count">0</strong><span>免签待探索</span></div><div><strong id="notes-count">0</strong><span>旅行笔记</span></div></div>
+      <div class="backup-actions"><button id="export-button">↓ 导出备份</button><button id="import-button">↑ 导入记录</button><input id="import-file" type="file" accept=".json,application/json" hidden></div>
+      <a class="repo-link" href="https://github.com/Warren-xh/travel-atlas" target="_blank" rel="noopener noreferrer">我的 GitHub 仓库 ↗</a>
+    </aside>
+  </main>
+  <dialog id="palette-dialog"><div class="dialog-heading"><h2>你的五种颜色</h2><button data-close="palette-dialog" aria-label="关闭颜色设置">×</button></div><p>修改颜色或名称，地图会一起更新。</p><form id="palette-form"><div id="palette-fields"></div><button class="button primary wide">保存颜色设置</button></form></dialog>
+  <dialog id="github-dialog"><div class="dialog-heading"><h2>发布地图记录</h2><button data-close="github-dialog" aria-label="关闭发布面板">×</button></div><p>把颜色、日期和备注保存到你的 GitHub，网页更新后可跨设备查看。<strong>发布的记录会公开。</strong></p><div class="repo-badge">Warren-xh / travel-atlas</div><label class="field-label" for="github-token">GitHub 仓库授权 Token</label><input id="github-token" type="password" autocomplete="off" spellcheck="false" placeholder="仅用于这次浏览器会话"><details><summary>第一次发布：怎样获取授权？</summary><ol><li>打开 <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener noreferrer">GitHub 的细粒度 Token 页面 ↗</a>。</li><li>选择账号 Warren-xh，设置名称和有效期。</li><li>Repository access 选择 Only select repositories，只选 travel-atlas。</li><li>Repository permissions 中设置 Contents → Read and write，其他权限无需增加。</li><li>生成后复制到上面的输入框。Token 不会写入网站文件、备份或本地存储。</li></ol></details><p id="publish-message" class="dialog-message" role="status"></p><button id="confirm-publish" class="button primary wide">发布当前记录</button><button id="pull-remote" class="button secondary wide">从 GitHub 拉取最新记录</button><small class="help">发布仅修改 data/atlas.json。GitHub Pages 需要一点时间更新网页。</small></dialog>
+  <dialog id="credits-dialog"><div class="dialog-heading"><h2>数据来源</h2><button data-close="credits-dialog" aria-label="关闭数据来源">×</button></div><p>边界：Natural Earth 1:50m，经 d3-maps atlas 转换。小型国家用圆点补充显示；地图轮廓用于个人旅行记录。</p><p>名称与大洲：<a href="https://github.com/mledoze/countries" target="_blank" rel="noopener noreferrer">mledoze/countries</a>。跨洲国家可能出现在两个大洲。</p><p>免签预填：<a href="https://cs.mfa.gov.cn/zggmcgx/cgqzapecswlxk/ylb/202607/t20260716_11984014.html" target="_blank" rel="noopener noreferrer">中国领事服务网普通护照适用协定</a>，以及目的国外交部、驻外使馆公告。只预填已核实的部分国家，透明不代表需要签证。</p><p>免签不等于满足所有入境、中转和返程条件；停留期限以目的国现行规定为准。颜色可由你自行调整。</p><p>绘图：<a href="https://d3js.org/" target="_blank" rel="noopener noreferrer">D3.js</a>。本网站不使用付费地图接口。</p></dialog>
+  <div id="toast" class="toast" role="status" hidden></div>
+</body></html>
