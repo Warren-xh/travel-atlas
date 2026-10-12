@@ -18,7 +18,9 @@ export class GitHubClient {
   #token = "";
   #fetch;
   constructor(fetcher = fetch) {
-    this.#fetch = fetcher;
+    // Native Window.fetch must retain its Window receiver. Calling the stored
+    // function as a client method can otherwise throw before any request starts.
+    this.#fetch = fetcher.bind(globalThis);
   }
   get unlocked() {
     return !!this.#token;

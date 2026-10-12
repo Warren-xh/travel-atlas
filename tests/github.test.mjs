@@ -12,6 +12,13 @@ test("Unicode data including emoji survives GitHub base64 round trip", () => {
   const note = "都柏林 🇮🇪\n海边 <script>只是文字</script>";
   assert.equal(decodeContent(encodeContent(note)), note);
 });
+test("fetch retains its global receiver rather than receiving the client instance", async () => {
+  const api = new GitHubClient(function () {
+    assert.equal(this, globalThis);
+    return Promise.resolve(new Response(JSON.stringify({ sha: "abc", content: encodeContent("{}") })));
+  });
+  assert.deepEqual(await api.read(DATA_PATH, false), { data: {}, sha: "abc" });
+});
 test("locked clients cannot write and public reads send no authorization", async () => {
   const seen = [];
   const api = new GitHubClient(async (url, options) => {
