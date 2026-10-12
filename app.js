@@ -16,7 +16,12 @@ import {
   strongPassword,
   validateVault,
 } from "./auth.mjs";
-import { GitHubClient, DATA_PATH, VAULT_PATH } from "./github.mjs";
+import {
+  GitHubClient,
+  DATA_PATH,
+  VAULT_PATH,
+  loadPublicVault,
+} from "./github.mjs";
 
 const $ = (id) => document.getElementById(id);
 const LOCAL_KEY = "travel-atlas-draft-v2";
@@ -857,18 +862,13 @@ async function loadVault() {
   if (loadingVault) return;
   loadingVault = true;
   try {
-    const current = await api.read(VAULT_PATH, false);
-    vault = current ? validateVault(current.data) : null;
-    vaultSha = current?.sha;
-  } catch (error) {
-    if (!vault) {
-      const response = await fetch("./" + VAULT_PATH, {
-        cache: "no-store",
-      }).catch(() => null);
-      if (response?.ok) vault = validateVault(await response.json());
-      else throw error;
-    }
-    notice("暂时无法检查最新管理授权，将尝试已加载的版本。");
+    const current = await loadPublicVault(api);
+    vault = current.data ? validateVault(current.data) : null;
+    vaultSha = current.sha;
+    if (current.fallback)
+      notice(
+        "暂时无法检查 GitHub 的最新授权，已使用网页中的授权状态。保存授权时会再次检查仓库。 ",
+      );
   } finally {
     loadingVault = false;
   }
@@ -1019,6 +1019,17 @@ async function configureAuth(event) {
     const encrypted = await candidate.seal(password);
     await candidate.read(DATA_PATH);
     const current = await candidate.read(VAULT_PATH, false);
+    if (
+      current &&
+      !vault &&
+      !api.unlocked &&
+      !(await confirmAction(
+        "仓库已有管理授权",
+        "网页可能还未显示最新授权。继续会替换已有管理密码；请确认这是你要做的操作。",
+        "替换现有授权",
+      ))
+    )
+      return;
     if (
       current &&
       ((vaultSha && current.sha !== vaultSha) ||

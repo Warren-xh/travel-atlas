@@ -6,6 +6,7 @@ import {
   VAULT_PATH,
   encodeContent,
   decodeContent,
+  loadPublicVault,
 } from "../github.mjs";
 test("Unicode data including emoji survives GitHub base64 round trip", () => {
   const note = "都柏林 🇮🇪\n海边 <script>只是文字</script>";
@@ -22,6 +23,7 @@ test("locked clients cannot write and public reads send no authorization", async
   await assert.rejects(() => api.write(DATA_PATH, {}, "abc", "test"));
   await api.read(DATA_PATH, false);
   assert.equal(seen[0].headers.Authorization, undefined);
+  assert.equal(seen[0].headers["X-GitHub-Api-Version"], undefined);
 });
 test("only data and encrypted vault can be published with matching SHA", async () => {
   let seen;
@@ -63,5 +65,51 @@ test("fetch failures have actionable messages without leaking credentials", asyn
   await assert.rejects(
     () => api.read(DATA_PATH),
     (e) => e.message.includes("草稿") && !e.message.includes("secret-token"),
+  );
+});
+
+test("first-time setup remains available when public API fails but Pages has no vault", async () => {
+  const client = {
+    read: async () => {
+      throw Error("API unavailable");
+    },
+  };
+  const result = await loadPublicVault(
+    client,
+    async () => new Response("", { status: 404 }),
+  );
+  assert.equal(result.data, null);
+  assert.equal(result.fallback, true);
+});
+
+test("an existing deployed vault can be read when the public API is unreachable", async () => {
+  const deployed = { version: 1, ciphertext: "opaque encrypted content" };
+  const client = {
+    read: async () => {
+      throw Error("API unavailable");
+    },
+  };
+  const result = await loadPublicVault(
+    client,
+    async () => new Response(JSON.stringify(deployed)),
+  );
+  assert.deepEqual(result.data, deployed);
+  assert.equal(result.sha, undefined);
+  assert.equal(result.fallback, true);
+});
+
+test("unknown vault state fails closed when neither GitHub nor Pages can be read", async () => {
+  const client = {
+    read: async () => {
+      throw Error("API unavailable");
+    },
+  };
+  await assert.rejects(() =>
+    loadPublicVault(client, async () => new Response("", { status: 503 })),
+  );
+  await assert.rejects(() =>
+    loadPublicVault(client, async () => {
+      throw Error("offline");
+    }),
   );
 });

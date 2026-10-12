@@ -39,12 +39,13 @@ export class GitHubClient {
       throw new Error("不支持这个 GitHub 操作。");
     if (method !== "GET" && !this.unlocked)
       throw new Error("请先用管理密码解锁。");
-    const headers = {
-      Accept: "application/vnd.github+json",
-      "X-GitHub-Api-Version": "2026-03-10",
-    };
-    if (authenticated && this.unlocked)
+    // Public reads stay CORS-simple; unnecessary custom headers can cause
+    // preflight failures in embedded browsers and restricted networks.
+    const headers = { Accept: "application/vnd.github+json" };
+    if (authenticated && this.unlocked) {
       headers.Authorization = "Bearer " + this.#token;
+      headers["X-GitHub-Api-Version"] = "2022-11-28";
+    }
     if (body) headers["Content-Type"] = "application/json";
     let response;
     try {
@@ -102,5 +103,24 @@ export class GitHubClient {
       branch: BRANCH,
       ...(sha ? { sha } : {}),
     });
+  }
+}
+
+export async function loadPublicVault(client, fetcher = fetch) {
+  try {
+    const current = await client.read(VAULT_PATH, false);
+    return { data: current?.data || null, sha: current?.sha, fallback: false };
+  } catch (error) {
+    const response = await fetcher("./" + VAULT_PATH, {
+      cache: "no-store",
+      signal: AbortSignal.timeout(10000),
+    }).catch(() => null);
+    if (response?.ok)
+      return { data: await response.json(), sha: undefined, fallback: true };
+    // A missing file in the deployed snapshot is a valid first-time setup.
+    // Saving still rechecks GitHub and requires repository write permission.
+    if (response?.status === 404)
+      return { data: null, sha: undefined, fallback: true };
+    throw error;
   }
 }
