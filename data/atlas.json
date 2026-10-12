@@ -1,6 +1,12 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-12T18:00:00.000Z",
+  "updatedAt": "2026-10-12T22:24:50.861Z",
+  "profile": {
+    "title": "把世界，走成故事。",
+    "subtitle": "用颜色收藏足迹，用文字记住每一次出发。",
+    "brand": "Warren 的旅行地图",
+    "home": "IRL"
+  },
   "palette": [
     {
       "id": "free",
@@ -31,1340 +37,1340 @@
   "countries": {
     "ALB": {
       "status": "free",
-      "note": "",
       "date": "",
+      "note": "",
       "source": "https://cs.mfa.gov.cn/zggmcgx/cgqzapecswlxk/ylb/202607/t20260716_11984014.html",
       "checkedAt": "2026-10-12"
     },
     "DZA": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "AFG": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "ARG": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "ARE": {
       "status": "free",
-      "note": "",
       "date": "",
+      "note": "",
       "source": "https://cs.mfa.gov.cn/zggmcgx/cgqzapecswlxk/ylb/202607/t20260716_11984014.html",
       "checkedAt": "2026-10-12"
     },
     "ABW": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "OMN": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "AZE": {
       "status": "free",
-      "note": "",
       "date": "",
+      "note": "",
       "source": "https://cs.mfa.gov.cn/zggmcgx/cgqzapecswlxk/ylb/202607/t20260716_11984014.html",
       "checkedAt": "2026-10-12"
     },
     "ATC": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "EGY": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "ETH": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "IRL": {
       "status": "visited",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "EST": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "AND": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "AGO": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "AIA": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "ATG": {
       "status": "free",
-      "note": "",
       "date": "",
+      "note": "",
       "source": "https://cs.mfa.gov.cn/zggmcgx/cgqzapecswlxk/ylb/202607/t20260716_11984014.html",
       "checkedAt": "2026-10-12"
     },
     "AUT": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "ALA": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "AUS": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "BRB": {
       "status": "free",
-      "note": "",
       "date": "",
+      "note": "",
       "source": "https://cs.mfa.gov.cn/zggmcgx/cgqzapecswlxk/ylb/202607/t20260716_11984014.html",
       "checkedAt": "2026-10-12"
     },
     "PNG": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "BHS": {
       "status": "free",
-      "note": "",
       "date": "",
+      "note": "",
       "source": "https://cs.mfa.gov.cn/zggmcgx/cgqzapecswlxk/ylb/202607/t20260716_11984014.html",
       "checkedAt": "2026-10-12"
     },
     "PAK": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "PRY": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "PSE": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "BHR": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "PAN": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "BRA": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "BLR": {
       "status": "free",
-      "note": "",
       "date": "",
+      "note": "",
       "source": "https://cs.mfa.gov.cn/zggmcgx/cgqzapecswlxk/ylb/202607/t20260716_11984014.html",
       "checkedAt": "2026-10-12"
     },
     "BMU": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "BGR": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "MNP": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "MKD": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "CYN": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "BEN": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "BEL": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "ISL": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "PRI": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "BIH": {
       "status": "free",
-      "note": "",
       "date": "",
+      "note": "",
       "source": "https://cs.mfa.gov.cn/zggmcgx/cgqzapecswlxk/ylb/202607/t20260716_11984014.html",
       "checkedAt": "2026-10-12"
     },
     "POL": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "BOL": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "BLZ": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "BWA": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "BTN": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "BFA": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "BDI": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "BVT": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "PRK": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "GNQ": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "DNK": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "DEU": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "TLS": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "TGO": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "DMA": {
       "status": "free",
-      "note": "",
       "date": "",
+      "note": "",
       "source": "https://cs.mfa.gov.cn/zggmcgx/cgqzapecswlxk/ylb/202607/t20260716_11984014.html",
       "checkedAt": "2026-10-12"
     },
     "DOM": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "RUS": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "ECU": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "ERI": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "FRA": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "ATF": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "FRO": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "PYF": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "GUF": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "VAT": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "PHL": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "FJI": {
       "status": "free",
-      "note": "",
       "date": "",
+      "note": "",
       "source": "https://cs.mfa.gov.cn/zggmcgx/cgqzapecswlxk/ylb/202607/t20260716_11984014.html",
       "checkedAt": "2026-10-12"
     },
     "FIN": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "CPV": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "FLK": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "GMB": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "COG": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "COL": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "CRI": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "GRD": {
       "status": "free",
-      "note": "",
       "date": "",
+      "note": "",
       "source": "https://cs.mfa.gov.cn/zggmcgx/cgqzapecswlxk/ylb/202607/t20260716_11984014.html",
       "checkedAt": "2026-10-12"
     },
     "GRL": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "GEO": {
       "status": "free",
-      "note": "",
       "date": "",
+      "note": "",
       "source": "https://cs.mfa.gov.cn/zggmcgx/cgqzapecswlxk/ylb/202607/t20260716_11984014.html",
       "checkedAt": "2026-10-12"
     },
     "GGY": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "CUB": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "GLP": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "GUM": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "GUY": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "KAZ": {
       "status": "free",
-      "note": "",
       "date": "",
+      "note": "",
       "source": "https://cs.mfa.gov.cn/zggmcgx/cgqzapecswlxk/ylb/202607/t20260716_11984014.html",
       "checkedAt": "2026-10-12"
     },
     "HTI": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "KOR": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "NLD": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "BES": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "HMD": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "MNE": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "HND": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "KIR": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "DJI": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "KGZ": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "GIN": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "GNB": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "CAN": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "GHA": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "GAB": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "KHM": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "CZE": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "ZWE": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "CMR": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "QAT": {
       "status": "free",
-      "note": "",
       "date": "",
+      "note": "",
       "source": "https://cs.mfa.gov.cn/zggmcgx/cgqzapecswlxk/ylb/202607/t20260716_11984014.html",
       "checkedAt": "2026-10-12"
     },
     "CYM": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "CCK": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "COM": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "UNK": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "CIV": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "KWT": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "HRV": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "KEN": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "COK": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "CUW": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "LVA": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "LSO": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "LAO": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "LBN": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "LTU": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "LBR": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "LBY": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "LIE": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "REU": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "LUX": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "RWA": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "ROU": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "MDG": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "IMN": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "MDV": {
       "status": "free",
-      "note": "",
       "date": "",
+      "note": "",
       "source": "https://cs.mfa.gov.cn/zggmcgx/cgqzapecswlxk/ylb/202607/t20260716_11984014.html",
       "checkedAt": "2026-10-12"
     },
     "MLT": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "MWI": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "MYS": {
       "status": "free",
-      "note": "",
       "date": "",
+      "note": "",
       "source": "https://cs.mfa.gov.cn/zggmcgx/cgqzapecswlxk/ylb/202607/t20260716_11984014.html",
       "checkedAt": "2026-10-12"
     },
     "MLI": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "MHL": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "MTQ": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "MYT": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "MUS": {
       "status": "free",
-      "note": "",
       "date": "",
+      "note": "",
       "source": "https://cs.mfa.gov.cn/zggmcgx/cgqzapecswlxk/ylb/202607/t20260716_11984014.html",
       "checkedAt": "2026-10-12"
     },
     "MRT": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "USA": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "UMI": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "ASM": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "VIR": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "MNG": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "MSR": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "BGD": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "PER": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "FSM": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "MMR": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "COD": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "MDA": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "MAR": {
       "status": "free",
-      "note": "",
       "date": "",
+      "note": "",
       "source": "https://ma.china-embassy.gov.cn/lsfw/zytz/202507/t20250716_11671271.htm",
       "checkedAt": "2026-10-12"
     },
     "MCO": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "MOZ": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "MEX": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "NAM": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "ZAF": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "ATA": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "SGS": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "SSD": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "NRU": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "NIC": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "NPL": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "NER": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "NGA": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "NIU": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "NOR": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "NFK": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "PLW": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "PCN": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "PRT": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "JPN": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "SWE": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "CHE": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "SLV": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "WSM": {
       "status": "free",
-      "note": "",
       "date": "",
+      "note": "",
       "source": "https://cs.mfa.gov.cn/zggmcgx/cgqzapecswlxk/ylb/202607/t20260716_11984014.html",
       "checkedAt": "2026-10-12"
     },
     "SRB": {
       "status": "free",
-      "note": "",
       "date": "",
+      "note": "",
       "source": "https://cs.mfa.gov.cn/zggmcgx/cgqzapecswlxk/ylb/202607/t20260716_11984014.html",
       "checkedAt": "2026-10-12"
     },
     "SLE": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "SEN": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "CYP": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "SYC": {
       "status": "free",
-      "note": "",
       "date": "",
+      "note": "",
       "source": "https://cs.mfa.gov.cn/zggmcgx/cgqzapecswlxk/ylb/202607/t20260716_11984014.html",
       "checkedAt": "2026-10-12"
     },
     "SAU": {
       "status": "evisa",
-      "note": "",
       "date": "",
+      "note": "",
       "source": "https://visa.visitsaudi.com/Home/TermsConditions",
       "checkedAt": "2026-10-12"
     },
     "BLM": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "CXR": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "STP": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "SHN": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "KNA": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "LCA": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "MAF": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "SXM": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "SMR": {
       "status": "free",
-      "note": "",
       "date": "",
+      "note": "",
       "source": "https://cs.mfa.gov.cn/zggmcgx/cgqzapecswlxk/ylb/202607/t20260716_11984014.html",
       "checkedAt": "2026-10-12"
     },
     "SPM": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "VCT": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "LKA": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "SVK": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "SVN": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "SJM": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "SWZ": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "SDN": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "SUR": {
       "status": "free",
-      "note": "",
       "date": "",
+      "note": "",
       "source": "https://cs.mfa.gov.cn/zggmcgx/cgqzapecswlxk/ylb/202607/t20260716_11984014.html",
       "checkedAt": "2026-10-12"
     },
     "SLB": {
       "status": "free",
-      "note": "",
       "date": "",
+      "note": "",
       "source": "https://cs.mfa.gov.cn/zggmcgx/cgqzapecswlxk/ylb/202607/t20260716_11984014.html",
       "checkedAt": "2026-10-12"
     },
     "SOM": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "SOL": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "TJK": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "THA": {
       "status": "free",
-      "note": "",
       "date": "",
+      "note": "",
       "source": "https://cs.mfa.gov.cn/zggmcgx/cgqzapecswlxk/ylb/202607/t20260716_11984014.html",
       "checkedAt": "2026-10-12"
     },
     "TZA": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "TON": {
       "status": "free",
-      "note": "",
       "date": "",
+      "note": "",
       "source": "https://cs.mfa.gov.cn/zggmcgx/cgqzapecswlxk/ylb/202607/t20260716_11984014.html",
       "checkedAt": "2026-10-12"
     },
     "TCA": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "TTO": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "TUN": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "TUV": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "TUR": {
       "status": "free",
-      "note": "",
       "date": "",
+      "note": "",
       "source": "https://www.mfa.gov.tr/visa-information-for-foreigners.en.mfa",
       "checkedAt": "2026-10-12"
     },
     "TKM": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "TKL": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "WLF": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "VUT": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "GTM": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "VEN": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "BRN": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "UGA": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "UKR": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "URY": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "UZB": {
       "status": "free",
-      "note": "",
       "date": "",
+      "note": "",
       "source": "https://cs.mfa.gov.cn/zggmcgx/cgqzapecswlxk/ylb/202607/t20260716_11984014.html",
       "checkedAt": "2026-10-12"
     },
     "ESP": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "ESH": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "GRC": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "KAS": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "SGP": {
       "status": "free",
-      "note": "",
       "date": "",
+      "note": "",
       "source": "https://cs.mfa.gov.cn/zggmcgx/cgqzapecswlxk/ylb/202607/t20260716_11984014.html",
       "checkedAt": "2026-10-12"
     },
     "NCL": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "NZL": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "HUN": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "SYR": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "JAM": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "ARM": {
       "status": "free",
-      "note": "",
       "date": "",
+      "note": "",
       "source": "https://cs.mfa.gov.cn/zggmcgx/cgqzapecswlxk/ylb/202607/t20260716_11984014.html",
       "checkedAt": "2026-10-12"
     },
     "YEM": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "IRQ": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "IRN": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "ISR": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "ITA": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "IND": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "IDN": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "IOA": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "GBR": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "VGB": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "IOT": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "JOR": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "VNM": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "ZMB": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "JEY": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "TCD": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "GIB": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "CHL": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "CAF": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "CHN": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "MAC": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "TWN": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     },
     "HKG": {
       "status": "none",
-      "note": "",
-      "date": ""
+      "date": "",
+      "note": ""
     }
   }
 }
