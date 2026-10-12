@@ -1,46 +1,734 @@
 <!doctype html>
 <html lang="zh-CN">
-<head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="我的个人旅行地图，按大洲探索国家，用颜色记录足迹和下一站。">
-  <meta name="theme-color" content="#244c40"><title>行迹 Atlas · 我的旅行地图</title>
-  <link rel="icon" href="./assets/compass.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="./style.css">
-  <script src="./assets/d3.min.js" defer></script><script src="./app.js" defer></script>
-</head>
-<body>
-  <header class="header"><a class="brand" href="#map"><img src="./assets/compass.svg" alt="" width="36" height="36"><span>行迹 <small>ATLAS</small></span></a>
-    <span class="header-caption">把世界，变成自己的地图。</span><nav class="mode-nav" aria-label="页面模式"><button id="map-mode" class="active">探索地图</button><button id="admin-mode">管理地图 <span aria-hidden="true">↗</span></button></nav>
-  </header>
-  <main class="workspace">
-    <section class="map-column">
-      <div class="intro"><div><div class="eyebrow">MY TRAVEL JOURNAL</div><h1>下一站，去哪里？</h1><p>每一种颜色，都有一段故事。</p></div><div class="passport"><span>中国普通护照</span><small id="save-status" role="status">正在加载记录…</small></div></div>
-      <nav id="continents" class="continents" aria-label="选择大洲"></nav>
-      <div class="map-card">
-        <div class="map-top"><div><span class="live-dot"></span><strong id="region-title">欧洲</strong><span id="region-count"></span></div><label class="label-toggle"><input id="show-labels" type="checkbox" checked> 国家名称</label></div>
-        <div id="map-stage" class="map-stage"><svg id="map" role="img" aria-label="可点击选择国家的旅行地图"></svg><div id="tooltip" class="tooltip" hidden></div><div id="map-error" class="map-error" hidden></div>
-          <div class="map-caption"><span id="region-english">EUROPE</span><small>点击国家查看记录 · 拖动平移</small></div>
-          <div class="zoom-controls" aria-label="地图缩放"><button id="zoom-in" aria-label="放大地图">＋</button><button id="zoom-out" aria-label="缩小地图">−</button><button id="zoom-reset" aria-label="恢复地图视角">⌂</button></div>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,viewport-fit=cover"
+    />
+    <meta
+      name="description"
+      content="行迹 Atlas：探索世界、收藏足迹、记录旅程，用密码管理并同步到 GitHub。"
+    />
+    <meta name="theme-color" content="#f5f3ec" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self' https://api.github.com; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'"
+    />
+    <title>行迹 Atlas · 把世界，走成故事</title>
+    <link rel="icon" href="./assets/compass.svg" type="image/svg+xml" />
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="stylesheet" href="./style.css" />
+    <script src="./assets/d3.min.js" defer></script>
+    <script src="./app.js" type="module"></script>
+  </head>
+  <body>
+    <svg
+      class="icon-definitions"
+      aria-hidden="true"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <defs>
+        <symbol id="i-search" viewBox="0 0 24 24">
+          <circle cx="10.8" cy="10.8" r="6.8" />
+          <path d="m16 16 4.5 4.5" />
+        </symbol>
+        <symbol id="i-lock" viewBox="0 0 24 24">
+          <rect x="5" y="10" width="14" height="11" rx="3" />
+          <path d="M8 10V7a4 4 0 0 1 8 0v3" />
+        </symbol>
+        <symbol id="i-unlock" viewBox="0 0 24 24">
+          <rect x="5" y="10" width="14" height="11" rx="3" />
+          <path d="M8 10V7a4 4 0 0 1 7.5-2" />
+        </symbol>
+        <symbol id="i-arrow" viewBox="0 0 24 24">
+          <path d="M5 12h14m-6-6 6 6-6 6" />
+        </symbol>
+        <symbol id="i-pin" viewBox="0 0 24 24">
+          <path d="M19 10c0 5-7 11-7 11S5 15 5 10a7 7 0 1 1 14 0Z" />
+          <circle cx="12" cy="10" r="2.5" />
+        </symbol>
+        <symbol id="i-upload" viewBox="0 0 24 24">
+          <path d="M12 16V3m-5 5 5-5 5 5M4 16v4h16v-4" />
+        </symbol>
+        <symbol id="i-download" viewBox="0 0 24 24">
+          <path d="M12 3v13m-5-5 5 5 5-5M4 17v4h16v-4" />
+        </symbol>
+        <symbol id="i-moon" viewBox="0 0 24 24">
+          <path d="M20 15.5A9 9 0 0 1 8.5 4 9 9 0 1 0 20 15.5Z" />
+        </symbol>
+        <symbol id="i-sun" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="4" />
+          <path
+            d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"
+          />
+        </symbol>
+        <symbol id="i-expand" viewBox="0 0 24 24">
+          <path d="M8 3H3v5m13-5h5v5M3 16v5h5m8 0h5v-5" />
+        </symbol>
+        <symbol id="i-reset" viewBox="0 0 24 24">
+          <path d="M4 10a8 8 0 1 1 1 7M4 4v6h6" />
+        </symbol>
+        <symbol id="i-settings" viewBox="0 0 24 24">
+          <path d="M4 7h16M4 17h16" />
+          <circle cx="9" cy="7" r="3" />
+          <circle cx="15" cy="17" r="3" />
+        </symbol>
+        <symbol id="i-close" viewBox="0 0 24 24">
+          <path d="m6 6 12 12M6 18 18 6" />
+        </symbol>
+        <symbol id="i-copy" viewBox="0 0 24 24">
+          <rect x="8" y="8" width="12" height="13" rx="2" />
+          <path d="M16 8V3H3v13h5" />
+        </symbol>
+        <symbol id="i-undo" viewBox="0 0 24 24">
+          <path d="M8 4 3 9l5 5M3 9h11a6 6 0 0 1 0 12" />
+        </symbol>
+      </defs>
+    </svg>
+    <a class="skip-link" href="#map-workspace">跳到旅行地图</a>
+    <header class="header">
+      <a class="brand" href="#map" aria-label="行迹 Atlas 首页"
+        ><img src="./assets/compass.svg" alt="" width="36" height="36" /><span
+          id="brand-name"
+          >行迹</span
+        ><small>ATLAS</small></a
+      ><span class="header-caption">A PERSONAL ATLAS OF THE WORLD</span>
+      <nav class="header-actions" aria-label="页面操作">
+        <button
+          id="theme-toggle"
+          class="icon-button"
+          aria-label="切换深色模式"
+          aria-pressed="false"
+        >
+          <svg class="icon"><use href="#i-moon" /></svg></button
+        ><button id="admin-mode" class="admin-button">
+          <svg class="icon"><use href="#i-lock" /></svg><span>管理地图</span>
+        </button>
+      </nav>
+    </header>
+    <main class="workspace" id="map-workspace">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <div class="eyebrow">
+            <span class="tiny-line"></span> YOUR WORLD, YOUR STORIES
+          </div>
+          <h1 id="hero-title">把世界，走成故事。</h1>
+          <p id="hero-subtitle">用颜色收藏足迹，用文字记住每一次出发。</p>
         </div>
-        <div id="legend" class="legend" aria-label="地图颜色说明"></div>
+        <div class="hero-stamp" aria-hidden="true">
+          <span>THE WORLD<br />IS WAITING</span><svg><use href="#i-pin" /></svg
+          ><small>随时可以出发</small>
+        </div>
+        <div class="overview" aria-label="我的旅行概览">
+          <button class="stat-card" id="visited-stat">
+            <span class="stat-label"
+              ><i class="stat-dot visited"></i> 已留下足迹</span
+            ><strong id="visited-count">—</strong
+            ><span class="stat-detail"
+              >国家 / 地区 <svg class="icon"><use href="#i-arrow" /></svg
+            ></span></button
+          ><button class="stat-card" id="free-stat">
+            <span class="stat-label"
+              ><i class="stat-dot free"></i> 免签待探索</span
+            ><strong id="free-count">—</strong
+            ><span class="stat-detail"
+              >部分官方来源预填 <svg class="icon"><use href="#i-arrow" /></svg
+            ></span></button
+          ><button class="stat-card" id="notes-stat">
+            <span class="stat-label"
+              ><svg class="icon"><use href="#i-pin" /></svg> 写下的故事</span
+            ><strong id="notes-count">—</strong
+            ><span class="stat-detail"
+              >旅行笔记 <svg class="icon"><use href="#i-arrow" /></svg
+            ></span>
+          </button>
+          <div class="stat-card progress-card">
+            <span class="stat-label">世界探索进度</span
+            ><strong id="progress-count">—</strong>
+            <div class="progress-track"><span id="progress-fill"></span></div>
+            <span id="progress-detail" class="stat-detail"
+              >每一个地方，都值得记录</span
+            >
+          </div>
+        </div>
+      </section>
+      <div id="admin-bar" class="admin-bar" hidden>
+        <div>
+          <svg class="icon"><use href="#i-unlock" /></svg
+          ><strong>管理已解锁</strong
+          ><span id="draft-status" role="status">所有记录已同步</span>
+        </div>
+        <div class="admin-tools">
+          <button
+            id="undo-button"
+            class="icon-button"
+            aria-label="撤销修改"
+            disabled
+          >
+            <svg class="icon"><use href="#i-undo" /></svg></button
+          ><button
+            id="redo-button"
+            class="icon-button"
+            aria-label="重做修改"
+            disabled
+          >
+            <svg class="icon flip"><use href="#i-undo" /></svg></button
+          ><button id="settings-button" class="text-button">主页设置</button
+          ><button id="security-button" class="text-button">管理设置</button
+          ><button id="lock-button" class="text-button">锁定</button
+          ><button id="publish" class="button primary compact">
+            <svg class="icon"><use href="#i-upload" /></svg> 发布修改
+            <span id="change-badge" class="count-badge">0</span>
+          </button>
+        </div>
       </div>
-      <div class="map-footer"><span>透明＝其他或待整理。免签与电子签仅预填部分已核实国家，出行前请查看最新官方条件。</span><button id="credits-button" class="text-button">数据来源</button></div>
-    </section>
-    <aside class="side-panel">
-      <div class="panel-heading"><span class="eyebrow" id="panel-heading">COUNTRY NOTES</span><span class="edition">第一版</span></div>
-      <label for="country-search" class="sr-only">搜索国家</label><div class="search-box"><span aria-hidden="true">⌕</span><input id="country-search" placeholder="搜索国家 / English / ISO" autocomplete="off"><button id="clear-search" aria-label="清空搜索" hidden>×</button></div><div id="search-results" class="search-results" hidden></div>
-      <div class="country-title"><div id="country-flag" class="country-flag"></div><div><h2 id="country-name">爱尔兰</h2><p id="country-english">Ireland</p></div></div>
-      <div id="country-status" class="status-pill"></div>
-      <div id="view-fields"><div class="note-block"><span class="field-label">旅行日期</span><p id="view-date">还没有记录</p></div><div class="note-block"><span class="field-label">我的备注</span><p id="view-note" class="empty-note">旅行见闻、路线、想去的城市……<br>都可以留在这里。</p></div><button id="edit-country" class="button secondary wide">编辑这个国家 <span>↗</span></button></div>
-      <form id="editor" hidden><fieldset><legend class="field-label">国家颜色</legend><div id="color-options" class="color-options"></div></fieldset><label class="field-label" for="travel-date">旅行日期</label><input id="travel-date" type="date"><label class="field-label" for="country-note">我的备注</label><textarea id="country-note" rows="4" maxlength="5000" placeholder="写下去过的城市、想去的地方或旅行心得…"></textarea><button class="button primary wide" type="submit">保存到本机</button><p class="help">修改先保存在当前浏览器，发布后其他设备也能看到。</p><button id="publish" class="button secondary wide" type="button">发布到 GitHub <span>↑</span></button><button id="palette-button" class="text-button palette-link" type="button">调整五种颜色和名称</button></form>
-      <div id="visa-source" class="visa-source" hidden><span class="field-label">预填分类的依据</span><a id="source-link" target="_blank" rel="noopener noreferrer">查看官方来源 ↗</a><small id="source-date"></small></div>
-      <div class="stats"><div><strong id="visited-count">1</strong><span>已去过</span></div><div><strong id="free-count">0</strong><span>免签待探索</span></div><div><strong id="notes-count">0</strong><span>旅行笔记</span></div></div>
-      <div class="backup-actions"><button id="export-button">↓ 导出备份</button><button id="import-button">↑ 导入记录</button><input id="import-file" type="file" accept=".json,application/json" hidden></div>
-      <a class="repo-link" href="https://github.com/Warren-xh/travel-atlas" target="_blank" rel="noopener noreferrer">我的 GitHub 仓库 ↗</a>
-    </aside>
-  </main>
-  <dialog id="palette-dialog"><div class="dialog-heading"><h2>你的五种颜色</h2><button data-close="palette-dialog" aria-label="关闭颜色设置">×</button></div><p>修改颜色或名称，地图会一起更新。</p><form id="palette-form"><div id="palette-fields"></div><button class="button primary wide">保存颜色设置</button></form></dialog>
-  <dialog id="github-dialog"><div class="dialog-heading"><h2>发布地图记录</h2><button data-close="github-dialog" aria-label="关闭发布面板">×</button></div><p>把颜色、日期和备注保存到你的 GitHub，网页更新后可跨设备查看。<strong>发布的记录会公开。</strong></p><div class="repo-badge">Warren-xh / travel-atlas</div><label class="field-label" for="github-token">GitHub 仓库授权 Token</label><input id="github-token" type="password" autocomplete="off" spellcheck="false" placeholder="仅用于这次浏览器会话"><details><summary>第一次发布：怎样获取授权？</summary><ol><li>打开 <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener noreferrer">GitHub 的细粒度 Token 页面 ↗</a>。</li><li>选择账号 Warren-xh，设置名称和有效期。</li><li>Repository access 选择 Only select repositories，只选 travel-atlas。</li><li>Repository permissions 中设置 Contents → Read and write，其他权限无需增加。</li><li>生成后复制到上面的输入框。Token 不会写入网站文件、备份或本地存储。</li></ol></details><p id="publish-message" class="dialog-message" role="status"></p><button id="confirm-publish" class="button primary wide">发布当前记录</button><button id="pull-remote" class="button secondary wide">从 GitHub 拉取最新记录</button><small class="help">发布仅修改 data/atlas.json。GitHub Pages 需要一点时间更新网页。</small></dialog>
-  <dialog id="credits-dialog"><div class="dialog-heading"><h2>数据来源</h2><button data-close="credits-dialog" aria-label="关闭数据来源">×</button></div><p>边界：Natural Earth 1:50m，经 d3-maps atlas 转换。小型国家用圆点补充显示；地图轮廓用于个人旅行记录。</p><p>名称与大洲：<a href="https://github.com/mledoze/countries" target="_blank" rel="noopener noreferrer">mledoze/countries</a>。跨洲国家可能出现在两个大洲。</p><p>免签预填：<a href="https://cs.mfa.gov.cn/zggmcgx/cgqzapecswlxk/ylb/202607/t20260716_11984014.html" target="_blank" rel="noopener noreferrer">中国领事服务网普通护照适用协定</a>，以及目的国外交部、驻外使馆公告。只预填已核实的部分国家，透明不代表需要签证。</p><p>免签不等于满足所有入境、中转和返程条件；停留期限以目的国现行规定为准。颜色可由你自行调整。</p><p>绘图：<a href="https://d3js.org/" target="_blank" rel="noopener noreferrer">D3.js</a>。本网站不使用付费地图接口。</p></dialog>
-  <div id="toast" class="toast" role="status" hidden></div>
-</body></html>
+      <div id="notice-banner" class="notice-banner" role="status" hidden>
+        <span id="notice-text"></span
+        ><button id="notice-dismiss" class="icon-button" aria-label="关闭提示">
+          <svg class="icon"><use href="#i-close" /></svg>
+        </button>
+      </div>
+      <section class="map-column" aria-label="互动旅行地图">
+        <div class="map-section-title">
+          <h2>探索世界 <span>EXPLORE</span></h2>
+          <span id="save-status" class="sync-status" role="status"
+            >正在加载地图…</span
+          >
+        </div>
+        <nav id="continents" class="continents" aria-label="选择大洲"></nav>
+        <div class="map-card" id="map-card">
+          <div class="map-top">
+            <div class="region-heading">
+              <span class="live-dot"></span
+              ><strong id="region-title">世界</strong
+              ><span id="region-count"></span>
+            </div>
+            <div class="map-options">
+              <label class="label-toggle"
+                ><input id="show-labels" type="checkbox" checked /><span
+                  >国家名称</span
+                ></label
+              ><button
+                id="fullscreen-button"
+                class="icon-button"
+                aria-label="全屏地图"
+              >
+                <svg class="icon"><use href="#i-expand" /></svg></button
+              ><button
+                id="map-export"
+                class="icon-button"
+                aria-label="导出当前地图 SVG"
+              >
+                <svg class="icon"><use href="#i-download" /></svg>
+              </button>
+            </div>
+          </div>
+          <div id="map-stage" class="map-stage">
+            <svg
+              id="map"
+              aria-label="旅行地图，点击国家查看记录"
+              role="group"
+            ></svg>
+            <div id="tooltip" class="tooltip" hidden></div>
+            <div id="map-loading" class="map-loading">
+              <div class="loading-ring"></div>
+              <span>正在展开世界地图</span>
+            </div>
+            <div id="map-error" class="map-error" hidden>
+              <strong>地图暂时无法加载</strong>
+              <p id="map-error-text"></p>
+              <button id="retry-button" class="button primary">重新加载</button>
+            </div>
+            <div class="map-caption">
+              <span id="region-english">WORLD</span
+              ><small>拖动平移 · 滚轮或双指缩放</small>
+            </div>
+            <div class="zoom-controls" aria-label="地图缩放">
+              <button id="zoom-in" aria-label="放大地图">+</button
+              ><button id="zoom-out" aria-label="缩小地图">−</button
+              ><button id="zoom-reset" aria-label="恢复地图视角">
+                <svg class="icon"><use href="#i-reset" /></svg>
+              </button>
+            </div>
+            <div id="filter-caption" class="filter-caption" hidden></div>
+          </div>
+          <div id="legend" class="legend" aria-label="按颜色筛选国家"></div>
+        </div>
+        <div class="map-footer">
+          <span
+            >点击图例筛选。透明表示尚未分类。签证颜色仅作个人整理，出行前请核对官方条件。</span
+          ><button id="credits-button" class="text-button">
+            地图与数据来源 ↗
+          </button>
+        </div>
+        <section class="journey-section" aria-label="旅行记录">
+          <div class="section-heading">
+            <h2>最近的故事 <span>YOUR JOURNEY</span></h2>
+            <button id="show-journal" class="text-button">查看全部 ↗</button>
+          </div>
+          <div id="journey-cards" class="journey-cards"></div>
+        </section>
+      </section>
+      <aside class="side-panel" aria-label="国家详情和旅行清单">
+        <div class="panel-tabs" role="tablist" aria-label="侧栏内容">
+          <button
+            id="details-tab"
+            role="tab"
+            aria-selected="true"
+            aria-controls="country-panel"
+          >
+            国家记录</button
+          ><button
+            id="list-tab"
+            role="tab"
+            aria-selected="false"
+            aria-controls="country-list-panel"
+          >
+            旅行清单 <span id="list-count"></span>
+          </button>
+        </div>
+        <div class="search-box">
+          <svg class="icon"><use href="#i-search" /></svg
+          ><label class="sr-only" for="country-search"
+            >搜索国家、英文名或 ISO 代码</label
+          ><input
+            id="country-search"
+            type="search"
+            placeholder="搜索国家 / English / ISO"
+            autocomplete="off"
+            aria-controls="search-results"
+            aria-expanded="false"
+          /><kbd>/</kbd>
+        </div>
+        <div id="search-results" class="search-results" hidden></div>
+        <div id="country-panel" role="tabpanel" aria-labelledby="details-tab">
+          <div class="country-title">
+            <div id="country-flag" class="country-flag" aria-hidden="true">
+              🇮🇪
+            </div>
+            <div>
+              <span id="country-continent" class="country-continent">欧洲</span>
+              <h2 id="country-name">爱尔兰</h2>
+              <p id="country-english">Ireland <span>IRL</span></p>
+            </div>
+            <button
+              id="focus-country"
+              class="icon-button"
+              aria-label="在地图上定位当前国家"
+            >
+              <svg class="icon"><use href="#i-pin" /></svg>
+            </button>
+          </div>
+          <div id="country-status" class="status-pill"></div>
+          <div id="view-fields">
+            <div class="note-block date-block">
+              <span class="field-label">旅行日期</span>
+              <p id="view-date">还没有日期记录</p>
+            </div>
+            <div class="note-block">
+              <span class="field-label">我的旅行笔记</span>
+              <p id="view-note" class="empty-note">故事，等你来写。</p>
+            </div>
+            <button id="edit-country" class="button secondary wide">
+              编辑这个国家 <svg class="icon"><use href="#i-arrow" /></svg>
+            </button>
+          </div>
+          <form id="editor" hidden>
+            <fieldset>
+              <legend class="field-label">用颜色定义这个地方</legend>
+              <div id="color-options" class="color-options"></div>
+            </fieldset>
+            <label class="field-label" for="travel-date">旅行日期</label
+            ><input id="travel-date" type="date" />
+            <div class="field-row">
+              <label class="field-label" for="country-note">我的旅行笔记</label
+              ><span id="note-count">0 / 5000</span>
+            </div>
+            <textarea
+              id="country-note"
+              rows="5"
+              maxlength="5000"
+              placeholder="去过的城市、想走的路线、值得记住的一天…"
+            ></textarea>
+            <div class="editor-footer">
+              <span id="editor-save-state" role="status"
+                >草稿自动保存在本机</span
+              ><button class="text-button" type="submit">立即保存</button>
+            </div>
+            <button
+              id="palette-button"
+              class="button secondary wide"
+              type="button"
+            >
+              <svg class="icon"><use href="#i-settings" /></svg>
+              自定义图例颜色与名称
+            </button>
+          </form>
+          <div id="visa-source" class="visa-source" hidden>
+            <span class="field-label">初始签证分类的官方来源</span
+            ><a id="source-link" target="_blank" rel="noopener noreferrer"
+              >查看官方条件 ↗</a
+            ><small id="source-date"></small>
+          </div>
+          <button id="share-country" class="button ghost wide">
+            <svg class="icon"><use href="#i-copy" /></svg> 复制这个国家的链接
+          </button>
+        </div>
+        <div
+          id="country-list-panel"
+          role="tabpanel"
+          aria-labelledby="list-tab"
+          hidden
+        >
+          <label class="sr-only" for="list-filter">清单筛选</label
+          ><select id="list-filter">
+            <option value="all">全部国家与地区</option>
+            <option value="visited">已留下足迹</option>
+            <option value="notes">有旅行笔记</option>
+            <option value="dated">有旅行日期</option>
+          </select>
+          <div class="list-meta">
+            <span id="country-list-summary"></span
+            ><label class="sr-only" for="list-sort">清单排序</label
+            ><select id="list-sort">
+              <option value="name">按名称</option>
+              <option value="date">最近旅行</option>
+            </select>
+          </div>
+          <div id="country-list" class="country-list"></div>
+        </div>
+        <div class="panel-bottom">
+          <div class="backup-actions">
+            <button id="export-button">
+              <svg class="icon"><use href="#i-download" /></svg>
+              备份记录</button
+            ><button id="import-button">
+              <svg class="icon"><use href="#i-upload" /></svg> 导入备份</button
+            ><input
+              id="import-file"
+              type="file"
+              accept=".json,application/json"
+              hidden
+            />
+          </div>
+          <button
+            id="recovery-button"
+            class="text-button recovery-button"
+            hidden
+          >
+            恢复近期草稿</button
+          ><a
+            class="repo-link"
+            href="https://github.com/Warren-xh/travel-atlas"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Warren-xh / travel-atlas ↗</a
+          >
+        </div>
+      </aside>
+    </main>
+    <footer class="site-footer">
+      <span><strong>行迹 ATLAS</strong> &nbsp; 世界很大，慢慢去看。</span
+      ><span id="last-updated">地图数据加载中</span>
+    </footer>
+    <dialog id="auth-dialog" aria-labelledby="auth-heading">
+      <div class="dialog-heading">
+        <span class="dialog-icon"
+          ><svg class="icon"><use href="#i-lock" /></svg></span
+        ><button
+          data-close="auth-dialog"
+          class="icon-button"
+          aria-label="关闭管理登录"
+        >
+          <svg class="icon"><use href="#i-close" /></svg>
+        </button>
+      </div>
+      <div class="eyebrow">YOUR MAP, YOUR KEY</div>
+      <h2 id="auth-heading">解锁你的地图</h2>
+      <p id="auth-description">输入管理密码，即可编辑记录并发布到 GitHub。</p>
+      <form id="unlock-form">
+        <label class="field-label" for="admin-password">管理密码</label
+        ><input
+          id="admin-password"
+          type="password"
+          autocomplete="current-password"
+          required
+          maxlength="200"
+          placeholder="输入你的管理密码"
+        /><label class="checkbox-row"
+          ><input id="show-password" type="checkbox" /> 显示密码</label
+        ><button id="unlock-submit" class="button primary wide" type="submit">
+          解锁并管理 <svg class="icon"><use href="#i-arrow" /></svg></button
+        ><button id="reset-auth" class="text-button muted-button" type="button">
+          密码忘了或授权过期？重新配置
+        </button>
+      </form>
+      <form id="setup-form" hidden>
+        <div class="setup-steps">
+          <span>01 · 配置一次</span><span>02 · 以后只需密码</span>
+        </div>
+        <label class="field-label" for="setup-token">GitHub 细粒度 Token</label
+        ><input
+          id="setup-token"
+          type="password"
+          autocomplete="off"
+          spellcheck="false"
+          placeholder="github_pat_…"
+        />
+        <details class="setup-help">
+          <summary>如何获取仅限此地图的发布授权？</summary>
+          <ol>
+            <li>
+              打开
+              <a
+                href="https://github.com/settings/personal-access-tokens/new"
+                target="_blank"
+                rel="noopener noreferrer"
+                >GitHub 授权页面 ↗</a
+              >，选择账号 Warren-xh。
+            </li>
+            <li>
+              设置到期时间；Repository access 选 Only select repositories，只选
+              <strong>travel-atlas</strong>。
+            </li>
+            <li>
+              Repository permissions →
+              <strong>Contents: Read and write</strong>；其余无需增加。
+            </li>
+            <li>生成后粘贴到这里。授权只在你的浏览器内用管理密码加密。</li>
+          </ol>
+        </details>
+        <div class="field-row">
+          <label class="field-label" for="new-password"
+            >设置长密码（至少 16 位）</label
+          ><button id="generate-password" class="text-button" type="button">
+            生成随机密码
+          </button>
+        </div>
+        <input
+          id="new-password"
+          type="password"
+          autocomplete="new-password"
+          required
+          minlength="16"
+          maxlength="200"
+        /><label class="field-label" for="confirm-password">再次输入密码</label
+        ><input
+          id="confirm-password"
+          type="password"
+          autocomplete="new-password"
+          required
+          minlength="16"
+          maxlength="200"
+        /><label class="checkbox-row"
+          ><input id="show-new-password" type="checkbox" /> 显示新密码</label
+        ><label class="checkbox-row"
+          ><input id="password-saved" type="checkbox" required />
+          我已把管理密码保存到安全的位置</label
+        >
+        <p class="security-note">
+          仓库只保存加密后的授权。密码无法找回；忘记时需用新的 GitHub
+          授权重新配置。请勿使用短密码或其他账号的密码。
+        </p>
+        <button id="setup-submit" class="button primary wide" type="submit">
+          保存授权并解锁地图
+        </button>
+      </form>
+      <p id="auth-message" class="dialog-message" role="status"></p>
+      <div class="dialog-footnote">
+        发布凭据仅在解锁后的页面内存中保留，闲置 15 分钟自动锁定。
+      </div>
+    </dialog>
+    <dialog id="publish-dialog" aria-labelledby="publish-heading">
+      <div class="dialog-heading">
+        <h2 id="publish-heading">把这次修改带到所有设备</h2>
+        <button
+          data-close="publish-dialog"
+          class="icon-button"
+          aria-label="关闭发布面板"
+        >
+          <svg class="icon"><use href="#i-close" /></svg>
+        </button>
+      </div>
+      <p>
+        发布到
+        <strong>Warren-xh / travel-atlas</strong
+        >。地图、旅行日期和笔记会公开显示。
+      </p>
+      <div id="publish-summary" class="publish-summary"></div>
+      <p id="publish-message" class="dialog-message" role="status"></p>
+      <button id="confirm-publish" class="button primary wide">
+        <svg class="icon"><use href="#i-upload" /></svg> 确认发布到 GitHub</button
+      ><button id="pull-remote" class="button secondary wide">
+        检查并合并云端更新</button
+      ><a
+        id="commit-link"
+        class="text-link"
+        target="_blank"
+        rel="noopener noreferrer"
+        hidden
+        >查看本次 GitHub 提交 ↗</a
+      >
+      <div class="dialog-footnote">
+        先合并不同设备的修改，再发布；遇到同一字段冲突时，由你选择保留哪份。
+      </div>
+    </dialog>
+    <dialog id="conflict-dialog" aria-labelledby="conflict-heading">
+      <div class="dialog-heading">
+        <h2 id="conflict-heading">两台设备改了同一处</h2>
+        <button
+          data-close="conflict-dialog"
+          class="icon-button"
+          aria-label="取消解决冲突"
+        >
+          <svg class="icon"><use href="#i-close" /></svg>
+        </button>
+      </div>
+      <p>草稿已保留。为每一处选择要保留的版本，再继续发布。</p>
+      <form id="conflict-form">
+        <div id="conflict-fields"></div>
+        <button class="button primary wide">保存选择并继续</button>
+      </form>
+    </dialog>
+    <dialog id="palette-dialog" aria-labelledby="palette-heading">
+      <div class="dialog-heading">
+        <h2 id="palette-heading">给地图一点你的颜色</h2>
+        <button
+          data-close="palette-dialog"
+          class="icon-button"
+          aria-label="关闭图例设置"
+        >
+          <svg class="icon"><use href="#i-close" /></svg>
+        </button>
+      </div>
+      <p>五种颜色可以自由命名。透明表示尚未分类。</p>
+      <form id="palette-form">
+        <div id="palette-fields"></div>
+        <button class="button primary wide">保存图例</button>
+      </form>
+    </dialog>
+    <dialog id="recovery-dialog" aria-labelledby="recovery-heading">
+      <div class="dialog-heading">
+        <h2 id="recovery-heading">给草稿多一次机会</h2>
+        <button
+          data-close="recovery-dialog"
+          class="icon-button"
+          aria-label="关闭草稿恢复"
+        >
+          <svg class="icon"><use href="#i-close" /></svg>
+        </button>
+      </div>
+      <p>
+        最近 8 份记录快照保存在这个浏览器。选择后恢复为草稿，确认发布前不会修改
+        GitHub 上的地图。
+      </p>
+      <div id="recovery-list"></div>
+      <div class="dialog-footnote">
+        快照和 JSON 备份只包含地图数据，不包含管理密码或 GitHub 授权。
+      </div>
+    </dialog>
+    <dialog id="settings-dialog" aria-labelledby="settings-heading">
+      <div class="dialog-heading">
+        <h2 id="settings-heading">让主页更像你</h2>
+        <button
+          data-close="settings-dialog"
+          class="icon-button"
+          aria-label="关闭主页设置"
+        >
+          <svg class="icon"><use href="#i-close" /></svg>
+        </button>
+      </div>
+      <form id="settings-form">
+        <label class="field-label" for="setting-brand">地图名称</label
+        ><input id="setting-brand" name="brand" maxlength="20" required /><label
+          class="field-label"
+          for="setting-title"
+          >首页标题</label
+        ><input id="setting-title" name="title" maxlength="80" required /><label
+          class="field-label"
+          for="setting-subtitle"
+          >一句话介绍</label
+        ><textarea
+          id="setting-subtitle"
+          name="subtitle"
+          maxlength="180"
+          rows="3"
+          required
+        ></textarea
+        ><label class="field-label" for="setting-home"
+          >打开网页时显示的国家</label
+        ><select id="setting-home" name="home"></select
+        ><button class="button primary wide">保存主页设置</button>
+        <p class="help">保存在本机草稿中，发布后同步到所有设备。</p>
+      </form>
+    </dialog>
+    <dialog id="confirm-dialog" aria-labelledby="confirm-heading">
+      <div class="dialog-heading">
+        <h2 id="confirm-heading">确认操作</h2>
+        <button
+          data-close="confirm-dialog"
+          class="icon-button"
+          aria-label="取消操作"
+        >
+          <svg class="icon"><use href="#i-close" /></svg>
+        </button>
+      </div>
+      <p id="confirm-description"></p>
+      <div class="confirm-actions">
+        <button id="confirm-cancel" class="button secondary">取消</button
+        ><button id="confirm-ok" class="button primary">确认</button>
+      </div>
+    </dialog>
+    <dialog id="credits-dialog" aria-labelledby="credits-heading">
+      <div class="dialog-heading">
+        <h2 id="credits-heading">一张地图的来处</h2>
+        <button
+          data-close="credits-dialog"
+          class="icon-button"
+          aria-label="关闭数据来源"
+        >
+          <svg class="icon"><use href="#i-close" /></svg>
+        </button>
+      </div>
+      <p>
+        国界：Natural Earth 1:50m，经 d3-maps atlas
+        转换。小型国家与地区以圆点补充；边界用于个人旅行记录。
+      </p>
+      <p>
+        名称与大洲：<a
+          href="https://github.com/mledoze/countries"
+          target="_blank"
+          rel="noopener noreferrer"
+          >mledoze/countries</a
+        >。统计包含国家与地区，跨洲国家可能出现在两个大洲。
+      </p>
+      <p>
+        免签与电子签：保留原地图已核实的部分预填分类。每个国家详情中显示原始官方来源及核实日期。<strong
+          >透明不代表需要签证。</strong
+        >
+      </p>
+      <p>
+        分类不替代入境、中转、停留期限和返程条件。旅行前请向目的地官方机构核对最新规定。
+      </p>
+      <p>
+        地图绘制：<a
+          href="https://d3js.org/"
+          target="_blank"
+          rel="noopener noreferrer"
+          >D3.js</a
+        >。网页与公开旅行数据由 GitHub Pages 托管，无付费地图接口。
+      </p>
+      <p>
+        管理：GitHub 细粒度授权由浏览器使用 PBKDF2-SHA256 与 AES-256-GCM
+        加密。请设置强密码，Token 仅限此仓库并设置有效期。
+      </p>
+    </dialog>
+    <div id="toast" class="toast" role="status" hidden></div>
+    <noscript
+      ><div class="noscript">
+        这张互动地图需要启用 JavaScript。你仍可在 GitHub 仓库中查看地图数据。
+      </div></noscript
+    >
+  </body>
+</html>

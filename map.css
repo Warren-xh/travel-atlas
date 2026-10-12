@@ -1,0 +1,246 @@
+.map-stage {
+  position: relative;
+  height: 510px;
+  background: radial-gradient(ellipse at center, var(--map), var(--page));
+  overflow: hidden;
+}
+#map {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+}
+.graticule {
+  fill: none;
+  stroke: var(--map-grid);
+  stroke-width: 0.5;
+  opacity: 0.65;
+  pointer-events: none;
+}
+.country {
+  stroke: var(--map-stroke);
+  stroke-width: 0.65;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+  cursor: pointer;
+  transition:
+    fill 0.15s,
+    opacity 0.15s;
+}
+.country:hover,
+.country:focus {
+  stroke: var(--green);
+  stroke-width: 1.6;
+  outline: none;
+  filter: brightness(0.95);
+}
+.country.selected {
+  stroke: var(--green);
+  stroke-width: 2;
+}
+.country.context {
+  stroke: var(--map-stroke);
+  opacity: 0.2;
+  cursor: default;
+}
+.country.filtered-out {
+  opacity: 0.18;
+}
+.country.selected.filtered-out {
+  opacity: 0.65;
+}
+.micro-country {
+  stroke: var(--map-stroke);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+  cursor: pointer;
+}
+.micro-country.selected {
+  stroke: var(--green);
+  stroke-width: 2;
+}
+.micro-country.filtered-out {
+  opacity: 0.2;
+}
+.country-label {
+  fill: var(--map-label);
+  paint-order: stroke;
+  stroke: var(--map);
+  stroke-width: 3px;
+  stroke-linejoin: round;
+  pointer-events: none;
+  letter-spacing: 0.1px;
+  font-size: 10px;
+  font-weight: 500;
+}
+.country-label.selected {
+  font-weight: 750;
+  fill: var(--green);
+}
+.country-label.filtered-out {
+  opacity: 0.25;
+}
+.map-caption {
+  position: absolute;
+  bottom: 21px;
+  left: 22px;
+  pointer-events: none;
+}
+.map-caption > span {
+  font-family: Georgia, serif;
+  font-size: 25px;
+  letter-spacing: 4px;
+  color: var(--faint);
+  opacity: 0.65;
+}
+.map-caption small {
+  display: block;
+  font-size: 9px;
+  color: var(--faint);
+  margin-top: 6px;
+}
+.zoom-controls {
+  position: absolute;
+  right: 16px;
+  bottom: 18px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  background: var(--surface);
+}
+.zoom-controls button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 38px;
+  height: 38px;
+  background: var(--surface);
+  color: var(--green);
+  font-size: 21px;
+}
+.zoom-controls button + button {
+  border-top: 1px solid var(--line);
+}
+.zoom-controls button:hover {
+  background: var(--soft);
+}
+.zoom-controls .icon {
+  width: 16px;
+  height: 16px;
+}
+.tooltip {
+  position: absolute;
+  pointer-events: none;
+  background: var(--green);
+  color: var(--surface);
+  border-radius: 9px;
+  padding: 10px 13px;
+  box-shadow: 0 6px 24px #0002;
+  max-width: 230px;
+  font-size: 12px;
+  z-index: 3;
+}
+.tooltip small {
+  display: block;
+  margin-top: 5px;
+  font-size: 9px;
+  opacity: 0.8;
+}
+.filter-caption {
+  position: absolute;
+  left: 15px;
+  top: 13px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  color: var(--muted);
+  padding: 7px 10px;
+  font-size: 10px;
+  border-radius: 8px;
+  pointer-events: none;
+}
+.map-loading,
+.map-error {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 17px;
+  font-size: 12px;
+  color: var(--muted);
+  background: var(--map);
+  padding: 30px;
+  text-align: center;
+}
+.map-error strong {
+  color: var(--ink);
+  font-size: 16px;
+}
+.map-error p {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.8;
+}
+.loading-ring {
+  height: 31px;
+  width: 31px;
+  border: 2px solid var(--line);
+  border-top-color: var(--green);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+#map-card:fullscreen {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  background: var(--surface);
+  border: 0;
+  border-radius: 0;
+}
+#map-card:fullscreen .map-stage {
+  flex: 1;
+  height: auto !important;
+  min-height: 0;
+}
+#map-card:fullscreen .map-top {
+  min-height: 60px;
+}
+#map-card:fullscreen .legend {
+  min-height: 65px;
+}
+@media (max-width: 560px) {
+  .map-caption {
+    left: 16px;
+    bottom: 19px;
+  }
+  .map-caption > span {
+    font-size: 21px;
+    letter-spacing: 2.5px;
+  }
+  .map-caption small {
+    font-size: 8px;
+  }
+  .zoom-controls {
+    right: 12px;
+    bottom: 14px;
+  }
+  .zoom-controls button {
+    width: 36px;
+    height: 36px;
+  }
+  .filter-caption {
+    font-size: 9px;
+    left: 11px;
+    top: 11px;
+  }
+}

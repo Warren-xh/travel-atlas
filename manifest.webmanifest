@@ -1,0 +1,18 @@
+{
+  "name": "行迹 Atlas · 我的旅行地图",
+  "short_name": "行迹 Atlas",
+  "lang": "zh-CN",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f5f3ec",
+  "theme_color": "#35513c",
+  "icons": [
+    {
+      "src": "./assets/compass.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

@@ -1,46 +1,99 @@
 # 行迹 Atlas
 
-个人旅行地图，使用 GitHub Pages 免费托管，没有付费地图接口和服务器依赖。
+一张属于自己的旅行地图。免费部署到 GitHub Pages，地图、国旗和脚本均从本仓库加载，没有付费地图接口、外部字体或服务器依赖。
 
-- 地图：https://warren-xh.github.io/travel-atlas/
-- 管理：https://warren-xh.github.io/travel-atlas/#admin
-- 大洲切换、国家搜索、地图缩放、五种自定义颜色、透明底色与清晰边界。
-- 蓝色：普通中国护照免签且未去过；绿色：去过；黄色：电子签；橙色与紫色：自定义。
-- 旅行日期、备注、浏览器本地保存、JSON 备份导入与导出。
-- 网页管理面板可以通过 GitHub Contents API 发布 data/atlas.json。
+- [打开地图](https://warren-xh.github.io/travel-atlas/)
+- [进入管理](https://warren-xh.github.io/travel-atlas/#admin)
 
-## 管理与发布
+## 可以做什么
 
-1. 点击“管理地图”，选择国家，改颜色、日期和备注，点击“保存到本机”。
-2. 如需所有设备看到相同记录，点击“发布到 GitHub”。
-3. 第一次在 GitHub 创建细粒度 Personal Access Token：仅选择 travel-atlas 仓库；Repository permissions 的 Contents 设为 Read and write；设置合理的到期时间。
-4. 将 Token 输入网站的发布面板，再点击“发布当前记录”。Token 只保留在当前页面内存中，不写入 localStorage、备份、仓库或 URL。刷新后需要再次输入。不要把 Token 发给别人。
-5. 发布只修改数据文件，Pages 会自动构建。地图与发布记录公开；私人信息不要发布到公开仓库。
-6. 多设备修改时如提示 GitHub 已有更新，先导出本机备份，再拉取最新记录后编辑，防止覆盖。
+- 按世界与七大洲浏览；搜索中文、英文、ISO 代码，支持英文重音字符。
+- 自定义五种图例颜色与名称，点击图例筛选国家；小型国家以圆点补充。
+- 缩放、平移、国家定位、全屏地图、导出带图例的 SVG。
+- 旅行日期与笔记、旅行清单、最近旅程、足迹统计；统计包含国家和地区。
+- 明暗主题、手机适配、键盘搜索、可访问的控件与减少动态效果支持。
+- 管理密码解锁后编辑；草稿自动保存，支持撤销、重做、近期快照恢复。
+- 管理主页名称、标题、介绍与默认国家；JSON 备份导入和导出。
+- 发布前预览修改；自动合并不同设备的独立修改，相同字段的冲突由你选择。
+- 发布后显示 GitHub 提交链接，并检查 Pages 是否已显示新记录。
 
-地图管理入口可以公开访问。访客只会修改自己的本机记录；发布到此仓库必须具有仓库写入授权，管理页不是服务器端登录后台。
+## 首次配置管理密码
 
-## 本地预览
+配置一次后，同一台或另一台设备只需输入管理密码，无需每次重新粘贴 Token。
 
-在此目录运行 Python 3 的 python3 -m http.server 8080，再打开 http://localhost:8080。需要 HTTP 服务加载 JSON，直接双击 HTML 不适用。
+1. 打开地图，点击「管理地图」。若尚未配置，将进入「设置你的地图钥匙」。
+2. 在 [GitHub 细粒度 Token 页面](https://github.com/settings/personal-access-tokens/new) 创建授权：资源所有者选 Warren-xh；Repository access 选 **Only select repositories**，只选 **travel-atlas**。
+3. Repository permissions 仅需 **Contents → Read and write**。设置适当的到期时间；不需要账户权限或其他仓库权限。
+4. 将 `github_pat_` 开头的 Token 粘贴到配置表单。经典 Token 和 OAuth Token 不接受。
+5. 设置长密码，建议使用页面生成的 **24 位随机密码**，保存到密码管理器，勾选「我已把管理密码保存到安全的位置」。
+6. 点击「保存授权并解锁地图」。浏览器会先加密 Token，再把密文保存为 `data/admin.vault.json`。
 
-## 部署
+GitHub 连接器的仓库写入权限不能自动转换成网页使用的个人 Token。仓库中没有内置密码或明文授权；首次配置仍需由拥有仓库权限的人提供细粒度 Token。
 
-仓库 Settings → Pages → Deploy from a branch → main / (root)。所有资源使用相对路径，适用于 GitHub Pages 项目子目录。
+## 日常管理与发布
 
-## 数据与修改
+1. 点击「管理地图」，输入管理密码。
+2. 点击国家或搜索国家，修改颜色、日期与笔记。草稿会自动保存到当前浏览器。
+3. 需要时点击「主页设置」或「自定义图例颜色与名称」。
+4. 点击「发布修改」，检查修改清单，再点击「确认发布到 GitHub」。
+5. 如其他设备也有修改，网页先执行字段级三方合并。不同国家、不同字段的修改会同时保留；同一字段的不同修改必须由你选择。
+6. 发布写入 `data/atlas.json` 的 `main` 分支，并使用当前文件 SHA 防止并发覆盖。等待 GitHub Pages 自动构建；提交成功和网页已更新会分别提示。
 
-- data/atlas.json：颜色名称、颜色值、国家状态、日期、笔记与预填政策来源。
-- data/countries.json：国家和地区的中文名、英文名、大洲、位置。
-- data/world.geojson：Natural Earth 1:50m 边界；微型国家通过位置圆点补充。
-- app.js / style.css / index.html：行为、样式与页面。
+「检查并合并云端更新」保留本机草稿。「恢复近期草稿」可找回当前浏览器最近 8 份快照。导入的备份先进入草稿，不会立即覆盖 GitHub。
 
-第一版只预填部分已核实的免签/电子签国家，透明表示未分类。出行前按官方来源核对停留期限、入境、过境和返程条件。初始“已去过”仅使用已确认的爱尔兰，不假设其他旅行历史。
+## 密码、授权与数据
+
+- Token 使用 **PBKDF2-SHA256（600,000 次迭代）+ AES-256-GCM** 加密，随机 16 字节盐、12 字节 IV 和认证标签；密文绑定到本仓库。
+- GitHub Pages 为公开静态托管。加密授权文件也公开，攻击者可尝试离线猜测密码，因此必须使用强随机密码，并将 Token 严格限制在此仓库。
+- 管理密码与解密后的 Token 仅在解锁页面的内存中使用，不写入浏览器存储、JSON 备份或 URL。配置表单关闭后清空敏感输入。
+- 页面闲置 15 分钟自动锁定；刷新或手动锁定后需重新输入密码。本机草稿仍保留。
+- 修改密码或更新即将过期的 Token：解锁后点击「管理设置」。Token 留空时沿用当前授权，填写新 Token 时替换授权。
+- 忘记密码无法从密文中恢复。使用新的细粒度 Token，通过「密码忘了或授权过期？重新配置」设置新密码。需要时在 GitHub 撤销旧 Token。
+- **地图、日期与笔记会公开。** 密码保护的是发布授权，公开地图的内容仍可被访客读取。请勿把私人信息放入旅行笔记。
+- 本机草稿与快照依赖浏览器存储。清理浏览器数据会删除它们，建议定期导出 JSON；导出的记录不含管理授权。
+
+## 开发与验证
+
+Node.js 22 或更新版本，无需安装运行时依赖：
+
+```sh
+node scripts/serve.mjs
+node --test
+```
+
+打开 `http://127.0.0.1:4173`。`PORT` 可设置端口。不要直接双击 HTML：地图数据与 ES 模块需要 HTTP 服务。
+
+隔离的浏览器验证模式：
+
+```sh
+node scripts/serve.mjs --test-api
+```
+
+该模式仅在本机服务时替换 GitHub 请求的传输层；加密与应用逻辑仍运行原代码。测试 API 在内存中保存模拟提交，**不会写入真实 GitHub，也不会修改数据文件**。测试用 Token 为 `github_pat_TestOnlyNoPermissions12345678901234567890`，不具备任何权限。此模式不得用于生产部署。
+
+23 项自动测试覆盖原数据兼容、日期与备份验证、字段级合并、冲突选择、Unicode、授权状态、SHA 写入、加密往返、错误密码、篡改检测和 KDF 参数约束。
+
+## 部署与文件
+
+GitHub Pages：**Deploy from a branch → main → / (root)**。所有站内资源使用相对路径，支持 `/travel-atlas/` 子目录；无需构建命令。
+
+| 文件 | 用途 |
+| --- | --- |
+| `data/atlas.json` | 图例、国家记录、官方来源及可选主页设置 |
+| `data/admin.vault.json` | 首次配置后创建的加密管理授权 |
+| `data/countries.json` / `data/world.geojson` | 国家与地区元数据、Natural Earth 边界 |
+| `app.js` | 界面与地图交互 |
+| `core.mjs` | 数据验证、搜索、修改比较和三方合并 |
+| `auth.mjs` / `github.mjs` | 密码加密与 GitHub 发布 |
+| `style.css` / `map.css` | 响应式界面与地图主题 |
+| `assets/flags/` | 本地 SVG 国旗 |
+| `tests/` | 不依赖外部服务的自动测试 |
+
+保留原始旅行历史：初始足迹只有已确认的爱尔兰。签证分类保留原版部分官方来源预填；透明表示尚未分类，并非一定需要签证。旅行前请重新核对最新入境、中转、停留和返程条件。
 
 ## 第三方资料
 
-- D3.js 7.9.0，ISC License：https://github.com/d3/d3/blob/main/LICENSE
-- Natural Earth 边界，public domain：https://www.naturalearthdata.com/about/terms-of-use/
-- @d3-maps/atlas 1.0.0：https://www.npmjs.com/package/@d3-maps/atlas
-- mledoze/countries，ODbL-1.0：https://github.com/mledoze/countries
-- 签证预填来源链接及核实日期保存在每条记录中。数据不是完整全球签证数据库。
+- [D3.js 7.9.0](https://github.com/d3/d3)，ISC License；许可证在 `assets/D3-LICENSE.txt`。
+- [Natural Earth](https://www.naturalearthdata.com/about/terms-of-use/)，public domain；边界来自 `@d3-maps/atlas` 1.0.0。
+- [mledoze/countries](https://github.com/mledoze/countries)，ODbL 1.0；修改说明在 `data/NOTICE.txt`。
+- [flag-icons](https://github.com/lipis/flag-icons)，MIT License；许可证在 `assets/FLAGS-LICENSE.txt`。

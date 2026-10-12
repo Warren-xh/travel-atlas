@@ -1,0 +1,11 @@
+{
+  "name": "travel-atlas",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test",
+    "check": "node --check app.js && node --check core.mjs && node --check auth.mjs && node --check github.mjs",
+    "dev": "node scripts/serve.mjs"
+  }
+}
