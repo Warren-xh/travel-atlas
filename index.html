@@ -448,7 +448,11 @@
       <h2 id="auth-heading">解锁你的地图</h2>
       <p id="auth-description">输入管理密码，即可编辑记录并发布到 GitHub。</p>
       <form id="unlock-form">
-        <label class="field-label" for="admin-password">管理密码</label
+        <label
+          id="unlock-password-label"
+          class="field-label"
+          for="admin-password"
+          >管理密码或 PIN</label
         ><input
           id="admin-password"
           type="password"
@@ -461,13 +465,19 @@
         ><button id="unlock-submit" class="button primary wide" type="submit">
           解锁并管理 <svg class="icon"><use href="#i-arrow" /></svg></button
         ><button id="reset-auth" class="text-button muted-button" type="button">
-          密码忘了或授权过期？重新配置
+          PIN 或密码忘了、授权过期？重新配置
         </button>
       </form>
       <form id="setup-form" hidden>
         <div class="setup-steps">
           <span>01 · 配置一次</span><span>02 · 以后只需密码</span>
         </div>
+        <label class="field-label" for="auth-storage">管理方式</label>
+        <select id="auth-storage">
+          <option value="device">本机 PIN · 支持 4 位数字</option>
+          <option value="shared">跨设备长密码 · 至少 16 位</option>
+        </select>
+        <p id="storage-explanation" class="security-note"></p>
         <label class="field-label" for="setup-token">GitHub 细粒度 Token</label
         ><input
           id="setup-token"
@@ -500,7 +510,7 @@
           </ol>
         </details>
         <div class="field-row">
-          <label class="field-label" for="new-password"
+          <label id="new-password-label" class="field-label" for="new-password"
             >设置长密码（至少 16 位）</label
           ><button id="generate-password" class="text-button" type="button">
             生成随机密码
@@ -527,7 +537,7 @@
           ><input id="password-saved" type="checkbox" required />
           我已把管理密码保存到安全的位置</label
         >
-        <p class="security-note">
+        <p id="setup-security-note" class="security-note">
           仓库只保存加密后的授权。密码无法找回；忘记时需用新的 GitHub
           授权重新配置。请勿使用短密码或其他账号的密码。
         </p>
@@ -537,7 +547,7 @@
       </form>
       <p id="auth-message" class="dialog-message" role="status"></p>
       <div class="dialog-footnote">
-        发布凭据仅在解锁后的页面内存中保留，闲置 15 分钟自动锁定。
+        解密后的发布凭据仅保留在页面内存中，闲置 15 分钟自动锁定。
       </div>
     </dialog>
     <dialog id="publish-dialog" aria-labelledby="publish-heading">

@@ -22,6 +22,13 @@ import {
   VAULT_PATH,
   loadPublicVault,
 } from "./github.mjs";
+import {
+  validPin,
+  hasDeviceAccess,
+  saveDeviceAccess,
+  removeDeviceAccess,
+  unlockDevice,
+} from "./device-auth.mjs";
 
 const $ = (id) => document.getElementById(id);
 const LOCAL_KEY = "travel-atlas-draft-v2";
@@ -78,6 +85,7 @@ let toastTimer,
   vault,
   vaultSha,
   loadingVault = false,
+  deviceAccess = false,
   editorDirty = false,
   storageFailed = false,
   conflictPlan;
@@ -862,6 +870,8 @@ async function loadVault() {
   if (loadingVault) return;
   loadingVault = true;
   try {
+    deviceAccess = await hasDeviceAccess().catch(() => false);
+    if (deviceAccess) return;
     const current = await loadPublicVault(api);
     vault = current.data ? validateVault(current.data) : null;
     vaultSha = current.sha;
@@ -873,6 +883,28 @@ async function loadVault() {
     loadingVault = false;
   }
 }
+function updateAuthStorage(clearPasswords = true) {
+  const local = $("auth-storage").value === "device";
+  $("new-password-label").textContent = local
+    ? "设置本机 PIN（4 至 8 位数字）"
+    : "设置长密码（至少 16 位）";
+  $("generate-password").hidden = local;
+  $("storage-explanation").textContent = local
+    ? "授权加密保存在当前浏览器，不上传到公开仓库。换设备或清理浏览器数据后需要重新授权。仅在自己的可信设备上使用短 PIN。"
+    : "加密授权保存到 GitHub 仓库，可在不同设备输入同一个长密码解锁。";
+  $("setup-security-note").textContent = local
+    ? "PIN 只是这台设备的快捷锁。请保持设备和浏览器安全；忘记 PIN 时需重新配置 GitHub 授权。"
+    : "仓库只保存加密后的授权。请保存强随机密码；忘记时需用 GitHub 授权重新配置。";
+  for (const id of ["new-password", "confirm-password"]) {
+    const input = $(id);
+    input.minLength = local ? 4 : 16;
+    input.maxLength = local ? 8 : 200;
+    input.inputMode = local ? "numeric" : "text";
+    if (local) input.pattern = "[0-9]{4,8}";
+    else input.removeAttribute("pattern");
+    if (clearPasswords) input.value = "";
+  }
+}
 function setupMode(reconfigure = false) {
   $("unlock-form").hidden = true;
   $("setup-form").hidden = false;
@@ -880,13 +912,15 @@ function setupMode(reconfigure = false) {
     ? "更新管理密码与授权"
     : "设置你的地图钥匙";
   $("auth-description").textContent = reconfigure
-    ? "设置新的长密码；替换 Token 可更新即将过期的 GitHub 授权。"
-    : "第一次配置 GitHub 授权与管理密码，以后只需输入密码。";
+    ? "更新 PIN、长密码或即将过期的 GitHub 授权。"
+    : "首次配置 GitHub 授权，选择本机 PIN 或跨设备长密码。";
   $("setup-token").required = !api.unlocked;
   $("setup-token").placeholder = api.unlocked
     ? "留空沿用当前授权，或粘贴新 Token"
     : "github_pat_…";
   $("setup-form").reset();
+  $("auth-storage").value = deviceAccess || !vault ? "device" : "shared";
+  updateAuthStorage();
   $("setup-token").required = !api.unlocked;
   $("auth-message").textContent = "";
 }
@@ -906,13 +940,18 @@ async function openAuth(reconfigure = false) {
   showDialog("auth-dialog");
   try {
     await loadVault();
-    if (!vault || reconfigure) setupMode(reconfigure);
+    if ((!vault && !deviceAccess) || reconfigure) setupMode(reconfigure);
     else {
       $("unlock-form").hidden = false;
       $("setup-form").hidden = true;
       $("auth-heading").textContent = "解锁你的地图";
-      $("auth-description").textContent =
-        "输入管理密码，即可编辑记录并发布到 GitHub。";
+      $("auth-description").textContent = deviceAccess
+        ? "输入这台设备的 PIN，即可编辑并发布到 GitHub。"
+        : "输入管理长密码，即可编辑记录并发布到 GitHub。";
+      $("unlock-password-label").textContent = deviceAccess
+        ? "本机 PIN"
+        : "管理长密码";
+      $("admin-password").inputMode = deviceAccess ? "numeric" : "text";
       $("auth-message").textContent = "";
       $("admin-password").focus();
     }
@@ -974,7 +1013,9 @@ async function unlock(event) {
   setAuthBusy(true);
   $("auth-message").textContent = "正在解锁…";
   try {
-    const token = await decryptToken(vault, $("admin-password").value);
+    const token = deviceAccess
+      ? await unlockDevice($("admin-password").value)
+      : await decryptToken(vault, $("admin-password").value);
     if (!$("auth-dialog").open) return;
     api.unlock(token);
     activateAdmin();
@@ -991,16 +1032,19 @@ async function configureAuth(event) {
   event.preventDefault();
   if (authBusy) return;
   const password = $("new-password").value;
+  const local = $("auth-storage").value === "device";
   if (password !== $("confirm-password").value) {
     $("auth-message").textContent = "两次输入的密码不一致。";
     return;
   }
-  if (!strongPassword(password)) {
-    $("auth-message").textContent =
-      "请使用至少 16 位的长密码，或点击生成随机密码。";
+  if (local ? !validPin(password) : !strongPassword(password)) {
+    $("auth-message").textContent = local
+      ? "请输入 4 至 8 位数字 PIN。"
+      : "请使用至少 16 位的长密码，或点击生成随机密码。";
     return;
   }
   if (
+    !local &&
     vault &&
     !api.unlocked &&
     !(await confirmAction(
@@ -1011,11 +1055,20 @@ async function configureAuth(event) {
   )
     return;
   setAuthBusy(true);
-  $("auth-message").textContent = "正在加密授权并检查仓库权限…";
+  $("auth-message").textContent = "正在加密授权并检查仓库访问…";
   const token = $("setup-token").value.trim();
   const candidate = token ? new GitHubClient() : api;
   if (token) candidate.unlock(token);
   try {
+    if (local) {
+      await candidate.read(DATA_PATH);
+      await saveDeviceAccess(candidate, password);
+      deviceAccess = true;
+      if (token) api.unlock(token);
+      activateAdmin();
+      toast("本机 PIN 配置成功！授权只保存在当前浏览器，未上传到仓库。");
+      return;
+    }
     const encrypted = await candidate.seal(password);
     await candidate.read(DATA_PATH);
     const current = await candidate.read(VAULT_PATH, false);
@@ -1046,6 +1099,12 @@ async function configureAuth(event) {
     );
     vault = encrypted;
     vaultSha = result.content.sha;
+    deviceAccess = false;
+    await removeDeviceAccess().catch(() =>
+      notice(
+        "跨设备授权已保存，但旧本机授权未能删除。请清理旧浏览器授权后再使用新的长密码。",
+      ),
+    );
     if (token) api.unlock(token);
     activateAdmin();
     toast("授权配置成功！以后只需用管理密码解锁。");
@@ -1547,6 +1606,7 @@ function wireEvents() {
   $("lock-button").onclick = () => lock();
   $("unlock-form").onsubmit = unlock;
   $("setup-form").onsubmit = configureAuth;
+  $("auth-storage").onchange = () => updateAuthStorage();
   $("reset-auth").onclick = () => setupMode(true);
   $("show-password").onchange = () =>
     ($("admin-password").type = $("show-password").checked
