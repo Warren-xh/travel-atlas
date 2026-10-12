@@ -3,6 +3,7 @@ import { decryptToken } from "./auth.mjs";
 
 const DATABASE = "travel-atlas-device-access-v1";
 const STORE = "access";
+export const DEFAULT_DEVICE_PIN = "0526";
 export const validPin = (pin) =>
   typeof pin === "string" && /^\d{4,8}$/.test(pin);
 

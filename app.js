@@ -21,14 +21,15 @@ import {
   DATA_PATH,
   VAULT_PATH,
   loadPublicVault,
-} from "./github.mjs";
+} from "./github.mjs?v=20261012r6";
 import {
   validPin,
+  DEFAULT_DEVICE_PIN,
   hasDeviceAccess,
   saveDeviceAccess,
   removeDeviceAccess,
   unlockDevice,
-} from "./device-auth.mjs";
+} from "./device-auth.mjs?v=20261012r6";
 
 const $ = (id) => document.getElementById(id);
 const LOCAL_KEY = "travel-atlas-draft-v2";
@@ -885,15 +886,20 @@ async function loadVault() {
 }
 function updateAuthStorage(clearPasswords = true) {
   const local = $("auth-storage").value === "device";
+  $("shared-password-fields").hidden = local;
+  for (const control of $("shared-password-fields").querySelectorAll(
+    "input, button",
+  ))
+    control.disabled = local;
   $("new-password-label").textContent = local
     ? "设置本机 PIN（4 至 8 位数字）"
     : "设置长密码（至少 16 位）";
   $("generate-password").hidden = local;
   $("storage-explanation").textContent = local
-    ? "授权加密保存在当前浏览器，不上传到公开仓库。换设备或清理浏览器数据后需要重新授权。仅在自己的可信设备上使用短 PIN。"
+    ? "管理 PIN 已固定为 0526，无需另设密码。发布授权加密保存在当前浏览器，换设备或清理网站存储后需要重新授权一次。"
     : "加密授权保存到 GitHub 仓库，可在不同设备输入同一个长密码解锁。";
   $("setup-security-note").textContent = local
-    ? "PIN 只是这台设备的快捷锁。请保持设备和浏览器安全；忘记 PIN 时需重新配置 GitHub 授权。"
+    ? "0526 是本机快捷入口。能否发布取决于当前浏览器中保存的 GitHub 授权。授权不会上传到公开仓库。"
     : "仓库只保存加密后的授权。请保存强随机密码；忘记时需用 GitHub 授权重新配置。";
   for (const id of ["new-password", "confirm-password"]) {
     const input = $(id);
@@ -1033,11 +1039,12 @@ async function configureAuth(event) {
   if (authBusy) return;
   const password = $("new-password").value;
   const local = $("auth-storage").value === "device";
-  if (password !== $("confirm-password").value) {
+  const credential = local ? DEFAULT_DEVICE_PIN : password;
+  if (!local && password !== $("confirm-password").value) {
     $("auth-message").textContent = "两次输入的密码不一致。";
     return;
   }
-  if (local ? !validPin(password) : !strongPassword(password)) {
+  if (local ? !validPin(credential) : !strongPassword(credential)) {
     $("auth-message").textContent = local
       ? "请输入 4 至 8 位数字 PIN。"
       : "请使用至少 16 位的长密码，或点击生成随机密码。";
@@ -1062,11 +1069,11 @@ async function configureAuth(event) {
   try {
     if (local) {
       await candidate.read(DATA_PATH);
-      await saveDeviceAccess(candidate, password);
+      await saveDeviceAccess(candidate, credential);
       deviceAccess = true;
       if (token) api.unlock(token);
       activateAdmin();
-      toast("本机 PIN 配置成功！授权只保存在当前浏览器，未上传到仓库。");
+      toast("本机授权已保存！以后输入 0526 即可管理并发布。");
       return;
     }
     const encrypted = await candidate.seal(password);
@@ -1606,6 +1613,20 @@ function wireEvents() {
   $("lock-button").onclick = () => lock();
   $("unlock-form").onsubmit = unlock;
   $("setup-form").onsubmit = configureAuth;
+  $("check-github-connection").onclick = async () => {
+    const button = $("check-github-connection");
+    button.disabled = true;
+    $("auth-message").textContent = "正在检测 GitHub 连接…";
+    try {
+      await new GitHubClient().read(DATA_PATH, false);
+      $("auth-message").textContent =
+        "GitHub 连接正常，可以保存授权并发布。（版本 20261012r6）";
+    } catch (error) {
+      $("auth-message").textContent = error.message + "（版本 20261012r6）";
+    } finally {
+      button.disabled = false;
+    }
+  };
   $("auth-storage").onchange = () => updateAuthStorage();
   $("reset-auth").onclick = () => setupMode(true);
   $("show-password").onchange = () =>

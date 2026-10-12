@@ -65,9 +65,16 @@ export class GitHubClient {
           ...(body ? { body: JSON.stringify(body) } : {}),
         },
       );
-    } catch {
+    } catch (error) {
+      const code = /Illegal invocation/.test(error?.message || "")
+        ? "FETCH_CONTEXT"
+        : ["TimeoutError", "AbortError"].includes(error?.name)
+          ? "API_TIMEOUT"
+          : "FETCH_NETWORK";
       throw new Error(
-        "连接 GitHub 超时或网络不可用。草稿仍保留在本机，请稍后重试。",
+        "连接 GitHub 失败（" +
+          code +
+          "）。草稿仍保留在本机。请检查网络或浏览器是否拦截 api.github.com。",
       );
     }
     if (
