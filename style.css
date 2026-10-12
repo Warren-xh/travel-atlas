@@ -1537,18 +1537,29 @@ dialog form > p {
   .brand {
     font-size: 21px;
     gap: 8px;
+    display: block;
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .brand img {
     width: 31px;
     height: 31px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 6px;
   }
   .brand small {
+    display: none;
     font-size: 8px;
     letter-spacing: 1.8px;
     margin-left: 0;
   }
   .header-actions {
     gap: 6px;
+    flex-shrink: 0;
+    white-space: nowrap;
   }
   .header-actions > .icon-button {
     width: 34px;
