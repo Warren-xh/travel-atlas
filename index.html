@@ -20,7 +20,7 @@
     <link rel="manifest" href="./manifest.webmanifest" />
     <link rel="stylesheet" href="./style.css?v=20261012r7" />
     <script src="./assets/d3.min.js" defer></script>
-    <script src="./app.js?v=20261012r6" type="module"></script>
+    <script src="./app.js?v=20261013pw1" type="module"></script>
   </head>
   <body>
     <svg
@@ -175,7 +175,7 @@
           >
             <svg class="icon flip"><use href="#i-undo" /></svg></button
           ><button id="settings-button" class="text-button">主页设置</button
-          ><button id="security-button" class="text-button">管理设置</button
+          ><button id="security-button" class="text-button">重新验证密码</button
           ><button id="lock-button" class="text-button">锁定</button
           ><button id="publish" class="button primary compact">
             <svg class="icon"><use href="#i-upload" /></svg> 发布修改
@@ -433,131 +433,18 @@
       ><span id="last-updated">地图数据加载中</span>
     </footer>
     <dialog id="auth-dialog" aria-labelledby="auth-heading">
-      <div class="dialog-heading">
-        <span class="dialog-icon"
-          ><svg class="icon"><use href="#i-lock" /></svg></span
-        ><button
-          data-close="auth-dialog"
-          class="icon-button"
-          aria-label="关闭管理登录"
-        >
-          <svg class="icon"><use href="#i-close" /></svg>
-        </button>
-      </div>
+      <div class="dialog-heading"><span class="dialog-icon"><svg class="icon"><use href="#i-lock" /></svg></span><button data-close="auth-dialog" class="icon-button" aria-label="关闭管理登录"><svg class="icon"><use href="#i-close" /></svg></button></div>
       <div class="eyebrow">YOUR MAP, YOUR KEY</div>
       <h2 id="auth-heading">解锁你的地图</h2>
-      <p id="auth-description">输入管理密码，即可编辑记录并发布到 GitHub。</p>
+      <p id="auth-description">输入管理密码，即可编辑并更新这张地图。</p>
       <form id="unlock-form">
-        <label
-          id="unlock-password-label"
-          class="field-label"
-          for="admin-password"
-          >管理密码或 PIN</label
-        ><input
-          id="admin-password"
-          type="password"
-          autocomplete="current-password"
-          required
-          maxlength="200"
-          placeholder="输入你的管理密码"
-        /><label class="checkbox-row"
-          ><input id="show-password" type="checkbox" /> 显示密码</label
-        ><button id="unlock-submit" class="button primary wide" type="submit">
-          解锁并管理 <svg class="icon"><use href="#i-arrow" /></svg></button
-        ><button id="reset-auth" class="text-button muted-button" type="button">
-          PIN 或密码忘了、授权过期？重新配置
-        </button>
+        <label id="unlock-password-label" class="field-label" for="admin-password">管理密码</label>
+        <input id="admin-password" type="password" autocomplete="off" inputmode="numeric" required maxlength="100" placeholder="输入你的管理密码" />
+        <label class="checkbox-row"><input id="show-password" type="checkbox" /> 显示密码</label>
+        <button id="unlock-submit" class="button primary wide" type="submit">解锁并管理 <svg class="icon"><use href="#i-arrow" /></svg></button>
       </form>
-      <form id="setup-form" hidden>
-        <div class="setup-steps">
-          <span>01 · 配置一次</span><span>02 · 以后只需密码</span>
-        </div>
-        <label class="field-label" for="auth-storage">管理方式</label>
-        <select id="auth-storage">
-          <option value="device">本机管理 · 固定 PIN 0526</option>
-          <option value="shared">跨设备长密码 · 至少 16 位</option>
-        </select>
-        <p id="storage-explanation" class="security-note"></p>
-        <label class="field-label" for="setup-token">GitHub 细粒度 Token</label
-        ><input
-          id="setup-token"
-          type="password"
-          autocomplete="off"
-          spellcheck="false"
-          placeholder="github_pat_…"
-        />
-        <details class="setup-help">
-          <summary>如何获取仅限此地图的发布授权？</summary>
-          <ol>
-            <li>
-              打开
-              <a
-                href="https://github.com/settings/personal-access-tokens/new"
-                target="_blank"
-                rel="noopener noreferrer"
-                >GitHub 授权页面 ↗</a
-              >，选择账号 Warren-xh。
-            </li>
-            <li>
-              设置到期时间；Repository access 选 Only select repositories，只选
-              <strong>travel-atlas</strong>。
-            </li>
-            <li>
-              Repository permissions →
-              <strong>Contents: Read and write</strong>；其余无需增加。
-            </li>
-            <li>生成后粘贴到这里。授权只在你的浏览器内用管理密码加密。</li>
-          </ol>
-        </details>
-        <div id="shared-password-fields">
-          <div class="field-row">
-            <label
-              id="new-password-label"
-              class="field-label"
-              for="new-password"
-              >设置长密码（至少 16 位）</label
-            ><button id="generate-password" class="text-button" type="button">
-              生成随机密码
-            </button>
-          </div>
-          <input
-            id="new-password"
-            type="password"
-            autocomplete="new-password"
-            required
-            minlength="16"
-            maxlength="200"
-          /><label class="field-label" for="confirm-password"
-            >再次输入密码</label
-          ><input
-            id="confirm-password"
-            type="password"
-            autocomplete="new-password"
-            required
-            minlength="16"
-            maxlength="200"
-          /><label class="checkbox-row"
-            ><input id="show-new-password" type="checkbox" /> 显示新密码</label
-          ><label class="checkbox-row"
-            ><input id="password-saved" type="checkbox" required />
-            我已把管理密码保存到安全的位置</label
-          >
-        </div>
-        <p id="setup-security-note" class="security-note">
-          仓库只保存加密后的授权。密码无法找回；忘记时需用新的 GitHub
-          授权重新配置。请勿使用短密码或其他账号的密码。
-        </p>
-        <button id="setup-submit" class="button primary wide" type="submit">
-          保存授权并解锁地图
-        </button>
-      </form>
-      <button id="check-github-connection" type="button" class="text-button">
-        检测 GitHub 连接
-      </button>
       <p id="auth-message" class="dialog-message" role="status"></p>
-      <div class="dialog-footnote">
-        解密后的发布凭据仅保留在页面内存中，闲置 15 分钟自动锁定。
-      </div>
+      <div class="dialog-footnote">密码由后台校验；管理会话闲置 15 分钟自动锁定。</div>
     </dialog>
     <dialog id="publish-dialog" aria-labelledby="publish-heading">
       <div class="dialog-heading">
@@ -571,14 +458,12 @@
         </button>
       </div>
       <p>
-        发布到
-        <strong>Warren-xh / travel-atlas</strong
-        >。地图、旅行日期和笔记会公开显示。
+        发布后，原地图网址在所有设备显示更新。地图、旅行日期和笔记会公开显示。
       </p>
       <div id="publish-summary" class="publish-summary"></div>
       <p id="publish-message" class="dialog-message" role="status"></p>
       <button id="confirm-publish" class="button primary wide">
-        <svg class="icon"><use href="#i-upload" /></svg> 确认发布到 GitHub</button
+        <svg class="icon"><use href="#i-upload" /></svg> 确认发布到网站</button
       ><button id="pull-remote" class="button secondary wide">
         检查并合并云端更新</button
       ><a
@@ -587,7 +472,7 @@
         target="_blank"
         rel="noopener noreferrer"
         hidden
-        >查看本次 GitHub 提交 ↗</a
+        >查看地图 ↗</a
       >
       <div class="dialog-footnote">
         先合并不同设备的修改，再发布；遇到同一字段冲突时，由你选择保留哪份。

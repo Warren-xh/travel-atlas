@@ -10,33 +10,14 @@ import {
   resolveConflict,
   searchCountries,
 } from "./core.mjs";
-import {
-  decryptToken,
-  generatePassword,
-  strongPassword,
-  validateVault,
-} from "./auth.mjs";
-import {
-  GitHubClient,
-  DATA_PATH,
-  VAULT_PATH,
-  loadPublicVault,
-} from "./github.mjs?v=20261012r6";
-import {
-  validPin,
-  DEFAULT_DEVICE_PIN,
-  hasDeviceAccess,
-  saveDeviceAccess,
-  removeDeviceAccess,
-  unlockDevice,
-} from "./device-auth.mjs?v=20261012r6";
+import { PasswordClient, DATA_PATH } from "./cloud.mjs?v=20261013pw1";
 
 const $ = (id) => document.getElementById(id);
 const LOCAL_KEY = "travel-atlas-draft-v2";
 const LEGACY_KEY = "travel-atlas-draft-v1";
 const RECOVERY_KEY = "travel-atlas-recovery-v2";
 const tabId = crypto.randomUUID();
-const api = new GitHubClient();
+const api = new PasswordClient();
 const CONTINENTS = [
   ["world", "世界", "WORLD"],
   ["Europe", "欧洲", "EUROPE"],
@@ -83,10 +64,6 @@ let toastTimer,
   lastActivity = Date.now(),
   busy = false,
   authBusy = false,
-  vault,
-  vaultSha,
-  loadingVault = false,
-  deviceAccess = false,
   editorDirty = false,
   storageFailed = false,
   conflictPlan;
@@ -261,7 +238,7 @@ function renderDraftStatus() {
   if (api.unlocked)
     $("save-status").textContent = diff.total
       ? "本机草稿 · 尚未发布"
-      : "已与 GitHub 记录同步";
+      : "已与网站记录同步";
 }
 function change(next) {
   if (!api.unlocked || busy) return;
@@ -867,115 +844,19 @@ async function confirmAction(title, description, label = "确认") {
     });
   });
 }
-async function loadVault() {
-  if (loadingVault) return;
-  loadingVault = true;
-  try {
-    deviceAccess = await hasDeviceAccess().catch(() => false);
-    if (deviceAccess) return;
-    const current = await loadPublicVault(api);
-    vault = current.data ? validateVault(current.data) : null;
-    vaultSha = current.sha;
-    if (current.fallback)
-      notice(
-        "暂时无法检查 GitHub 的最新授权，已使用网页中的授权状态。保存授权时会再次检查仓库。 ",
-      );
-  } finally {
-    loadingVault = false;
-  }
-}
-function updateAuthStorage(clearPasswords = true) {
-  const local = $("auth-storage").value === "device";
-  $("shared-password-fields").hidden = local;
-  for (const control of $("shared-password-fields").querySelectorAll(
-    "input, button",
-  ))
-    control.disabled = local;
-  $("new-password-label").textContent = local
-    ? "设置本机 PIN（4 至 8 位数字）"
-    : "设置长密码（至少 16 位）";
-  $("generate-password").hidden = local;
-  $("storage-explanation").textContent = local
-    ? "管理 PIN 已固定为 0526，无需另设密码。发布授权加密保存在当前浏览器，换设备或清理网站存储后需要重新授权一次。"
-    : "加密授权保存到 GitHub 仓库，可在不同设备输入同一个长密码解锁。";
-  $("setup-security-note").textContent = local
-    ? "0526 是本机快捷入口。能否发布取决于当前浏览器中保存的 GitHub 授权。授权不会上传到公开仓库。"
-    : "仓库只保存加密后的授权。请保存强随机密码；忘记时需用 GitHub 授权重新配置。";
-  for (const id of ["new-password", "confirm-password"]) {
-    const input = $(id);
-    input.minLength = local ? 4 : 16;
-    input.maxLength = local ? 8 : 200;
-    input.inputMode = local ? "numeric" : "text";
-    if (local) input.pattern = "[0-9]{4,8}";
-    else input.removeAttribute("pattern");
-    if (clearPasswords) input.value = "";
-  }
-}
-function setupMode(reconfigure = false) {
-  $("unlock-form").hidden = true;
-  $("setup-form").hidden = false;
-  $("auth-heading").textContent = reconfigure
-    ? "更新管理密码与授权"
-    : "设置你的地图钥匙";
-  $("auth-description").textContent = reconfigure
-    ? "更新 PIN、长密码或即将过期的 GitHub 授权。"
-    : "首次配置 GitHub 授权，选择本机 PIN 或跨设备长密码。";
-  $("setup-token").required = !api.unlocked;
-  $("setup-token").placeholder = api.unlocked
-    ? "留空沿用当前授权，或粘贴新 Token"
-    : "github_pat_…";
-  $("setup-form").reset();
-  $("auth-storage").value = deviceAccess || !vault ? "device" : "shared";
-  updateAuthStorage();
-  $("setup-token").required = !api.unlocked;
-  $("auth-message").textContent = "";
-}
 async function openAuth(reconfigure = false) {
   flushEditor();
-  if (api.unlocked && !reconfigure) {
-    toast("管理已解锁，可以直接编辑或发布。");
-    return;
-  }
-  if (!crypto?.subtle) {
-    toast("管理功能需要 HTTPS 或 localhost 环境及支持 Web Crypto 的浏览器。");
-    return;
-  }
-  $("auth-message").textContent = "正在检查管理授权…";
-  $("unlock-form").hidden = true;
-  $("setup-form").hidden = true;
+  if (api.unlocked && !reconfigure) { toast("管理已解锁，可以直接编辑或发布。"); return; }
+  clearAuthFields();
+  $("auth-message").textContent = "";
+  $("auth-heading").textContent = "解锁你的地图";
+  $("auth-description").textContent = "输入管理密码，即可编辑并更新这张地图。";
   showDialog("auth-dialog");
-  try {
-    await loadVault();
-    if ((!vault && !deviceAccess) || reconfigure) setupMode(reconfigure);
-    else {
-      $("unlock-form").hidden = false;
-      $("setup-form").hidden = true;
-      $("auth-heading").textContent = "解锁你的地图";
-      $("auth-description").textContent = deviceAccess
-        ? "输入这台设备的 PIN，即可编辑并发布到 GitHub。"
-        : "输入管理长密码，即可编辑记录并发布到 GitHub。";
-      $("unlock-password-label").textContent = deviceAccess
-        ? "本机 PIN"
-        : "管理长密码";
-      $("admin-password").inputMode = deviceAccess ? "numeric" : "text";
-      $("auth-message").textContent = "";
-      $("admin-password").focus();
-    }
-  } catch (error) {
-    $("auth-message").textContent = error.message;
-    $("auth-description").textContent =
-      "无法读取管理授权，请检查网络后重新打开管理入口。";
-  }
+  $("admin-password").focus();
 }
 function setAuthBusy(value) {
   authBusy = value;
-  for (const id of [
-    "unlock-submit",
-    "setup-submit",
-    "generate-password",
-    "reset-auth",
-  ])
-    $(id).disabled = value;
+  $("unlock-submit").disabled = value;
   $("auth-dialog").querySelector("[data-close]").disabled = value;
 }
 function activateAdmin() {
@@ -1017,128 +898,19 @@ async function unlock(event) {
   event.preventDefault();
   if (authBusy) return;
   setAuthBusy(true);
-  $("auth-message").textContent = "正在解锁…";
+  $("auth-message").textContent = "正在校验管理密码…";
   try {
-    const token = deviceAccess
-      ? await unlockDevice($("admin-password").value)
-      : await decryptToken(vault, $("admin-password").value);
-    if (!$("auth-dialog").open) return;
-    api.unlock(token);
+    await api.unlock($("admin-password").value);
+    if (!$("auth-dialog").open) { api.lock(); return; }
     activateAdmin();
-    toast("已解锁。编辑会自动保存为草稿，发布后同步到所有设备。");
-  } catch (error) {
-    $("auth-message").textContent = error.message;
-    $("admin-password").value = "";
-  } finally {
-    setAuthBusy(false);
-    $("admin-password").value = "";
-  }
-}
-async function configureAuth(event) {
-  event.preventDefault();
-  if (authBusy) return;
-  const password = $("new-password").value;
-  const local = $("auth-storage").value === "device";
-  const credential = local ? DEFAULT_DEVICE_PIN : password;
-  if (!local && password !== $("confirm-password").value) {
-    $("auth-message").textContent = "两次输入的密码不一致。";
-    return;
-  }
-  if (local ? !validPin(credential) : !strongPassword(credential)) {
-    $("auth-message").textContent = local
-      ? "请输入 4 至 8 位数字 PIN。"
-      : "请使用至少 16 位的长密码，或点击生成随机密码。";
-    return;
-  }
-  if (
-    !local &&
-    vault &&
-    !api.unlocked &&
-    !(await confirmAction(
-      "重新配置管理授权",
-      "此操作会替换原管理密码。请确认你已保存好新密码，且新的 Token 只授权本地图仓库。",
-      "重新配置",
-    ))
-  )
-    return;
-  setAuthBusy(true);
-  $("auth-message").textContent = "正在加密授权并检查仓库访问…";
-  const token = $("setup-token").value.trim();
-  const candidate = token ? new GitHubClient() : api;
-  if (token) candidate.unlock(token);
-  try {
-    if (local) {
-      await candidate.read(DATA_PATH);
-      await saveDeviceAccess(candidate, credential);
-      deviceAccess = true;
-      if (token) api.unlock(token);
-      activateAdmin();
-      toast("本机授权已保存！以后输入 0526 即可管理并发布。");
-      return;
-    }
-    const encrypted = await candidate.seal(password);
-    await candidate.read(DATA_PATH);
-    const current = await candidate.read(VAULT_PATH, false);
-    if (
-      current &&
-      !vault &&
-      !api.unlocked &&
-      !(await confirmAction(
-        "仓库已有管理授权",
-        "网页可能还未显示最新授权。继续会替换已有管理密码；请确认这是你要做的操作。",
-        "替换现有授权",
-      ))
-    )
-      return;
-    if (
-      current &&
-      ((vaultSha && current.sha !== vaultSha) ||
-        (vault && !equivalent(current.data, vault)))
-    )
-      throw Error(
-        "管理授权刚被其他设备更新。请关闭后重新打开管理设置，再试一次。",
-      );
-    const result = await candidate.write(
-      VAULT_PATH,
-      encrypted,
-      current?.sha,
-      "Configure encrypted travel atlas admin access",
-    );
-    vault = encrypted;
-    vaultSha = result.content.sha;
-    deviceAccess = false;
-    await removeDeviceAccess().catch(() =>
-      notice(
-        "跨设备授权已保存，但旧本机授权未能删除。请清理旧浏览器授权后再使用新的长密码。",
-      ),
-    );
-    if (token) api.unlock(token);
-    activateAdmin();
-    toast("授权配置成功！以后只需用管理密码解锁。");
-  } catch (error) {
-    $("auth-message").textContent = error.message;
-  } finally {
-    if (candidate !== api) candidate.lock();
-    $("setup-token").value = "";
-    $("new-password").value = "";
-    $("confirm-password").value = "";
-    $("password-saved").checked = false;
-    setAuthBusy(false);
-  }
+    toast("已解锁。编辑自动保存为草稿，发布后所有设备都能看到更新。");
+  } catch (error) { $("auth-message").textContent = error.message; }
+  finally { setAuthBusy(false); clearAuthFields(); }
 }
 function clearAuthFields() {
-  for (const id of [
-    "admin-password",
-    "setup-token",
-    "new-password",
-    "confirm-password",
-  ]) {
-    $(id).value = "";
-    $(id).type = "password";
-  }
+  $("admin-password").value = "";
+  $("admin-password").type = "password";
   $("show-password").checked = false;
-  $("show-new-password").checked = false;
-  $("password-saved").checked = false;
 }
 
 function openPalette() {
@@ -1418,7 +1190,7 @@ function renderPublishSummary() {
   if (diff.profile) list.append(text("li", "主页名称、标题或默认国家"));
   box.append(
     list,
-    text("small", "发布前还会检查 GitHub 的最新版本，避免覆盖其他设备的记录。"),
+    text("small", "发布前会检查服务器的最新版本，避免覆盖其他设备的记录。"),
   );
 }
 function openPublish() {
@@ -1468,7 +1240,7 @@ function presentConflicts(plan, remote, continuePublish) {
         content.append(
           text(
             "strong",
-            choice === "local" ? "保留本机草稿" : "保留 GitHub 版本",
+            choice === "local" ? "保留本机草稿" : "保留云端版本",
           ),
           document.createTextNode(
             conflict[choice] === undefined
@@ -1513,13 +1285,13 @@ async function publish() {
   if (busy || !api.unlocked) return;
   flushEditor();
   setBusy(true);
-  $("publish-message").textContent = "正在检查并合并 GitHub 最新记录…";
+  $("publish-message").textContent = "正在检查并合并云端最新记录…";
   try {
     const file = await reconcile(true);
     if (!file) return;
     if (!dirty()) {
       $("publish-message").textContent =
-        "所有修改已经在 GitHub，无需重复发布。";
+        "所有修改已经在网站，无需重复发布。";
       return;
     }
     const next = clone(data);
@@ -1530,20 +1302,17 @@ async function publish() {
       file.sha,
       "Update travel atlas: " + diffAtlas(baseline, next).total + " changes",
     );
-    data = next;
-    baseline = clone(next);
-    published = clone(next);
+    data = valid(result.data);
+    baseline = clone(data);
+    published = clone(data);
     pendingDraft = null;
     undoStack = [];
     redoStack = [];
     persist();
     renderAll();
-    $("publish-message").textContent = "已提交到 GitHub！正在等待网页更新…";
-    $("commit-link").href =
-      "https://github.com/" + REPO + "/commit/" + result.commit.sha;
-    $("commit-link").hidden = false;
-    toast("发布成功，正在等待 GitHub Pages 更新。");
-    pollPublished(next);
+    $("publish-message").textContent = "记录已保存，正在确认网页更新…";
+    $("commit-link").hidden = true;
+    await pollPublished(data);
   } catch (error) {
     $("publish-message").textContent = error.message;
   } finally {
@@ -1560,7 +1329,7 @@ async function pullRemote() {
     if (file) {
       $("publish-message").textContent = dirty()
         ? "云端更新已合并。本机仍有待发布草稿。"
-        : "已与 GitHub 最新记录同步。";
+        : "已与网站最新记录同步。";
       toast("云端检查完成，草稿已保留。");
     }
   } catch (error) {
@@ -1569,32 +1338,19 @@ async function pullRemote() {
     setBusy(false);
   }
 }
-function pollPublished(expected) {
-  clearTimeout(publishPoll);
-  let attempts = 0;
-  const check = async () => {
-    attempts++;
-    try {
-      const response = await fetch(
-        "./data/atlas.json?published=" + Date.now(),
-        { cache: "no-store" },
-      );
-      if (response.ok && sameAtlas(valid(await response.json()), expected)) {
-        $("publish-message").textContent =
-          "发布完成！GitHub Pages 已显示这次更新。";
-        $("save-status").textContent = "已发布 · 网页已更新";
-        toast("网页已更新，其他设备可以看到最新地图。");
-        return;
-      }
-    } catch {}
-    if (attempts < 24) publishPoll = setTimeout(check, 5000);
-    else {
-      $("publish-message").textContent =
-        "数据已提交到 GitHub。网页构建仍在进行，请稍后刷新查看。";
-      $("save-status").textContent = "已提交 · 等待网页构建";
+async function pollPublished(expected) {
+  try {
+    const file = await api.read(DATA_PATH);
+    if (sameAtlas(valid(file.data), expected)) {
+      $("publish-message").textContent = "发布完成！其他设备刷新地图即可看到更新。";
+      $("save-status").textContent = "已发布 · 网页已更新";
+      toast("发布成功，最新记录已同步到网站。");
+    } else {
+      $("publish-message").textContent = "记录已保存，云端又有新的更新，可点击检查并合并。";
     }
-  };
-  publishPoll = setTimeout(check, 5000);
+  } catch {
+    $("publish-message").textContent = "记录已保存，但暂时无法再次确认，请稍后刷新查看。";
+  }
 }
 
 function wireEvents() {
@@ -1612,41 +1368,8 @@ function wireEvents() {
   $("security-button").onclick = () => openAuth(true);
   $("lock-button").onclick = () => lock();
   $("unlock-form").onsubmit = unlock;
-  $("setup-form").onsubmit = configureAuth;
-  $("check-github-connection").onclick = async () => {
-    const button = $("check-github-connection");
-    button.disabled = true;
-    $("auth-message").textContent = "正在检测 GitHub 连接…";
-    try {
-      await new GitHubClient().read(DATA_PATH, false);
-      $("auth-message").textContent =
-        "GitHub 连接正常，可以保存授权并发布。（版本 20261012r6）";
-    } catch (error) {
-      $("auth-message").textContent = error.message + "（版本 20261012r6）";
-    } finally {
-      button.disabled = false;
-    }
-  };
-  $("auth-storage").onchange = () => updateAuthStorage();
-  $("reset-auth").onclick = () => setupMode(true);
   $("show-password").onchange = () =>
-    ($("admin-password").type = $("show-password").checked
-      ? "text"
-      : "password");
-  $("show-new-password").onchange = () => {
-    for (const id of ["new-password", "confirm-password"])
-      $(id).type = $("show-new-password").checked ? "text" : "password";
-  };
-  $("generate-password").onclick = () => {
-    const password = generatePassword();
-    $("new-password").value = password;
-    $("confirm-password").value = password;
-    $("show-new-password").checked = true;
-    for (const id of ["new-password", "confirm-password"]) $(id).type = "text";
-    $("password-saved").checked = false;
-    $("auth-message").textContent =
-      "已生成 24 位随机密码。请先保存到密码管理器，再完成配置。";
-  };
+    ($("admin-password").type = $("show-password").checked ? "text" : "password");
   $("auth-dialog").addEventListener("close", clearAuthFields);
   $("auth-dialog").addEventListener("cancel", (event) => {
     if (authBusy) event.preventDefault();
@@ -1867,7 +1590,7 @@ function wireEvents() {
     if ((event.ctrlKey || event.metaKey) && event.key === "s" && api.unlocked) {
       event.preventDefault();
       flushEditor();
-      toast("草稿已保存在本机；点击发布同步到 GitHub。");
+      toast("草稿已保存在本机；点击发布同步到网站。");
     }
   });
   document.addEventListener("pointerdown", activity, { passive: true });
@@ -1932,6 +1655,8 @@ async function init() {
     countryIds = new Set(countryById.keys());
     features = new Map(geometry.features.map((f) => [f.properties.id, f]));
     data = valid(await responses[2].json());
+    try { const cloud = await api.read(DATA_PATH); data = valid(cloud.data); }
+    catch { notice("暂时无法读取云端，正在显示初始地图。管理发布需要连接服务器。"); }
     baseline = clone(data);
     published = clone(data);
     try {
