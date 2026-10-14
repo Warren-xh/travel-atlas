@@ -987,7 +987,11 @@ function activateAdmin() {
   $("admin-mode").classList.add("active");
   $("admin-mode").replaceChildren(icon("unlock"), text("span", "管理已解锁"));
   $("auth-dialog").close();
+  policyView = false;
+  colorFilter = "";
+  $("list-filter").value = "all";
   renderAll();
+  writeLocation();
   $("editor-save-state").textContent = dirty()
     ? "已恢复本机草稿"
     : "草稿自动保存在本机";
@@ -1838,9 +1842,14 @@ async function init() {
     $("save-status").textContent = "地图已就绪 · 正在同步旅行记录";
     $("admin-mode").disabled = true;
     $("edit-country").disabled = true;
+    const initialSelection = selected;
     const cloud = await cloudRequest;
     if (cloud.value) {
-      data = valid(cloud.value.data); baseline = clone(data); published = clone(data); renderAll();
+      data = valid(cloud.value.data); baseline = clone(data); published = clone(data);
+      if (!query.get("country") && selected === initialSelection && selected !== data.profile.home) {
+        selected = data.profile.home;
+        setContinent(info(selected).continents[0] || "world");
+      } else renderAll();
       $("save-status").textContent = "旅行记录已同步";
     } else {
       notice("暂时无法读取云端，正在显示初始旅行记录。可继续浏览签证参考，稍后刷新同步。");
