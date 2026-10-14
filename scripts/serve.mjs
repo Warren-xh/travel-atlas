@@ -5,7 +5,8 @@ import path from "node:path";
 import { encodeContent, decodeContent } from "../github.mjs";
 const root = fileURLToPath(new URL("../", import.meta.url));
 const port = Number(process.env.PORT || 4173),
-  testApi = process.argv.includes("--test-api");
+  testApi = process.argv.includes("--test-api"),
+  testCloud = process.argv.includes("--test-cloud");
 const mime = {
   ".html": "text/html; charset=utf-8",
   ".js": "text/javascript",
@@ -36,6 +37,39 @@ const server = http.createServer(async (request, response) => {
     const pathname = decodeURIComponent(
       new URL(request.url, "http://localhost").pathname,
     );
+    // Isolated password-backend fixture. All changes stay in process memory.
+    if (testCloud && pathname.startsWith("/cloud-fixture/")) {
+      if (
+        !["/cloud-fixture/api/auth", "/cloud-fixture/api/atlas"].includes(
+          pathname,
+        )
+      )
+        return json(response, 404, {});
+      if (request.method === "GET" && pathname.endsWith("/atlas"))
+        return json(response, 200, { document: atlas, revision: dataSha });
+      if (request.method !== "POST") return json(response, 405, {});
+      let body = "";
+      for await (const chunk of request) {
+        body += chunk;
+        if (body.length > 2000000) return json(response, 413, {});
+      }
+      const value = JSON.parse(body);
+      if (value.password !== "2468")
+        return json(response, 401, { error: "测试密码不正确。" });
+      if (pathname.endsWith("/auth"))
+        return json(response, 200, { authenticated: true });
+      if (value.baselineRevision !== dataSha)
+        return json(response, 409, {
+          error: "云端记录已变化，请重新检查并合并。",
+        });
+      atlas = value.document;
+      dataSha = "test-cloud-" + ++sequence;
+      return json(response, 200, {
+        published: true,
+        document: atlas,
+        revision: dataSha,
+      });
+    }
     if (testApi && pathname.startsWith("/api-fixture/")) {
       const isVault = pathname.endsWith("admin.vault.json"),
         state = isVault ? vault : atlas,
@@ -100,6 +134,15 @@ const server = http.createServer(async (request, response) => {
       return response.end();
     }
     let content = await readFile(filename);
+    if (testCloud && pathname === "/app.js")
+      content = Buffer.from(
+        content
+          .toString()
+          .replace(
+            "new PasswordClient()",
+            "new PasswordClient((url, options) => fetch(url.replace('https://travel-atlas-publish-warren.neoncorgi.chatgpt.site', '/cloud-fixture'), options))",
+          ),
+      );
     // Local QA substitutes only the network transport. All app behavior and
     // encryption still run unchanged; simulated writes never touch GitHub.
     if (testApi && pathname === "/app.js")
@@ -125,6 +168,8 @@ const server = http.createServer(async (request, response) => {
 });
 server.listen(port, "127.0.0.1", () =>
   console.log(
-    "Local: http://127.0.0.1:" + port + (testApi ? " (isolated QA API)" : ""),
+    "Local: http://127.0.0.1:" +
+      port +
+      (testApi || testCloud ? " (isolated QA API)" : ""),
   ),
 );

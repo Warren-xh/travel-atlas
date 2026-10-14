@@ -1,11 +1,17 @@
 {
   "name": "travel-atlas",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "private": true,
   "type": "module",
   "scripts": {
     "test": "node --test",
-    "check": "node --check app.js && node --check core.mjs && node --check cloud.mjs && node --check visa.mjs",
+    "check": "node --check app.js && node --check experience.mjs && node --check cloud.mjs && node --check core.mjs && node --check visa.mjs",
+    "build:globe": "node scripts/build-globe.cjs",
     "dev": "node scripts/serve.mjs"
+  },
+  "devDependencies": {
+    "topojson-server": "3.0.1",
+    "topojson-client": "3.1.0",
+    "topojson-simplify": "3.0.3"
   }
 }

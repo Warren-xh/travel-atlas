@@ -12,8 +12,18 @@ import {
   validDate,
 } from "./core.mjs";
 import { PasswordClient, DATA_PATH } from "./cloud.mjs?v=20261013pw1";
+import { createExperience } from "./experience.mjs?v=20261014globe1";
 
-import { POLICY_LABELS, POLICY_COLORS, EVIDENCE_LABELS, policyDate, policyCategory, preferredRoute, routeState, displayCategory } from "./visa.mjs?v=20261014v3";
+import {
+  POLICY_LABELS,
+  POLICY_COLORS,
+  EVIDENCE_LABELS,
+  policyDate,
+  policyCategory,
+  preferredRoute,
+  routeState,
+  displayCategory,
+} from "./visa.mjs?v=20261014v3";
 
 const $ = (id) => document.getElementById(id);
 const LOCAL_KEY = "travel-atlas-draft-v2";
@@ -39,7 +49,14 @@ const VIEWS = {
   "South America": [-63, -23, 0.67],
   Oceania: [153, -22, 0.57],
 };
-const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+let reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+let mapMode = "globe",
+  globeScale = 1,
+  globeTransform,
+  sphericalAreas = new Map(),
+  globeGeometry,
+  detailedGeometry,
+  globeFrame = 0;
 let countries = [],
   countryById = new Map(),
   features = new Map(),
@@ -49,7 +66,13 @@ let countries = [],
   baseline,
   published,
   pendingDraft;
-let policyDb = null, policyView = true, policyDay = policyDate(), automaticDay = true, policyCache = new Map(), labelFrame = 0, cloudReady = false;
+let policyDb = null,
+  policyView = false,
+  policyDay = policyDate(),
+  automaticDay = true,
+  policyCache = new Map(),
+  labelFrame = 0,
+  cloudReady = false;
 let selected = "IRL",
   continent = "Europe",
   colorFilter = "",
@@ -78,11 +101,25 @@ let undoStack = [],
 const info = (id) => countryById.get(id);
 const record = (id) => data?.countries[id] || EMPTY_RECORD;
 const palette = (id) => data.palette.find((p) => p.id === id);
-const category = (id) => displayCategory(policyCache.get(id)?.category, record(id).status, policyView);
-const mapPalette = () => [...data.palette.map(p => policyView ? {...p, label: POLICY_LABELS[p.id], color: POLICY_COLORS[p.id]} : p), {id: "none", label: policyView ? POLICY_LABELS.none : "透明 / 未分类", color: ""}];
+const category = (id) =>
+  displayCategory(policyCache.get(id)?.category, record(id).status, policyView);
+const mapPalette = () => [
+  ...data.palette.map((p) =>
+    policyView
+      ? { ...p, label: POLICY_LABELS[p.id], color: POLICY_COLORS[p.id] }
+      : p,
+  ),
+  {
+    id: "none",
+    label: policyView ? POLICY_LABELS.none : "透明 / 未分类",
+    color: "",
+  },
+];
 const status = (id) => {
   const key = category(id);
-  return policyView ? { id: key, label: POLICY_LABELS[key], color: POLICY_COLORS[key] || "" } : palette(key);
+  return policyView
+    ? { id: key, label: POLICY_LABELS[key], color: POLICY_COLORS[key] || "" }
+    : palette(key);
 };
 const fill = (id) => status(id)?.color || "transparent";
 const belongs = (country) =>
@@ -142,6 +179,7 @@ function notice(message) {
   $("notice-banner").hidden = false;
 }
 function showDialog(id) {
+  experience.pause();
   if (!$(id).open) $(id).showModal();
 }
 function showTab(next) {
@@ -288,7 +326,11 @@ function queueEditor() {
   editorTimer = setTimeout(flushEditor, 500);
 }
 function writeLocation() {
-  const query = new URLSearchParams({ country: selected, region: continent, view: policyView ? "policy" : "travel" });
+  const query = new URLSearchParams({
+    country: selected,
+    region: continent,
+    view: policyView ? "policy" : "travel",
+  });
   if (!automaticDay) query.set("date", policyDay);
   history.replaceState(null, "", "#" + query);
 }
@@ -297,6 +339,7 @@ function selectCountry(id, scroll = false) {
   flushEditor();
   selected = id;
   $("country-search").value = "";
+  $("search-clear").hidden = true;
   hideSearch();
   showTab("details");
   if (!belongs(info(id))) setContinent(info(id).continents[0] || "world");
@@ -310,6 +353,7 @@ function selectCountry(id, scroll = false) {
       behavior: reduceMotion ? "auto" : "smooth",
       block: "start",
     });
+  if (scroll && mapMode === "globe") focusCountry();
 }
 function setContinent(id) {
   if (!CONTINENTS.some((c) => c[0] === id)) id = "world";
@@ -334,6 +378,7 @@ function setContinent(id) {
       countries.find(belongs)?.id ||
       "ATA";
   drawMap();
+  experience.mapTransition();
   renderAll();
   writeLocation();
 }
@@ -353,14 +398,24 @@ function renderProfile() {
     : "每一次出发，都值得记住";
 }
 function cachePolicies() {
-  policyCache = new Map(countries.map(c => [c.id, {category: policyCategory(policyDb?.countries[c.id], policyDay), route: preferredRoute(policyDb?.countries[c.id], policyDay)}]));
+  policyCache = new Map(
+    countries.map((c) => [
+      c.id,
+      {
+        category: policyCategory(policyDb?.countries[c.id], policyDay),
+        route: preferredRoute(policyDb?.countries[c.id], policyDay),
+      },
+    ]),
+  );
 }
 function switchView(next) {
   flushEditor();
   policyView = !!next && !!policyDb;
   colorFilter = "";
   $("list-filter").value = "all";
-  try { localStorage.setItem("travel-atlas-view", policyView ? "policy" : "travel"); } catch {}
+  try {
+    localStorage.setItem("travel-atlas-view", policyView ? "policy" : "travel");
+  } catch {}
   renderAll();
   writeLocation();
 }
@@ -372,25 +427,51 @@ function renderPolicyControls() {
   $("policy-date").value = policyDay;
   $("editor-layer-hint").hidden = !policyView;
   for (const option of $("list-filter").options) {
-    if (["free", "evisa", "orange", "purple"].includes(option.value)) option.textContent = mapPalette().find(p => p.id === option.value)?.label || option.textContent;
+    if (["free", "evisa", "orange", "purple"].includes(option.value))
+      option.textContent =
+        mapPalette().find((p) => p.id === option.value)?.label ||
+        option.textContent;
   }
   $("policy-summary").replaceChildren();
   if (policyView) {
-    const count = Object.values(policyDb.countries).filter(c => c.routes.length).length;
-    $("policy-summary").append(text("span", `中国大陆普通护照 · 短期旅游 · 核查 ${policyDb.checkedAt} · ${count} 个目的地有条目`));
-    const link = text("a", "下载核查表 ↗"); link.href = "./data/visa-audit.csv"; link.download = "中国普通护照签证核查.csv";
+    const count = Object.values(policyDb.countries).filter(
+      (c) => c.routes.length,
+    ).length;
+    $("policy-summary").append(
+      text(
+        "span",
+        `中国大陆普通护照 · 短期旅游 · 核查 ${policyDb.checkedAt} · ${count} 个目的地有条目`,
+      ),
+    );
+    const link = text("a", "下载核查表 ↗");
+    link.href = "./data/visa-audit.csv";
+    link.download = "中国普通护照签证核查.csv";
     $("policy-summary").append(link);
-    $("map-guidance").textContent = "透明包括普通签证与未核实项目；橙色仍需授权或签证手续。出发日仅筛除已知到期政策，不预测政策变化。";
+    $("map-guidance").textContent =
+      "透明包括普通签证与未核实项目；橙色仍需授权或签证手续。出发日仅筛除已知到期政策，不预测政策变化。";
   } else {
-    $("policy-summary").append(text("span", "你的颜色、足迹与笔记。编辑后点击「发布修改」，即可在其他设备查看。"));
-    $("map-guidance").textContent = "点击图例筛选。颜色和名称可在管理中自定义；切换「签证参考」查看官方政策依据。";
+    $("policy-summary").append(
+      text(
+        "span",
+        "你的颜色、足迹与笔记。编辑后点击「发布修改」，即可在其他设备查看。",
+      ),
+    );
+    $("map-guidance").textContent =
+      "点击图例筛选。颜色和名称可在管理中自定义；切换「签证参考」查看官方政策依据。";
   }
 }
 function officialLinks(route) {
   const box = text("div", "", "policy-links");
   route.sources.forEach((url, i) => {
-    try { const parsed = new URL(url); if (parsed.protocol !== "https:") return;
-      const a = text("a", `官方依据 ${i + 1} ↗`); a.href = parsed.href; a.target = "_blank"; a.rel = "noopener noreferrer"; a.title = parsed.hostname; box.append(a);
+    try {
+      const parsed = new URL(url);
+      if (parsed.protocol !== "https:") return;
+      const a = text("a", `官方依据 ${i + 1} ↗`);
+      a.href = parsed.href;
+      a.target = "_blank";
+      a.rel = "noopener noreferrer";
+      a.title = parsed.hostname;
+      box.append(a);
     } catch {}
   });
   return box;
@@ -398,54 +479,129 @@ function officialLinks(route) {
 function routeDetails(route) {
   const box = text("div", "", "route-details");
   box.append(text("p", route.conditions));
-  const rows = [["费用", route.fee], ["办理时间", route.processing]].filter(([,v]) => v && !v.startsWith("本轮未核实"));
+  const rows = [
+    ["费用", route.fee],
+    ["办理时间", route.processing],
+  ].filter(([, v]) => v && !v.startsWith("本轮未核实"));
   if (rows.length) {
     const dl = document.createElement("dl");
-    for (const [key, value] of rows) dl.append(text("dt", key), text("dd", value));
+    for (const [key, value] of rows)
+      dl.append(text("dt", key), text("dd", value));
     box.append(dl);
   }
-  box.append(officialLinks(route), text("small", "核查 " + route.checkedAt + " · 未列费用/时长的项目仍待核实。", "policy-checked"));
+  box.append(
+    officialLinks(route),
+    text(
+      "small",
+      "核查 " + route.checkedAt + " · 未列费用/时长的项目仍待核实。",
+      "policy-checked",
+    ),
+  );
   return box;
 }
 function renderPolicyCard() {
-  const card = $("policy-card"); card.replaceChildren(); card.hidden = !policyDb;
-  if (!policyDb) return;
-  const entry = policyDb.countries[selected], route = policyCache.get(selected)?.route;
+  const card = $("policy-card");
+  card.replaceChildren();
+  card.hidden = !policyDb || !policyView;
+  if (card.hidden) return;
+  const entry = policyDb.countries[selected],
+    route = policyCache.get(selected)?.route;
   card.append(text("span", "护照入境参考", "policy-eyebrow"));
   if (!route) {
-    card.append(text("h3", entry?.routes.length ? "原政策已到期，需重新核实" : "本轮尚未核实"), text("p", "未确认当前适用的入境方式，暂不标为免签或电子签。"));
+    card.append(
+      text(
+        "h3",
+        entry?.routes.length ? "原政策已到期，需重新核实" : "本轮尚未核实",
+      ),
+      text("p", "未确认当前适用的入境方式，暂不标为免签或电子签。"),
+    );
   } else {
-    card.append(text("h3", route.label), text("span", EVIDENCE_LABELS[route.level], "evidence-badge " + route.level), text("p", route.stay, "policy-stay"));
-    if (route.validFrom || route.validUntil) card.append(text("p", `${route.validFrom || "未列起始日"} — ${route.validUntil || "未列截止日"} · ${routeState(route, policyDay)}`, "policy-period"));
-    const details = document.createElement("details"); details.open = policyView;
-    details.append(text("summary", "条件与官方来源"), routeDetails(route)); card.append(details);
+    card.append(
+      text("h3", route.label),
+      text(
+        "span",
+        EVIDENCE_LABELS[route.level],
+        "evidence-badge " + route.level,
+      ),
+      text("p", route.stay, "policy-stay"),
+    );
+    if (route.validFrom || route.validUntil)
+      card.append(
+        text(
+          "p",
+          `${route.validFrom || "未列起始日"} — ${route.validUntil || "未列截止日"} · ${routeState(route, policyDay)}`,
+          "policy-period",
+        ),
+      );
+    const details = document.createElement("details");
+    details.open = policyView;
+    details.append(text("summary", "条件与官方来源"), routeDetails(route));
+    card.append(details);
   }
-  const other = (entry?.routes || []).filter(r => r !== route);
+  const other = (entry?.routes || []).filter((r) => r !== route);
   if (other.length) {
-    const details = document.createElement("details"); details.append(text("summary", "其他途径 / 到期政策（" + other.length + "）"));
-    for (const r of other) details.append(text("h4", r.label + " · " + routeState(r, policyDay)), text("p", r.stay), routeDetails(r));
+    const details = document.createElement("details");
+    details.append(
+      text("summary", "其他途径 / 到期政策（" + other.length + "）"),
+    );
+    for (const r of other)
+      details.append(
+        text("h4", r.label + " · " + routeState(r, policyDay)),
+        text("p", r.stay),
+        routeDetails(r),
+      );
     card.append(details);
   }
 }
 function renderDestinations() {
   $("discover-section").hidden = !policyView;
   if (!policyView) return;
-  const candidates = countries.filter(c => belongs(c) && matchesFilter(c.id) && ["free", "evisa", "orange", "purple"].includes(category(c.id)))
-    .sort((a,b) => ["free", "evisa", "orange", "purple"].indexOf(category(a.id)) - ["free", "evisa", "orange", "purple"].indexOf(category(b.id)) || a.name.localeCompare(b.name, "zh-CN")).slice(0, 6);
-  $("destination-cards").replaceChildren(...candidates.map(c => {
-    const button = text("button", "", "destination-card"); button.type = "button";
-    const route = policyCache.get(c.id)?.route;
-    button.append(flag(c), text("strong", c.name), text("span", route.label), text("small", route.stay));
-    button.style.setProperty("--destination-color", fill(c.id));
-    button.onclick = () => selectCountry(c.id, true); return button;
-  }));
-  if (!candidates.length) $("destination-cards").append(text("p", "当前筛选没有已确认的便利入境目的地，可查看清单中的其他国家。", "empty-state"));
+  const candidates = countries
+    .filter(
+      (c) =>
+        belongs(c) &&
+        matchesFilter(c.id) &&
+        ["free", "evisa", "orange", "purple"].includes(category(c.id)),
+    )
+    .sort(
+      (a, b) =>
+        ["free", "evisa", "orange", "purple"].indexOf(category(a.id)) -
+          ["free", "evisa", "orange", "purple"].indexOf(category(b.id)) ||
+        a.name.localeCompare(b.name, "zh-CN"),
+    )
+    .slice(0, 6);
+  $("destination-cards").replaceChildren(
+    ...candidates.map((c) => {
+      const button = text("button", "", "destination-card");
+      button.type = "button";
+      const route = policyCache.get(c.id)?.route;
+      button.append(
+        flag(c),
+        text("strong", c.name),
+        text("span", route.label),
+        text("small", route.stay),
+      );
+      button.style.setProperty("--destination-color", fill(c.id));
+      button.onclick = () => selectCountry(c.id, true);
+      return button;
+    }),
+  );
+  if (!candidates.length)
+    $("destination-cards").append(
+      text(
+        "p",
+        "当前筛选没有已确认的便利入境目的地，可查看清单中的其他国家。",
+        "empty-state",
+      ),
+    );
 }
 function renderStats() {
   const all = Object.values(data.countries);
   const visited = all.filter((r) => r.status === "visited").length;
   $("visited-count").textContent = visited;
-  $("free-count").textContent = countries.filter(c => category(c.id) === "free").length;
+  $("free-count").textContent = countries.filter(
+    (c) => category(c.id) === "free",
+  ).length;
   $("notes-count").textContent = all.filter((r) => r.note.trim()).length;
   const progress = (100 * visited) / countries.length;
   $("progress-count").replaceChildren(
@@ -458,39 +614,36 @@ function renderStats() {
 }
 function renderLegend() {
   $("legend").replaceChildren(
-    ...mapPalette().map(
-      (p) => {
-        const button = text(
-          "button",
-          "",
-          "legend-item" + (colorFilter === p.id ? " active" : ""),
-        );
-        button.type = "button";
-        button.setAttribute("aria-pressed", String(colorFilter === p.id));
-        button.append(
-          swatch(p.color, p.id === "none"),
-          document.createTextNode(p.label),
-          text(
-            "small",
-            countries.filter((c) => belongs(c) && category(c.id) === p.id)
-              .length,
-          ),
-        );
-        button.onclick = () => {
-          colorFilter = colorFilter === p.id ? "" : p.id;
-          renderLegend();
-          recolor();
-          renderList();
-          renderDestinations();
-        };
-        return button;
-      },
-    ),
+    ...mapPalette().map((p) => {
+      const button = text(
+        "button",
+        "",
+        "legend-item" + (colorFilter === p.id ? " active" : ""),
+      );
+      button.type = "button";
+      button.setAttribute("aria-pressed", String(colorFilter === p.id));
+      button.append(
+        swatch(p.color, p.id === "none"),
+        document.createTextNode(p.label),
+        text(
+          "small",
+          countries.filter((c) => belongs(c) && category(c.id) === p.id).length,
+        ),
+      );
+      button.onclick = () => {
+        colorFilter = colorFilter === p.id ? "" : p.id;
+        renderLegend();
+        recolor();
+        renderList();
+        renderDestinations();
+      };
+      return button;
+    }),
   );
   $("filter-caption").hidden = !colorFilter;
   $("filter-caption").textContent =
     "正在筛选：" +
-    (mapPalette().find(p => p.id === colorFilter)?.label || "未分类") +
+    (mapPalette().find((p) => p.id === colorFilter)?.label || "未分类") +
     " · 再点图例恢复全部";
 }
 function renderCountry() {
@@ -548,6 +701,7 @@ function renderCountry() {
       " · 对应原始分类，旅行前需重新核对";
   }
   recolor();
+  experience.selection();
 }
 function renderList() {
   const filter = $("list-filter").value;
@@ -558,7 +712,11 @@ function renderList() {
       (filter === "all" ||
         (filter === "notes" && record(c.id).note.trim()) ||
         (filter === "dated" && record(c.id).date) ||
-        (filter === "unverified" && (!policyCache.get(c.id)?.route || ["channel", "unknown"].includes(policyCache.get(c.id).route.level))) ||
+        (filter === "unverified" &&
+          (!policyCache.get(c.id)?.route ||
+            ["channel", "unknown"].includes(
+              policyCache.get(c.id).route.level,
+            ))) ||
         category(c.id) === filter),
   );
   const query = $("country-search").value.trim();
@@ -582,10 +740,7 @@ function renderList() {
         text("strong", c.name),
         text("small", record(c.id).date || status(c.id)?.label || c.english),
       );
-      button.append(
-        details,
-        swatch(fill(c.id), category(c.id) === "none"),
-      );
+      button.append(details, swatch(fill(c.id), category(c.id) === "none"));
       button.onclick = () => selectCountry(c.id, true);
       return button;
     }),
@@ -641,6 +796,7 @@ function renderAll() {
   renderList();
   renderJourney();
   renderDraftStatus();
+  experience.render();
 }
 
 function recolor() {
@@ -671,6 +827,27 @@ function recolor() {
     .selectAll(".country-label")
     .classed("selected", (c) => c.id === selected)
     .classed("filtered-out", (c) => !matchesFilter(c.id));
+  updateMarker();
+}
+function updateMarker() {
+  const marker = centers.find((c) => c.id === selected);
+  const k = transform?.k || 1;
+  const pin = root
+    .selectAll(".selection-marker")
+    .data(marker ? [marker] : [])
+    .join((enter) => {
+      const group = enter
+        .append("g")
+        .attr("class", "selection-marker")
+        .attr("aria-hidden", "true");
+      group.append("circle").attr("class", "marker-pulse").attr("r", 10);
+      group.append("circle").attr("class", "marker-dot").attr("r", 3.5);
+      return group;
+    });
+  pin.attr(
+    "transform",
+    (c) => `translate(${c.xy[0]},${c.xy[1] - 18 / k}) scale(${1 / k})`,
+  );
 }
 function tooltip(event, country) {
   const t = $("tooltip");
@@ -678,7 +855,10 @@ function tooltip(event, country) {
   const key = country.id + caption;
   if (t.dataset.country !== key) {
     t.dataset.country = key;
-    t.replaceChildren(document.createTextNode(country.name), text("small", caption));
+    t.replaceChildren(
+      document.createTextNode(country.name),
+      text("small", caption),
+    );
   }
   t.hidden = false;
   const bounds = $("map-stage").getBoundingClientRect();
@@ -735,25 +915,226 @@ function updateLabels() {
     .style("stroke-width", 3 / k + "px")
     .text((c) => c.name)
     .attr("display", $("show-labels").checked ? null : "none");
-  root.selectAll(".country-label")
-    .classed("selected", c => c.id === selected)
-    .classed("filtered-out", c => !matchesFilter(c.id));
+  root
+    .selectAll(".country-label")
+    .classed("selected", (c) => c.id === selected)
+    .classed("filtered-out", (c) => !matchesFilter(c.id));
+  updateMarker();
 }
 function scheduleLabels() {
-  if (!labelFrame) labelFrame = requestAnimationFrame(() => { labelFrame = 0; updateLabels(); });
+  if (!labelFrame)
+    labelFrame = requestAnimationFrame(() => {
+      labelFrame = 0;
+      updateLabels();
+    });
+}
+function frontFacing(country) {
+  const rotation = projection.rotate();
+  return (
+    d3.geoDistance([country.lng, country.lat], [-rotation[0], -rotation[1]]) <
+    Math.PI / 2 - 0.025
+  );
+}
+function renderCenters() {
+  centers = countries
+    .filter((c) => belongs(c) && (mapMode !== "globe" || frontFacing(c)))
+    .map((c) => {
+      const f = features.get(c.id);
+      let xy =
+        mapMode === "globe"
+          ? projection([c.lng, c.lat])
+          : f
+            ? geoPath.centroid(f)
+            : projection([c.lng, c.lat]);
+      if (!xy || !xy.every(Number.isFinite)) return null;
+      const area = f
+        ? mapMode === "globe"
+          ? (sphericalAreas.get(c.id) || 0) * projection.scale() ** 2
+          : geoPath.area(f)
+        : 0;
+      return { ...c, xy, area, small: !f || area < 26 };
+    })
+    .filter(
+      (c) =>
+        c && c.xy[0] > 0 && c.xy[0] < width && c.xy[1] > 0 && c.xy[1] < height,
+    );
+  root
+    .selectAll(".micro-country")
+    .data(
+      centers.filter(
+        (c) =>
+          c.small &&
+          (c.id === selected ||
+            mapMode !== "globe" ||
+            (globeTransform?.k || 1) >= 1.8),
+      ),
+      (c) => c.id,
+    )
+    .join("circle")
+    .attr("class", "micro-country")
+    .attr("fill", (c) => fill(c.id))
+    .classed("selected", (c) => c.id === selected)
+    .classed("filtered-out", (c) => !matchesFilter(c.id))
+    .attr("data-country", (c) => c.id)
+    .attr("cx", (c) => c.xy[0])
+    .attr("cy", (c) => c.xy[1])
+    .attr("r", 4)
+    .attr("tabindex", 0)
+    .attr("role", "button")
+    .attr("aria-label", (c) => c.name)
+    .on("click", (event, c) => selectCountry(c.id, api.unlocked))
+    .on("keydown", (event, c) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        selectCountry(c.id, api.unlocked);
+      }
+    })
+    .on("pointermove", (event, c) => tooltip(event, c))
+    .on("pointerleave", () => {
+      $("tooltip").hidden = true;
+    });
+}
+function redrawGlobe() {
+  root
+    .selectAll(
+      ".country,.land-base,.land-shadow,.graticule,.globe-ocean,.globe-lighting",
+    )
+    .attr("d", geoPath);
+  root
+    .selectAll(".country")
+    .attr("tabindex", (f) =>
+      belongs(info(f.properties.id)) &&
+      frontFacing(info(f.properties.id)) &&
+      (sphericalAreas.get(f.properties.id) || 0) * projection.scale() ** 2 >= 26
+        ? 0
+        : null,
+    )
+    .attr("aria-hidden", (f) =>
+      !belongs(info(f.properties.id)) ||
+      !frontFacing(info(f.properties.id)) ||
+      (sphericalAreas.get(f.properties.id) || 0) * projection.scale() ** 2 < 26
+        ? "true"
+        : null,
+    );
+  renderCenters();
+  updateLabels();
+  // Keep shading above land and below interactive labels without intercepting clicks.
+  root.select(".globe-lighting").raise();
+  root.selectAll(".country-label,.selection-marker,.micro-country").raise();
+}
+async function ensureFlatGeometry() {
+  if (detailedGeometry) return;
+  const response = await fetch("./data/world.geojson", {
+    signal: AbortSignal.timeout(15000),
+  });
+  if (!response.ok)
+    throw Error("详细地图暂时无法加载，请稍后再试。球体地图仍可使用。");
+  detailedGeometry = await response.json();
+  geometry = detailedGeometry;
+  features = new Map(geometry.features.map((f) => [f.properties.id, f]));
 }
 function drawMap(preserveView = false) {
   if (!geometry || !data) return;
   const stage = $("map-stage");
-  const oldWidth = width, oldHeight = height, oldTransform = transform;
-  if (preserveView && width === stage.clientWidth && height === stage.clientHeight) return;
+  const oldWidth = width,
+    oldHeight = height,
+    oldTransform = transform;
+  if (
+    preserveView &&
+    width === stage.clientWidth &&
+    height === stage.clientHeight
+  )
+    return;
+  cancelAnimationFrame(globeFrame);
+  cancelAnimationFrame(labelFrame);
+  globeFrame = labelFrame = 0;
+  const oldRotation = projection?.rotate(),
+    oldGlobeTransform = globeTransform;
   width = stage.clientWidth;
   height = stage.clientHeight;
   if (width < 1 || height < 1) return;
   const svg = d3.select("#map");
+  svg.interrupt("globe-focus").interrupt();
   svg.selectAll("*").remove();
   svg.attr("viewBox", `0 0 ${width} ${height}`);
-  if (continent === "world")
+  const spherical = mapMode === "globe";
+  svg
+    .attr("tabindex", 0)
+    .attr(
+      "aria-label",
+      spherical
+        ? "旅行地球，拖动或方向键旋转，点击国家查看记录"
+        : "旅行地图，点击国家查看记录",
+    );
+  svg.on("keydown.globe", (event) => {
+    if (
+      event.target !== svg.node() ||
+      mapMode !== "globe" ||
+      !["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Home"].includes(
+        event.key,
+      )
+    )
+      return;
+    event.preventDefault();
+    experience.pause();
+    svg.interrupt("globe-focus");
+    if (event.key === "Home") {
+      drawMap();
+      return;
+    }
+    const rotation = projection.rotate(),
+      amount = event.shiftKey ? 3 : 10;
+    const dx =
+      event.key === "ArrowLeft"
+        ? -amount
+        : event.key === "ArrowRight"
+          ? amount
+          : 0;
+    const dy =
+      event.key === "ArrowUp"
+        ? amount
+        : event.key === "ArrowDown"
+          ? -amount
+          : 0;
+    projection.rotate([
+      rotation[0] + dx,
+      Math.max(-89.5, Math.min(89.5, rotation[1] + dy)),
+      0,
+    ]);
+    redrawGlobe();
+  });
+  $("map-card").classList.toggle("globe-mode", spherical);
+  $("map-view-toggle").setAttribute(
+    "aria-label",
+    spherical ? "切换为平面地图" : "切换为球体地图",
+  );
+  $("map-view-toggle").querySelector("span").textContent = spherical
+    ? "球体"
+    : "平面";
+  $("map-view-toggle").title = spherical
+    ? "当前为球体，点击切换平面"
+    : "当前为平面，点击切换球体";
+  $("map-hint").textContent = spherical
+    ? "拖动旋转地球 · 滚轮或双指缩放"
+    : "拖动平移 · 滚轮或双指缩放";
+  if (spherical) {
+    const center =
+      continent === "world"
+        ? [18, 23]
+        : continent === "Antarctica"
+          ? [0, -80]
+          : VIEWS[continent];
+    globeScale = Math.min(width * 0.43, height * 0.43);
+    projection = d3
+      .geoOrthographic()
+      .rotate(
+        preserveView && oldRotation ? oldRotation : [-center[0], -center[1]],
+      )
+      .scale(globeScale)
+      .translate([width / 2, height / 2 - 5])
+      .clipAngle(90)
+      .precision(0.5);
+  } else if (continent === "world")
     projection = d3.geoNaturalEarth1().fitExtent(
       [
         [16, 30],
@@ -778,13 +1159,89 @@ function drawMap(preserveView = false) {
       .translate([width / 2, height / 2 - 10]);
   }
   geoPath = d3.geoPath(projection).digits(1);
+  const gradient = svg
+    .append("defs")
+    .append("linearGradient")
+    .attr("id", "map-land-light")
+    .attr("x1", "0%")
+    .attr("y1", "0%")
+    .attr("x2", "60%")
+    .attr("y2", "100%");
+  gradient.append("stop").attr("offset", "0%").attr("class", "land-light");
+  gradient.append("stop").attr("offset", "100%").attr("class", "land-shade");
+  const ocean = svg
+    .select("defs")
+    .append("radialGradient")
+    .attr("id", "globe-ocean-fill")
+    .attr("cx", "30%")
+    .attr("cy", "24%")
+    .attr("r", "80%");
+  ocean.append("stop").attr("offset", "0%").attr("class", "ocean-light");
+  ocean.append("stop").attr("offset", "100%").attr("class", "ocean-shade");
+  const lighting = svg
+    .select("defs")
+    .append("radialGradient")
+    .attr("id", "globe-lighting-fill")
+    .attr("cx", "28%")
+    .attr("cy", "22%")
+    .attr("r", "78%");
+  lighting
+    .append("stop")
+    .attr("offset", "0%")
+    .attr("stop-color", "#ffffff")
+    .attr("stop-opacity", ".22");
+  lighting
+    .append("stop")
+    .attr("offset", "45%")
+    .attr("stop-color", "#ffffff")
+    .attr("stop-opacity", "0");
+  lighting
+    .append("stop")
+    .attr("offset", "78%")
+    .attr("stop-color", "#123b31")
+    .attr("stop-opacity", ".06");
+  lighting
+    .append("stop")
+    .attr("offset", "100%")
+    .attr("stop-color", "#123b31")
+    .attr("stop-opacity", ".48");
   root = svg.append("g");
+  if (spherical)
+    root
+      .append("path")
+      .datum({ type: "Sphere" })
+      .attr("class", "globe-ocean")
+      .attr("d", geoPath);
   root
     .append("path")
     .datum(d3.geoGraticule10())
     .attr("class", "graticule")
     .attr("d", geoPath);
-  const available = geometry.features.filter((f) => info(f.properties.id));
+  const available = (spherical ? globeGeometry : geometry).features.filter(
+    (f) => info(f.properties.id),
+  );
+  const land = spherical
+    ? globeGeometry.land
+    : { type: "FeatureCollection", features: available };
+  if (!spherical)
+    root
+      .append("path")
+      .datum(land)
+      .attr("class", "land-shadow")
+      .attr("d", geoPath)
+      .attr("aria-hidden", "true");
+  root
+    .append("path")
+    .datum(land)
+    .attr("class", "land-base")
+    .attr("d", geoPath)
+    .attr("aria-hidden", "true");
+  if (spherical)
+    root
+      .append("path")
+      .datum({ type: "Sphere" })
+      .attr("class", "globe-lighting")
+      .attr("d", geoPath);
   root
     .selectAll(".country")
     .data(available)
@@ -803,12 +1260,13 @@ function drawMap(preserveView = false) {
     )
     .attr("role", (f) => (belongs(info(f.properties.id)) ? "button" : null))
     .on("click", (event, f) => {
-      if (belongs(info(f.properties.id))) selectCountry(f.properties.id, true);
+      if (belongs(info(f.properties.id)))
+        selectCountry(f.properties.id, api.unlocked);
     })
     .on("keydown", (event, f) => {
       if (event.key === "Enter" || event.key === " ") {
         event.preventDefault();
-        selectCountry(f.properties.id, true);
+        selectCountry(f.properties.id, api.unlocked);
       }
     })
     .on("pointermove", (event, f) => {
@@ -817,58 +1275,83 @@ function drawMap(preserveView = false) {
     .on("pointerleave", () => {
       $("tooltip").hidden = true;
     });
-  centers = countries
-    .filter(belongs)
-    .map((c) => {
-      const f = features.get(c.id);
-      let xy = f ? geoPath.centroid(f) : projection([c.lng, c.lat]);
-      if (!xy || !xy.every(Number.isFinite)) return null;
-      const area = f ? geoPath.area(f) : 0;
-      return { ...c, xy, area, small: !f || area < 26 };
-    })
-    .filter(
-      (c) =>
-        c && c.xy[0] > 0 && c.xy[0] < width && c.xy[1] > 0 && c.xy[1] < height,
-    );
-  root
-    .selectAll(".micro-country")
-    .data(centers.filter((c) => c.small))
-    .join("circle")
-    .attr("class", "micro-country")
-    .attr("data-country", (c) => c.id)
-    .attr("cx", (c) => c.xy[0])
-    .attr("cy", (c) => c.xy[1])
-    .attr("r", 4)
-    .attr("tabindex", 0)
-    .attr("role", "button")
-    .attr("aria-label", (c) => c.name)
-    .on("click", (event, c) => selectCountry(c.id, true))
-    .on("keydown", (event, c) => {
-      if (event.key === "Enter" || event.key === " ") {
-        event.preventDefault();
-        selectCountry(c.id, true);
-      }
-    })
-    .on("pointermove", (event, c) => tooltip(event, c))
-    .on("pointerleave", () => {
-      $("tooltip").hidden = true;
-    });
+  renderCenters();
   transform = d3.zoomIdentity;
+  globeTransform = d3.zoomIdentity;
   zoom = d3
     .zoom()
-    .scaleExtent([1, 12])
-    .translateExtent([
-      [-width * 0.5, -height * 0.5],
-      [width * 1.5, height * 1.5],
-    ])
+    .scaleExtent([1, mapMode === "globe" ? 5 : 12])
+    .translateExtent(
+      mapMode === "globe"
+        ? [
+            [-Infinity, -Infinity],
+            [Infinity, Infinity],
+          ]
+        : [
+            [-width * 0.5, -height * 0.5],
+            [width * 1.5, height * 1.5],
+          ],
+    )
+    .on("start", (event) => {
+      if (event.sourceEvent) svg.interrupt("globe-focus");
+      stage.classList.add("is-dragging");
+    })
+    .on("end", () => {
+      stage.classList.remove("is-dragging");
+      if (globeFrame) {
+        cancelAnimationFrame(globeFrame);
+        globeFrame = 0;
+        redrawGlobe();
+      }
+    })
     .on("zoom", (event) => {
-      transform = event.transform;
-      root.attr("transform", transform);
-      root.selectAll(".micro-country").attr("r", 4 / transform.k);
       $("tooltip").hidden = true;
-      scheduleLabels();
+      if (mapMode === "globe") {
+        const next = event.transform;
+        if (event.sourceEvent && Math.abs(next.k - globeTransform.k) < 0.0001) {
+          const rotation = projection.rotate();
+          const sensitivity = 57.2958 / projection.scale();
+          projection.rotate([
+            rotation[0] + (next.x - globeTransform.x) * sensitivity,
+            Math.max(
+              -89.5,
+              Math.min(
+                89.5,
+                rotation[1] - (next.y - globeTransform.y) * sensitivity,
+              ),
+            ),
+            0,
+          ]);
+        }
+        globeTransform = next;
+        projection.scale(globeScale * next.k);
+        if (!event.sourceEvent) redrawGlobe();
+        else if (!globeFrame)
+          globeFrame = requestAnimationFrame(() => {
+            globeFrame = 0;
+            redrawGlobe();
+          });
+      } else {
+        transform = event.transform;
+        root.attr("transform", transform);
+        root
+          .select(".land-shadow")
+          .attr("transform", `translate(0,${3 / transform.k})`);
+        root.selectAll(".micro-country").attr("r", 4 / transform.k);
+        scheduleLabels();
+      }
     });
-  const initialTransform = preserveView && oldWidth && oldHeight && oldTransform ? d3.zoomIdentity.translate(oldTransform.x * width / oldWidth, oldTransform.y * height / oldHeight).scale(oldTransform.k) : d3.zoomIdentity;
+  const initialTransform =
+    preserveView && oldWidth && oldHeight
+      ? spherical
+        ? d3.zoomIdentity.scale(oldGlobeTransform?.k || 1)
+        : d3.zoomIdentity
+            .translate(
+              (oldTransform.x * width) / oldWidth,
+              (oldTransform.y * height) / oldHeight,
+            )
+            .scale(oldTransform.k)
+      : d3.zoomIdentity;
   svg
     .call(zoom)
     .on("dblclick.zoom", null)
@@ -877,6 +1360,28 @@ function drawMap(preserveView = false) {
   updateLabels();
 }
 function focusCountry() {
+  if (mapMode === "globe") {
+    const country = info(selected);
+    if (!country) return;
+    const svg = d3.select("#map");
+    svg.interrupt("globe-focus");
+    svg.call(zoom.transform, d3.zoomIdentity);
+    const current = projection.rotate();
+    const interpolate = d3.geoInterpolate(
+      [-current[0], -current[1]],
+      [country.lng, country.lat],
+    );
+    svg
+      .transition("globe-focus")
+      .duration(reduceMotion ? 0 : 850)
+      .ease(d3.easeCubicInOut)
+      .tween("rotate", () => (t) => {
+        const point = interpolate(t);
+        projection.rotate([-point[0], -point[1], 0]);
+        redrawGlobe();
+      });
+    return;
+  }
   const c = centers.find((c) => c.id === selected);
   if (!c) {
     toast("此国家的主要位置不在当前视角，请切换世界地图。");
@@ -901,6 +1406,7 @@ function hideSearch() {
 }
 function search() {
   const query = $("country-search").value.trim();
+  $("search-clear").hidden = !query;
   if (panel === "list") renderList();
   if (!query) {
     hideSearch();
@@ -919,7 +1425,18 @@ function search() {
         document.createTextNode(c.name),
         text("small", c.id),
       );
-      button.onclick = () => selectCountry(c.id, true);
+      button.onclick = () => {
+        const editingOnPhone = api.unlocked && innerWidth <= 860;
+        selectCountry(c.id, editingOnPhone);
+        if (!editingOnPhone) {
+          focusCountry();
+          if (innerWidth <= 860)
+            $("map-card").scrollIntoView({
+              behavior: reduceMotion ? "auto" : "smooth",
+              block: "start",
+            });
+        }
+      };
       return button;
     }),
   );
@@ -960,9 +1477,19 @@ async function confirmAction(title, description, label = "确认") {
   });
 }
 async function openAuth(reconfigure = false) {
-  if (!cloudReady) { toast("正在同步云端旅行记录，完成后即可管理。地图已可浏览。"); return; }
+  if (!cloudReady) {
+    toast("正在同步云端旅行记录，完成后即可管理。地图已可浏览。");
+    return;
+  }
   flushEditor();
-  if (api.unlocked && !reconfigure) { toast("管理已解锁，可以直接编辑或发布。"); return; }
+  if (api.unlocked && !reconfigure) {
+    showTab("details");
+    $("country-panel").scrollIntoView({
+      behavior: reduceMotion ? "auto" : "smooth",
+      block: "start",
+    });
+    return;
+  }
   clearAuthFields();
   $("auth-message").textContent = "";
   $("auth-heading").textContent = "解锁你的地图";
@@ -990,8 +1517,13 @@ function activateAdmin() {
   policyView = false;
   colorFilter = "";
   $("list-filter").value = "all";
+  showTab("details");
   renderAll();
   writeLocation();
+  $("country-panel").scrollIntoView({
+    behavior: reduceMotion ? "auto" : "smooth",
+    block: "start",
+  });
   $("editor-save-state").textContent = dirty()
     ? "已恢复本机草稿"
     : "草稿自动保存在本机";
@@ -1021,11 +1553,18 @@ async function unlock(event) {
   $("auth-message").textContent = "正在校验管理密码…";
   try {
     await api.unlock($("admin-password").value);
-    if (!$("auth-dialog").open) { api.lock(); return; }
+    if (!$("auth-dialog").open) {
+      api.lock();
+      return;
+    }
     activateAdmin();
     toast("已解锁。编辑自动保存为草稿，发布后所有设备都能看到更新。");
-  } catch (error) { $("auth-message").textContent = error.message; }
-  finally { setAuthBusy(false); clearAuthFields(); }
+  } catch (error) {
+    $("auth-message").textContent = error.message;
+  } finally {
+    setAuthBusy(false);
+    clearAuthFields();
+  }
 }
 function clearAuthFields() {
   $("admin-password").value = "";
@@ -1178,8 +1717,8 @@ function exportMap() {
   background.setAttribute("height", height + 80);
   background.setAttribute("fill", computed.getPropertyValue("--map").trim());
   svg.prepend(background);
-  const originals = $("map").querySelectorAll("path,circle,text"),
-    clones = svg.querySelectorAll("path,circle,text");
+  const originals = $("map").querySelectorAll("path,circle,text,stop"),
+    clones = svg.querySelectorAll("path,circle,text,stop");
   originals.forEach((node, i) => {
     const css = getComputedStyle(node);
     for (const property of [
@@ -1194,9 +1733,17 @@ function exportMap() {
       "font-family",
       "paint-order",
       "display",
+      "stop-color",
+      "stop-opacity",
     ])
-      clones[i].style.setProperty(property, css.getPropertyValue(property));
+      clones[i].style.setProperty(
+        property,
+        css
+          .getPropertyValue(property)
+          .replace(/url\(["']?[^)]*#([^"')]+)["']?\)/g, "url(#$1)"),
+      );
   });
+  svg.querySelectorAll(".selection-marker").forEach((node) => node.remove());
   const addText = (content, x, y, size) => {
     const node = document.createElementNS(svg.namespaceURI, "text");
     node.setAttribute("x", x);
@@ -1228,28 +1775,30 @@ function exportMap() {
   );
   let x = 20,
     y = height + 42;
-  mapPalette().filter(p => p.id !== "none").forEach((p) => {
-    const itemWidth =
-      22 +
-      [...p.label].reduce(
-        (sum, c) => sum + (/[^\x00-\xff]/.test(c) ? 9 : 5.5),
-        0,
-      );
-    if (x + itemWidth > width - 20) {
-      x = 20;
-      y += 21;
-    }
-    const dot = document.createElementNS(svg.namespaceURI, "rect");
-    dot.setAttribute("x", x);
-    dot.setAttribute("y", y);
-    dot.setAttribute("width", 8);
-    dot.setAttribute("height", 8);
-    dot.setAttribute("rx", 2);
-    dot.setAttribute("fill", p.color);
-    svg.append(dot);
-    addText(p.label, x + 14, y + 8, 9);
-    x += itemWidth + 17;
-  });
+  mapPalette()
+    .filter((p) => p.id !== "none")
+    .forEach((p) => {
+      const itemWidth =
+        22 +
+        [...p.label].reduce(
+          (sum, c) => sum + (/[^\x00-\xff]/.test(c) ? 9 : 5.5),
+          0,
+        );
+      if (x + itemWidth > width - 20) {
+        x = 20;
+        y += 21;
+      }
+      const dot = document.createElementNS(svg.namespaceURI, "rect");
+      dot.setAttribute("x", x);
+      dot.setAttribute("y", y);
+      dot.setAttribute("width", 8);
+      dot.setAttribute("height", 8);
+      dot.setAttribute("rx", 2);
+      dot.setAttribute("fill", p.color);
+      svg.append(dot);
+      addText(p.label, x + 14, y + 8, 9);
+      x += itemWidth + 17;
+    });
   const exportHeight = y + 28;
   svg.setAttribute("height", exportHeight);
   svg.setAttribute("viewBox", `0 0 ${width} ${exportHeight}`);
@@ -1358,10 +1907,7 @@ function presentConflicts(plan, remote, continuePublish) {
         input.value = choice;
         input.required = true;
         content.append(
-          text(
-            "strong",
-            choice === "local" ? "保留本机草稿" : "保留云端版本",
-          ),
+          text("strong", choice === "local" ? "保留本机草稿" : "保留云端版本"),
           document.createTextNode(
             conflict[choice] === undefined
               ? "（未设置）"
@@ -1410,8 +1956,7 @@ async function publish() {
     const file = await reconcile(true);
     if (!file) return;
     if (!dirty()) {
-      $("publish-message").textContent =
-        "所有修改已经在网站，无需重复发布。";
+      $("publish-message").textContent = "所有修改已经在网站，无需重复发布。";
       return;
     }
     const next = clone(data);
@@ -1462,14 +2007,17 @@ async function pollPublished(expected) {
   try {
     const file = await api.read(DATA_PATH);
     if (sameAtlas(valid(file.data), expected)) {
-      $("publish-message").textContent = "发布完成！其他设备刷新地图即可看到更新。";
+      $("publish-message").textContent =
+        "发布完成！其他设备刷新地图即可看到更新。";
       $("save-status").textContent = "已发布 · 网页已更新";
       toast("发布成功，最新记录已同步到网站。");
     } else {
-      $("publish-message").textContent = "记录已保存，云端又有新的更新，可点击检查并合并。";
+      $("publish-message").textContent =
+        "记录已保存，云端又有新的更新，可点击检查并合并。";
     }
   } catch {
-    $("publish-message").textContent = "记录已保存，但暂时无法再次确认，请稍后刷新查看。";
+    $("publish-message").textContent =
+      "记录已保存，但暂时无法再次确认，请稍后刷新查看。";
   }
 }
 
@@ -1479,14 +2027,40 @@ function wireEvents() {
   $("edit-travel-layer").onclick = () => switchView(false);
   $("policy-date").onchange = () => {
     flushEditor();
-    if (!validDate($("policy-date").value)) { $("policy-date").value = policyDay; return; }
-    automaticDay = false; policyDay = $("policy-date").value; cachePolicies(); renderAll(); writeLocation();
+    if (!validDate($("policy-date").value)) {
+      $("policy-date").value = policyDay;
+      return;
+    }
+    automaticDay = false;
+    policyDay = $("policy-date").value;
+    cachePolicies();
+    renderAll();
+    writeLocation();
   };
-  $("today-button").onclick = () => { flushEditor(); automaticDay = true; policyDay = policyDate(); cachePolicies(); renderAll(); writeLocation(); };
-  $("find-country").onclick = () => { $("country-search").scrollIntoView({behavior: reduceMotion ? "auto" : "smooth", block: "center"}); $("country-search").focus({preventScroll:true}); };
-  $("back-to-map").onclick = () => $("map-card").scrollIntoView({behavior: reduceMotion ? "auto" : "smooth", block: "start"});
-  $("show-destinations").onclick = () => { showTab("list"); if (innerWidth <= 860) $("country-list-panel").scrollIntoView({behavior: reduceMotion ? "auto" : "smooth", block: "start"}); };
-  document.addEventListener("visibilitychange", () => { if (!document.hidden && automaticDay && policyDay !== policyDate()) { flushEditor(); policyDay = policyDate(); cachePolicies(); renderAll(); } });
+  $("today-button").onclick = () => {
+    flushEditor();
+    automaticDay = true;
+    policyDay = policyDate();
+    cachePolicies();
+    renderAll();
+    writeLocation();
+  };
+  $("show-destinations").onclick = () => {
+    showTab("list");
+    if (innerWidth <= 860)
+      $("country-list-panel").scrollIntoView({
+        behavior: reduceMotion ? "auto" : "smooth",
+        block: "start",
+      });
+  };
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden && automaticDay && policyDay !== policyDate()) {
+      flushEditor();
+      policyDay = policyDate();
+      cachePolicies();
+      renderAll();
+    }
+  });
   $("continents").replaceChildren(
     ...CONTINENTS.map(([id, name]) => {
       const button = text("button", name);
@@ -1502,7 +2076,9 @@ function wireEvents() {
   $("lock-button").onclick = () => lock();
   $("unlock-form").onsubmit = unlock;
   $("show-password").onchange = () =>
-    ($("admin-password").type = $("show-password").checked ? "text" : "password");
+    ($("admin-password").type = $("show-password").checked
+      ? "text"
+      : "password");
   $("auth-dialog").addEventListener("close", clearAuthFields);
   $("auth-dialog").addEventListener("cancel", (event) => {
     if (authBusy) event.preventDefault();
@@ -1524,6 +2100,19 @@ function wireEvents() {
     }
   };
   $("country-search").oninput = search;
+  $("search-clear").onclick = () => {
+    $("country-search").value = "";
+    search();
+    $("country-search").focus();
+  };
+  $("back-to-map").onclick = () => {
+    flushEditor();
+    $("explore").scrollIntoView({
+      behavior: reduceMotion ? "auto" : "smooth",
+      block: "start",
+    });
+    $("country-search").focus({ preventScroll: true });
+  };
   $("country-search").onkeydown = (event) => {
     const buttons = [...$("search-results").querySelectorAll("button")];
     if (event.key === "Escape") {
@@ -1548,6 +2137,34 @@ function wireEvents() {
   $("list-filter").onchange = renderList;
   $("list-sort").onchange = renderList;
   $("show-labels").onchange = updateLabels;
+  $("map-view-toggle").onclick = async () => {
+    experience.pause();
+    const button = $("map-view-toggle"),
+      next = mapMode === "globe" ? "flat" : "globe";
+    button.disabled = true;
+    try {
+      if (next === "flat") {
+        button.querySelector("span").textContent = "载入…";
+        await ensureFlatGeometry();
+      }
+      mapMode = next;
+      drawMap();
+      if (mapMode === "globe") focusCountry();
+      experience.mapTransition();
+      try {
+        localStorage.setItem("travel-atlas-map-view", mapMode);
+      } catch {}
+    } catch {
+      toast("详细地图暂时无法加载，请稍后重试。球体地图仍可使用。");
+      button.querySelector("span").textContent = "球体";
+    } finally {
+      button.disabled = false;
+    }
+  };
+  try {
+    if (localStorage.getItem("travel-atlas-map-view") === "flat")
+      mapMode = "flat";
+  } catch {}
   $("focus-country").onclick = focusCountry;
   $("zoom-in").onclick = () =>
     d3
@@ -1561,12 +2178,16 @@ function wireEvents() {
       .transition()
       .duration(reduceMotion ? 0 : 200)
       .call(zoom.scaleBy, 1 / 1.5);
-  $("zoom-reset").onclick = () =>
-    d3
-      .select("#map")
-      .transition()
-      .duration(reduceMotion ? 0 : 200)
-      .call(zoom.transform, d3.zoomIdentity);
+  $("zoom-reset").onclick = () => {
+    if (mapMode === "globe") {
+      drawMap();
+      experience.mapTransition();
+    } else
+      d3.select("#map")
+        .transition()
+        .duration(reduceMotion ? 0 : 200)
+        .call(zoom.transform, d3.zoomIdentity);
+  };
   $("fullscreen-button").onclick = async () => {
     try {
       if (document.fullscreenElement) await document.exitFullscreen();
@@ -1764,7 +2385,11 @@ function wireEvents() {
       const p = new URLSearchParams(location.hash.slice(1));
       if (p.get("view") === "travel") policyView = false;
       if (p.get("view") === "policy" && policyDb) policyView = true;
-      if (validDate(p.get("date"))) { automaticDay = false; policyDay = p.get("date"); cachePolicies(); }
+      if (validDate(p.get("date"))) {
+        automaticDay = false;
+        policyDay = p.get("date");
+        cachePolicies();
+      }
       if (info(p.get("country"))) selectCountry(p.get("country"));
       renderAll();
     }
@@ -1781,27 +2406,47 @@ async function init() {
     setTheme("light");
   }
   try {
-    try { policyView = localStorage.getItem("travel-atlas-view") !== "travel"; } catch {}
+    try {
+      policyView = localStorage.getItem("travel-atlas-view") === "policy";
+    } catch {}
     const initialParams = new URLSearchParams(location.hash.slice(1));
-    if (["policy", "travel"].includes(initialParams.get("view"))) policyView = initialParams.get("view") === "policy";
-    if (validDate(initialParams.get("date"))) { automaticDay = false; policyDay = initialParams.get("date"); }
-    const cloudRequest = api.read(DATA_PATH).then(value => ({value}), error => ({error}));
-    const policyRequest = fetch("./data/visa-policies.json?v=20261014v3").then(r => { if (!r.ok) throw Error("policy"); return r.json(); }).catch(() => null);
+    if (["policy", "travel"].includes(initialParams.get("view")))
+      policyView = initialParams.get("view") === "policy";
+    if (validDate(initialParams.get("date"))) {
+      automaticDay = false;
+      policyDay = initialParams.get("date");
+    }
+    const cloudRequest = api.read(DATA_PATH).then(
+      (value) => ({ value }),
+      (error) => ({ error }),
+    );
+    const policyRequest = fetch("./data/visa-policies.json?v=20261014v3")
+      .then((r) => {
+        if (!r.ok) throw Error("policy");
+        return r.json();
+      })
+      .catch(() => null);
     const responses = await Promise.all([
       fetch("./data/countries.json"),
-      fetch("./data/world.geojson"),
+      fetch("./assets/globe.geojson?v=20261014globe1"),
       fetch("./data/atlas.json", { cache: "no-store" }),
     ]);
     if (responses.some((r) => !r.ok))
       throw Error("地图数据加载失败，请检查网络后重试。");
     countries = await responses[0].json();
-    geometry = await responses[1].json();
+    geometry = globeGeometry = await responses[1].json();
     countryById = new Map(countries.map((c) => [c.id, c]));
     countryIds = new Set(countryById.keys());
     features = new Map(geometry.features.map((f) => [f.properties.id, f]));
+    sphericalAreas = new Map(
+      geometry.features.map((f) => [f.properties.id, d3.geoArea(f)]),
+    );
     data = valid(await responses[2].json());
     policyDb = await policyRequest;
-    if (!policyDb?.countries) { policyDb = null; policyView = false; }
+    if (!policyDb?.countries) {
+      policyDb = null;
+      policyView = false;
+    }
     cachePolicies();
     baseline = clone(data);
     published = clone(data);
@@ -1831,13 +2476,23 @@ async function init() {
       }),
     );
     wireEvents();
+    if (mapMode === "flat") {
+      try {
+        await ensureFlatGeometry();
+      } catch {
+        mapMode = "globe";
+      }
+    }
     selected = data.profile.home;
     const query = new URLSearchParams(location.hash.slice(1)),
       initialAdmin = location.hash === "#admin";
     if (info(query.get("country"))) selected = query.get("country");
     setContinent(
-      query.get("region") || info(selected).continents[0] || "world",
+      query.get("region") ||
+        (mapMode === "globe" ? "world" : info(selected).continents[0]) ||
+        "world",
     );
+    if (mapMode === "globe" && info(query.get("country"))) focusCountry();
     $("map-loading").hidden = true;
     $("save-status").textContent = "地图已就绪 · 正在同步旅行记录";
     $("admin-mode").disabled = true;
@@ -1845,14 +2500,27 @@ async function init() {
     const initialSelection = selected;
     const cloud = await cloudRequest;
     if (cloud.value) {
-      data = valid(cloud.value.data); baseline = clone(data); published = clone(data);
-      if (!query.get("country") && selected === initialSelection && selected !== data.profile.home) {
+      data = valid(cloud.value.data);
+      baseline = clone(data);
+      published = clone(data);
+      if (
+        !query.get("country") &&
+        selected === initialSelection &&
+        selected !== data.profile.home
+      ) {
         selected = data.profile.home;
-        setContinent(info(selected).continents[0] || "world");
+        setContinent(
+          query.get("region") ||
+            (mapMode === "globe" ? "world" : info(selected).continents[0]) ||
+            "world",
+        );
+        if (mapMode === "globe") focusCountry();
       } else renderAll();
       $("save-status").textContent = "旅行记录已同步";
     } else {
-      notice("暂时无法读取云端，正在显示初始旅行记录。可继续浏览签证参考，稍后刷新同步。");
+      notice(
+        "暂时无法读取云端，正在显示初始旅行记录。可继续浏览签证参考，稍后刷新同步。",
+      );
       $("save-status").textContent = "初始旅行记录 · 云端未连接";
     }
     cloudReady = true;
@@ -1867,4 +2535,25 @@ async function init() {
     $("retry-button").onclick = () => location.reload();
   }
 }
+const experience = createExperience({
+  getState: () => ({
+    countries,
+    data,
+    geometry: globeGeometry,
+    selected,
+    selectedLabel: data ? status(selected)?.label : "",
+  }),
+  onMotionChange: (quiet) => {
+    reduceMotion = quiet;
+    if (quiet && root) d3.select("#map").interrupt("globe-focus").interrupt();
+  },
+  navigate: (id) => {
+    colorFilter = "";
+    selectCountry(id);
+    if (mapMode !== "globe" && !centers.some((c) => c.id === id))
+      setContinent("world");
+    renderLegend();
+    focusCountry();
+  },
+});
 init();

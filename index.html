@@ -18,10 +18,11 @@
     <title>行迹 Atlas · 把世界，走成故事</title>
     <link rel="icon" href="./assets/compass.svg" type="image/svg+xml" />
     <link rel="manifest" href="./manifest.webmanifest" />
-    <link rel="stylesheet" href="./style.css?v=20261014v3" />
+    <link rel="stylesheet" href="./style.css?v=20261014globe1" />
     <link rel="stylesheet" href="./atlas.css?v=20261014v3" />
+    <link rel="stylesheet" href="./experience.css?v=20261014globe1" />
     <script src="./assets/d3.min.js" defer></script>
-    <script src="./app.js?v=20261014v3" type="module"></script>
+    <script src="./app.js?v=20261014globe1" type="module"></script>
   </head>
   <body>
     <svg
@@ -33,6 +34,18 @@
         <symbol id="i-search" viewBox="0 0 24 24">
           <circle cx="10.8" cy="10.8" r="6.8" />
           <path d="m16 16 4.5 4.5" />
+        </symbol>
+        <symbol id="i-play" viewBox="0 0 24 24">
+          <path d="m9 5 11 7-11 7Z" />
+        </symbol>
+        <symbol id="i-pause" viewBox="0 0 24 24">
+          <path d="M8 5v14M16 5v14" />
+        </symbol>
+        <symbol id="i-spark" viewBox="0 0 24 24">
+          <path d="m12 3 2.5 6.5L21 12l-6.5 2.5L12 21l-2.5-6.5L3 12l6.5-2.5Z" />
+        </symbol>
+        <symbol id="i-layers" viewBox="0 0 24 24">
+          <path d="m3 8 9-5 9 5-9 5Zm0 5 9 5 9-5M3 18l9 5 9-5" />
         </symbol>
         <symbol id="i-lock" viewBox="0 0 24 24">
           <rect x="5" y="10" width="14" height="11" rx="3" />
@@ -97,6 +110,15 @@
       ><span class="header-caption">A PERSONAL ATLAS OF THE WORLD</span>
       <nav class="header-actions" aria-label="页面操作">
         <button
+          id="motion-toggle"
+          class="icon-button"
+          aria-label="暂停装饰动效"
+          aria-pressed="false"
+          title="暂停装饰动效"
+        >
+          <svg class="icon"><use href="#i-pause" /></svg>
+        </button>
+        <button
           id="theme-toggle"
           class="icon-button"
           aria-label="切换深色模式"
@@ -116,10 +138,63 @@
           </div>
           <h1 id="hero-title">把世界，走成故事。</h1>
           <p id="hero-subtitle">用颜色收藏足迹，用文字记住每一次出发。</p>
+          <div class="hero-actions">
+            <button id="start-tour" class="button primary" disabled>
+              <svg class="icon"><use href="#i-play" /></svg> 漫游我的足迹
+            </button>
+            <button
+              id="discover-country"
+              class="button discovery-button"
+              disabled
+            >
+              随遇一个地方 <svg class="icon"><use href="#i-spark" /></svg>
+            </button>
+          </div>
+          <p class="hero-footnote"><span></span> EVERY PLACE HAS A STORY</p>
         </div>
-        <div class="hero-stamp" aria-hidden="true">
-          <span>THE WORLD<br />IS WAITING</span><svg><use href="#i-pin" /></svg
-          ><small>随时可以出发</small>
+        <div class="hero-art" aria-hidden="true">
+          <div class="globe-halo"></div>
+          <svg class="atlas-globe" viewBox="0 0 440 330">
+            <defs>
+              <radialGradient id="globe-light" cx="30%" cy="22%" r="80%">
+                <stop offset="0" stop-color="#faf8e9" />
+                <stop offset=".8" stop-color="#d6dec5" />
+                <stop offset="1" stop-color="#b8c8ad" />
+              </radialGradient>
+              <radialGradient id="globe-shade" cx="30%" cy="22%" r="80%">
+                <stop offset=".55" stop-color="#173c34" stop-opacity="0" />
+                <stop offset="1" stop-color="#173c34" stop-opacity=".3" />
+              </radialGradient>
+            </defs>
+            <ellipse
+              class="globe-orbit"
+              cx="233"
+              cy="164"
+              rx="177"
+              ry="139"
+              transform="rotate(-24 233 164)"
+            />
+            <circle class="globe-ring" cx="233" cy="164" r="153" />
+            <circle cx="233" cy="164" r="126" fill="url(#globe-light)" />
+            <g id="hero-globe-land"></g>
+            <circle cx="233" cy="164" r="126" fill="url(#globe-shade)" />
+            <g class="orbit-traveler">
+              <path d="m235 4 4 8 9 2-9 3-4 8-2-8-9-3 9-2Z" />
+            </g>
+            <text class="globe-cardinal" x="231" y="8">N</text>
+            <text class="globe-cardinal" x="391" y="168">E</text>
+          </svg>
+          <div class="passport-card">
+            <span>PERSONAL PASSPORT</span><strong>世界很大，慢慢去看。</strong>
+            <div>
+              <span id="passport-count">— 处足迹</span><i>EXPLORE MORE ↗</i>
+            </div>
+          </div>
+          <div class="atlas-seal">
+            <span>COLLECT MOMENTS</span
+            ><svg class="icon"><use href="#i-pin" /></svg
+            ><small>行 迹 · ATLAS</small>
+          </div>
         </div>
         <div class="overview" aria-label="我的旅行概览">
           <button class="stat-card" id="visited-stat">
@@ -190,23 +265,81 @@
           <svg class="icon"><use href="#i-close" /></svg>
         </button>
       </div>
-      <section class="map-column" aria-label="互动旅行地图">
+      <section
+        class="map-column"
+        id="explore"
+        aria-label="互动旅行地图"
+        tabindex="-1"
+      >
         <div class="map-section-title">
           <h2>探索世界 <span>EXPLORE</span></h2>
           <span id="save-status" class="sync-status" role="status"
             >正在加载地图…</span
           >
         </div>
+        <div class="map-search">
+          <div class="search-box">
+            <svg class="icon"><use href="#i-search" /></svg
+            ><label class="sr-only" for="country-search"
+              >搜索国家、英文名或 ISO 代码</label
+            ><input
+              id="country-search"
+              type="search"
+              placeholder="想去哪里？搜索国家 / English / ISO"
+              autocomplete="off"
+              aria-controls="search-results"
+              aria-expanded="false"
+            /><button
+              id="search-clear"
+              class="icon-button"
+              aria-label="清空搜索"
+              hidden
+            >
+              <svg class="icon"><use href="#i-close" /></svg></button
+            ><kbd>/</kbd>
+          </div>
+          <div id="search-results" class="search-results" hidden></div>
+        </div>
         <div class="explore-toolbar">
           <div class="view-switch" role="group" aria-label="地图显示内容">
-            <button id="policy-view" type="button" aria-pressed="true">签证参考</button>
-            <button id="travel-view" type="button" aria-pressed="false">我的旅行</button>
+            <button id="travel-view" type="button" aria-pressed="true">
+              我的旅行
+            </button>
+            <button id="policy-view" type="button" aria-pressed="false">
+              签证参考
+            </button>
           </div>
-          <label class="trip-date" id="trip-date-label">计划出发日<input type="date" id="policy-date" aria-label="计划出发日" /><button type="button" id="today-button">今天</button></label>
-          <button id="find-country" class="icon-button" aria-label="搜索目的地"><svg class="icon"><use href="#i-search" /></svg></button>
+          <label class="trip-date" id="trip-date-label"
+            >计划出发日<input
+              type="date"
+              id="policy-date"
+              aria-label="计划出发日"
+            /><button type="button" id="today-button">今天</button></label
+          >
         </div>
         <div id="policy-summary" class="policy-summary" role="status"></div>
         <nav id="continents" class="continents" aria-label="选择大洲"></nav>
+        <div id="tour-bar" class="tour-bar" hidden>
+          <div class="tour-copy" role="status">
+            <span id="tour-index"></span><strong id="tour-country"></strong
+            ><small id="tour-note"></small>
+          </div>
+          <div class="tour-controls">
+            <button id="tour-prev" class="icon-button" aria-label="上一处足迹">
+              <svg class="icon reverse"><use href="#i-arrow" /></svg>
+            </button>
+            <button id="tour-pause" class="icon-button" aria-label="暂停漫游">
+              <svg class="icon"><use href="#i-pause" /></svg>
+            </button>
+            <button id="tour-next" class="icon-button" aria-label="下一处足迹">
+              <svg class="icon"><use href="#i-arrow" /></svg>
+            </button>
+            <button id="tour-close" class="icon-button" aria-label="结束漫游">
+              <svg class="icon"><use href="#i-close" /></svg>
+            </button>
+          </div>
+          <div class="tour-progress"><span id="tour-progress"></span></div>
+        </div>
         <div class="map-card" id="map-card">
           <div class="map-top">
             <div class="region-heading">
@@ -215,6 +348,15 @@
               ><span id="region-count"></span>
             </div>
             <div class="map-options">
+              <button
+                id="map-view-toggle"
+                class="map-view-toggle"
+                aria-label="切换为平面地图"
+                title="当前为球体，点击切换平面"
+              >
+                <svg class="icon"><use href="#i-layers" /></svg
+                ><span>球体</span>
+              </button>
               <label class="label-toggle"
                 ><input id="show-labels" type="checkbox" checked /><span
                   >国家名称</span
@@ -252,7 +394,7 @@
             </div>
             <div class="map-caption">
               <span id="region-english">WORLD</span
-              ><small>拖动平移 · 滚轮或双指缩放</small>
+              ><small id="map-hint">拖动旋转地球 · 滚轮或双指缩放</small>
             </div>
             <div class="zoom-controls" aria-label="地图缩放">
               <button id="zoom-in" aria-label="放大地图">+</button
@@ -262,6 +404,24 @@
               </button>
             </div>
             <div id="filter-caption" class="filter-caption" hidden></div>
+            <div class="map-compass" aria-hidden="true">
+              <span>N</span
+              ><svg viewBox="0 0 32 40">
+                <path d="M16 5 24 33 16 28 8 33Z" />
+                <path d="M16 5v23" />
+              </svg>
+            </div>
+            <button
+              id="map-country-peek"
+              class="map-country-peek"
+              aria-label="查看当前国家记录"
+            >
+              <span id="peek-flag"></span
+              ><span
+                ><strong id="peek-name"></strong
+                ><small id="peek-status"></small></span
+              ><svg class="icon"><use href="#i-arrow" /></svg>
+            </button>
           </div>
           <div id="legend" class="legend" aria-label="按颜色筛选国家"></div>
         </div>
@@ -271,9 +431,29 @@
             地图与数据来源 ↗
           </button>
         </div>
-        <section id="discover-section" class="discover-section" aria-label="当前大洲的目的地速览">
-          <div class="section-heading"><h2>下一站，去哪里 <span>DISCOVER</span></h2><button id="show-destinations" class="text-button">浏览清单 ↗</button></div>
-          <p class="section-description">按当前大洲与颜色筛选，查看有官方依据的入境方式。</p>
+        <section class="footprint-section" aria-labelledby="footprint-heading">
+          <div class="section-heading">
+            <h2 id="footprint-heading">
+              我的足迹 <span>PLACES I'VE BEEN</span>
+            </h2>
+            <span id="footprint-total" class="footprint-total"></span>
+          </div>
+          <div id="footprint-strip" class="footprint-strip"></div>
+        </section>
+        <section
+          id="discover-section"
+          class="discover-section"
+          aria-label="当前大洲的目的地速览"
+        >
+          <div class="section-heading">
+            <h2>下一站，去哪里 <span>DISCOVER</span></h2>
+            <button id="show-destinations" class="text-button">
+              浏览清单 ↗
+            </button>
+          </div>
+          <p class="section-description">
+            按当前大洲与颜色筛选，查看有官方依据的入境方式。
+          </p>
           <div id="destination-cards" class="destination-cards"></div>
         </section>
         <section class="journey-section" aria-label="旅行记录">
@@ -284,8 +464,7 @@
           <div id="journey-cards" class="journey-cards"></div>
         </section>
       </section>
-      <aside class="side-panel" aria-label="国家详情和旅行清单">
-        <button id="back-to-map" class="back-to-map text-button">↑ 返回地图</button>
+      <aside class="side-panel" id="side-panel" aria-label="国家详情和旅行清单">
         <div class="panel-tabs" role="tablist" aria-label="侧栏内容">
           <button
             id="details-tab"
@@ -303,20 +482,9 @@
             目的地清单 <span id="list-count"></span>
           </button>
         </div>
-        <div class="search-box">
-          <svg class="icon"><use href="#i-search" /></svg
-          ><label class="sr-only" for="country-search"
-            >搜索国家、英文名或 ISO 代码</label
-          ><input
-            id="country-search"
-            type="search"
-            placeholder="搜索国家 / English / ISO"
-            autocomplete="off"
-            aria-controls="search-results"
-            aria-expanded="false"
-          /><kbd>/</kbd>
-        </div>
-        <div id="search-results" class="search-results" hidden></div>
+        <button id="back-to-map" class="button ghost back-to-map">
+          <svg class="icon reverse"><use href="#i-arrow" /></svg> 回到地图
+        </button>
         <div id="country-panel" role="tabpanel" aria-labelledby="details-tab">
           <div class="country-title">
             <div id="country-flag" class="country-flag" aria-hidden="true">
@@ -336,7 +504,11 @@
             </button>
           </div>
           <div id="country-status" class="status-pill"></div>
-          <section id="policy-card" class="policy-card" aria-label="护照入境信息"></section>
+          <section
+            id="policy-card"
+            class="policy-card"
+            aria-label="护照入境信息"
+          ></section>
           <div id="view-fields">
             <div class="note-block date-block">
               <span class="field-label">旅行日期</span>
@@ -353,7 +525,14 @@
           <form id="editor" hidden>
             <fieldset>
               <legend class="field-label">我的旅行颜色</legend>
-              <p id="editor-layer-hint" class="editor-layer-hint" hidden>当前展示签证参考。自定义颜色在“我的旅行”中显示；已去过标记在两种视图中均显示。<button type="button" id="edit-travel-layer">切到我的旅行</button></p>
+              <p id="editor-layer-hint" class="editor-layer-hint" hidden>
+                当前展示签证参考。自定义颜色在“我的旅行”中显示；已去过标记在两种视图中均显示。<button
+                  type="button"
+                  id="edit-travel-layer"
+                >
+                  切到我的旅行
+                </button>
+              </p>
               <div id="color-options" class="color-options"></div>
             </fieldset>
             <label class="field-label" for="travel-date">旅行日期</label
@@ -371,7 +550,7 @@
             <div class="editor-footer">
               <span id="editor-save-state" role="status"
                 >草稿自动保存在本机</span
-              ><button class="text-button" type="submit">立即保存</button>
+              ><button class="text-button" type="submit">保存草稿</button>
             </div>
             <button
               id="palette-button"
@@ -455,18 +634,47 @@
       ><span id="last-updated">地图数据加载中</span>
     </footer>
     <dialog id="auth-dialog" aria-labelledby="auth-heading">
-      <div class="dialog-heading"><span class="dialog-icon"><svg class="icon"><use href="#i-lock" /></svg></span><button data-close="auth-dialog" class="icon-button" aria-label="关闭管理登录"><svg class="icon"><use href="#i-close" /></svg></button></div>
+      <div class="dialog-heading">
+        <span class="dialog-icon"
+          ><svg class="icon"><use href="#i-lock" /></svg></span
+        ><button
+          data-close="auth-dialog"
+          class="icon-button"
+          aria-label="关闭管理登录"
+        >
+          <svg class="icon"><use href="#i-close" /></svg>
+        </button>
+      </div>
       <div class="eyebrow">YOUR MAP, YOUR KEY</div>
       <h2 id="auth-heading">解锁你的地图</h2>
       <p id="auth-description">输入管理密码，即可编辑并更新这张地图。</p>
       <form id="unlock-form">
-        <label id="unlock-password-label" class="field-label" for="admin-password">管理密码</label>
-        <input id="admin-password" type="password" autocomplete="off" inputmode="numeric" required maxlength="100" placeholder="输入你的管理密码" />
-        <label class="checkbox-row"><input id="show-password" type="checkbox" /> 显示密码</label>
-        <button id="unlock-submit" class="button primary wide" type="submit">解锁并管理 <svg class="icon"><use href="#i-arrow" /></svg></button>
+        <label
+          id="unlock-password-label"
+          class="field-label"
+          for="admin-password"
+          >管理密码</label
+        >
+        <input
+          id="admin-password"
+          type="password"
+          autocomplete="off"
+          inputmode="numeric"
+          required
+          maxlength="100"
+          placeholder="输入你的管理密码"
+        />
+        <label class="checkbox-row"
+          ><input id="show-password" type="checkbox" /> 显示密码</label
+        >
+        <button id="unlock-submit" class="button primary wide" type="submit">
+          解锁并管理 <svg class="icon"><use href="#i-arrow" /></svg>
+        </button>
       </form>
       <p id="auth-message" class="dialog-message" role="status"></p>
-      <div class="dialog-footnote">密码由后台校验；管理会话闲置 15 分钟自动锁定。</div>
+      <div class="dialog-footnote">
+        密码由后台校验；管理会话闲置 15 分钟自动锁定。
+      </div>
     </dialog>
     <dialog id="publish-dialog" aria-labelledby="publish-heading">
       <div class="dialog-heading">
@@ -546,12 +754,12 @@
         </button>
       </div>
       <p>
-        最近 8 份记录快照保存在这个浏览器。选择后恢复为草稿，确认发布前不会修改
-        GitHub 上的地图。
+        最近 8
+        份记录快照保存在这个浏览器。选择后恢复为草稿，确认发布前不会修改公开地图。
       </p>
       <div id="recovery-list"></div>
       <div class="dialog-footnote">
-        快照和 JSON 备份只包含地图数据，不包含管理密码或 GitHub 授权。
+        快照和 JSON 备份只包含地图数据，不包含管理密码。
       </div>
     </dialog>
     <dialog id="settings-dialog" aria-labelledby="settings-heading">
@@ -643,12 +851,9 @@
           target="_blank"
           rel="noopener noreferrer"
           >D3.js</a
-        >。网页与公开旅行数据由 GitHub Pages 托管，无付费地图接口。
+        >。网页由 GitHub Pages 托管，旅行记录由独立后台保存，无付费地图接口。
       </p>
-      <p>
-        管理：GitHub 细粒度授权由浏览器使用 PBKDF2-SHA256 与 AES-256-GCM
-        加密。请设置强密码，Token 仅限此仓库并设置有效期。
-      </p>
+      <p>管理密码由后台校验。解锁后可编辑并发布旅行记录；离开前可点击锁定。</p>
     </dialog>
     <div id="toast" class="toast" role="status" hidden></div>
     <noscript
