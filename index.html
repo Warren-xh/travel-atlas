@@ -18,9 +18,10 @@
     <title>行迹 Atlas · 把世界，走成故事</title>
     <link rel="icon" href="./assets/compass.svg" type="image/svg+xml" />
     <link rel="manifest" href="./manifest.webmanifest" />
-    <link rel="stylesheet" href="./style.css?v=20261012r7" />
+    <link rel="stylesheet" href="./style.css?v=20261014v3" />
+    <link rel="stylesheet" href="./atlas.css?v=20261014v3" />
     <script src="./assets/d3.min.js" defer></script>
-    <script src="./app.js?v=20261013pw2" type="module"></script>
+    <script src="./app.js?v=20261014v3" type="module"></script>
   </head>
   <body>
     <svg
@@ -133,7 +134,7 @@
               ><i class="stat-dot free"></i> 免签待探索</span
             ><strong id="free-count">—</strong
             ><span class="stat-detail"
-              >部分官方来源预填 <svg class="icon"><use href="#i-arrow" /></svg
+              >按当前视图统计 <svg class="icon"><use href="#i-arrow" /></svg
             ></span></button
           ><button class="stat-card" id="notes-stat">
             <span class="stat-label"
@@ -196,6 +197,15 @@
             >正在加载地图…</span
           >
         </div>
+        <div class="explore-toolbar">
+          <div class="view-switch" role="group" aria-label="地图显示内容">
+            <button id="policy-view" type="button" aria-pressed="true">签证参考</button>
+            <button id="travel-view" type="button" aria-pressed="false">我的旅行</button>
+          </div>
+          <label class="trip-date" id="trip-date-label">计划出发日<input type="date" id="policy-date" aria-label="计划出发日" /><button type="button" id="today-button">今天</button></label>
+          <button id="find-country" class="icon-button" aria-label="搜索目的地"><svg class="icon"><use href="#i-search" /></svg></button>
+        </div>
+        <div id="policy-summary" class="policy-summary" role="status"></div>
         <nav id="continents" class="continents" aria-label="选择大洲"></nav>
         <div class="map-card" id="map-card">
           <div class="map-top">
@@ -256,12 +266,16 @@
           <div id="legend" class="legend" aria-label="按颜色筛选国家"></div>
         </div>
         <div class="map-footer">
-          <span
-            >点击图例筛选。透明表示尚未分类。签证颜色仅作个人整理，出行前请核对官方条件。</span
+          <span id="map-guidance">点击图例筛选；选择国家查看详细条件。</span
           ><button id="credits-button" class="text-button">
             地图与数据来源 ↗
           </button>
         </div>
+        <section id="discover-section" class="discover-section" aria-label="当前大洲的目的地速览">
+          <div class="section-heading"><h2>下一站，去哪里 <span>DISCOVER</span></h2><button id="show-destinations" class="text-button">浏览清单 ↗</button></div>
+          <p class="section-description">按当前大洲与颜色筛选，查看有官方依据的入境方式。</p>
+          <div id="destination-cards" class="destination-cards"></div>
+        </section>
         <section class="journey-section" aria-label="旅行记录">
           <div class="section-heading">
             <h2>最近的故事 <span>YOUR JOURNEY</span></h2>
@@ -271,6 +285,7 @@
         </section>
       </section>
       <aside class="side-panel" aria-label="国家详情和旅行清单">
+        <button id="back-to-map" class="back-to-map text-button">↑ 返回地图</button>
         <div class="panel-tabs" role="tablist" aria-label="侧栏内容">
           <button
             id="details-tab"
@@ -278,14 +293,14 @@
             aria-selected="true"
             aria-controls="country-panel"
           >
-            国家记录</button
+            国家详情</button
           ><button
             id="list-tab"
             role="tab"
             aria-selected="false"
             aria-controls="country-list-panel"
           >
-            旅行清单 <span id="list-count"></span>
+            目的地清单 <span id="list-count"></span>
           </button>
         </div>
         <div class="search-box">
@@ -321,6 +336,7 @@
             </button>
           </div>
           <div id="country-status" class="status-pill"></div>
+          <section id="policy-card" class="policy-card" aria-label="护照入境信息"></section>
           <div id="view-fields">
             <div class="note-block date-block">
               <span class="field-label">旅行日期</span>
@@ -336,7 +352,8 @@
           </div>
           <form id="editor" hidden>
             <fieldset>
-              <legend class="field-label">用颜色定义这个地方</legend>
+              <legend class="field-label">我的旅行颜色</legend>
+              <p id="editor-layer-hint" class="editor-layer-hint" hidden>当前展示签证参考。自定义颜色在“我的旅行”中显示；已去过标记在两种视图中均显示。<button type="button" id="edit-travel-layer">切到我的旅行</button></p>
               <div id="color-options" class="color-options"></div>
             </fieldset>
             <label class="field-label" for="travel-date">旅行日期</label
@@ -385,6 +402,11 @@
           ><select id="list-filter">
             <option value="all">全部国家与地区</option>
             <option value="visited">已留下足迹</option>
+            <option value="free">免签待探索</option>
+            <option value="evisa">提前电子签</option>
+            <option value="orange">授权 / 落地手续</option>
+            <option value="purple">附条件 / 地域限制</option>
+            <option value="unverified">尚待核实的政策</option>
             <option value="notes">有旅行笔记</option>
             <option value="dated">有旅行日期</option>
           </select>

@@ -9,8 +9,11 @@ import {
   mergeAtlas,
   resolveConflict,
   searchCountries,
+  validDate,
 } from "./core.mjs";
 import { PasswordClient, DATA_PATH } from "./cloud.mjs?v=20261013pw1";
+
+import { POLICY_LABELS, POLICY_COLORS, EVIDENCE_LABELS, policyDate, policyCategory, preferredRoute, routeState, displayCategory } from "./visa.mjs?v=20261014v3";
 
 const $ = (id) => document.getElementById(id);
 const LOCAL_KEY = "travel-atlas-draft-v2";
@@ -46,6 +49,7 @@ let countries = [],
   baseline,
   published,
   pendingDraft;
+let policyDb = null, policyView = true, policyDay = policyDate(), automaticDay = true, policyCache = new Map(), labelFrame = 0, cloudReady = false;
 let selected = "IRL",
   continent = "Europe",
   colorFilter = "",
@@ -74,11 +78,16 @@ let undoStack = [],
 const info = (id) => countryById.get(id);
 const record = (id) => data?.countries[id] || EMPTY_RECORD;
 const palette = (id) => data.palette.find((p) => p.id === id);
-const status = (id) => palette(record(id).status);
+const category = (id) => displayCategory(policyCache.get(id)?.category, record(id).status, policyView);
+const mapPalette = () => [...data.palette.map(p => policyView ? {...p, label: POLICY_LABELS[p.id], color: POLICY_COLORS[p.id]} : p), {id: "none", label: policyView ? POLICY_LABELS.none : "透明 / 未分类", color: ""}];
+const status = (id) => {
+  const key = category(id);
+  return policyView ? { id: key, label: POLICY_LABELS[key], color: POLICY_COLORS[key] || "" } : palette(key);
+};
 const fill = (id) => status(id)?.color || "transparent";
 const belongs = (country) =>
   continent === "world" || country?.continents.includes(continent);
-const matchesFilter = (id) => !colorFilter || record(id).status === colorFilter;
+const matchesFilter = (id) => !colorFilter || category(id) === colorFilter;
 const continentName = (id) => CONTINENTS.find((c) => c[0] === id)?.[1] || id;
 const valid = (value) => validateAtlas(value, countryIds);
 const text = (tag, content, className) => {
@@ -279,7 +288,8 @@ function queueEditor() {
   editorTimer = setTimeout(flushEditor, 500);
 }
 function writeLocation() {
-  const query = new URLSearchParams({ country: selected, region: continent });
+  const query = new URLSearchParams({ country: selected, region: continent, view: policyView ? "policy" : "travel" });
+  if (!automaticDay) query.set("date", policyDay);
   history.replaceState(null, "", "#" + query);
 }
 function selectCountry(id, scroll = false) {
@@ -342,11 +352,100 @@ function renderProfile() {
       }).format(updated)
     : "每一次出发，都值得记住";
 }
+function cachePolicies() {
+  policyCache = new Map(countries.map(c => [c.id, {category: policyCategory(policyDb?.countries[c.id], policyDay), route: preferredRoute(policyDb?.countries[c.id], policyDay)}]));
+}
+function switchView(next) {
+  flushEditor();
+  policyView = !!next && !!policyDb;
+  colorFilter = "";
+  $("list-filter").value = "all";
+  try { localStorage.setItem("travel-atlas-view", policyView ? "policy" : "travel"); } catch {}
+  renderAll();
+  writeLocation();
+}
+function renderPolicyControls() {
+  $("policy-view").disabled = !policyDb;
+  $("policy-view").setAttribute("aria-pressed", String(policyView));
+  $("travel-view").setAttribute("aria-pressed", String(!policyView));
+  $("trip-date-label").hidden = !policyView;
+  $("policy-date").value = policyDay;
+  $("editor-layer-hint").hidden = !policyView;
+  for (const option of $("list-filter").options) {
+    if (["free", "evisa", "orange", "purple"].includes(option.value)) option.textContent = mapPalette().find(p => p.id === option.value)?.label || option.textContent;
+  }
+  $("policy-summary").replaceChildren();
+  if (policyView) {
+    const count = Object.values(policyDb.countries).filter(c => c.routes.length).length;
+    $("policy-summary").append(text("span", `中国大陆普通护照 · 短期旅游 · 核查 ${policyDb.checkedAt} · ${count} 个目的地有条目`));
+    const link = text("a", "下载核查表 ↗"); link.href = "./data/visa-audit.csv"; link.download = "中国普通护照签证核查.csv";
+    $("policy-summary").append(link);
+    $("map-guidance").textContent = "透明包括普通签证与未核实项目；橙色仍需授权或签证手续。出发日仅筛除已知到期政策，不预测政策变化。";
+  } else {
+    $("policy-summary").append(text("span", "你的颜色、足迹与笔记。编辑后点击「发布修改」，即可在其他设备查看。"));
+    $("map-guidance").textContent = "点击图例筛选。颜色和名称可在管理中自定义；切换「签证参考」查看官方政策依据。";
+  }
+}
+function officialLinks(route) {
+  const box = text("div", "", "policy-links");
+  route.sources.forEach((url, i) => {
+    try { const parsed = new URL(url); if (parsed.protocol !== "https:") return;
+      const a = text("a", `官方依据 ${i + 1} ↗`); a.href = parsed.href; a.target = "_blank"; a.rel = "noopener noreferrer"; a.title = parsed.hostname; box.append(a);
+    } catch {}
+  });
+  return box;
+}
+function routeDetails(route) {
+  const box = text("div", "", "route-details");
+  box.append(text("p", route.conditions));
+  const rows = [["费用", route.fee], ["办理时间", route.processing]].filter(([,v]) => v && !v.startsWith("本轮未核实"));
+  if (rows.length) {
+    const dl = document.createElement("dl");
+    for (const [key, value] of rows) dl.append(text("dt", key), text("dd", value));
+    box.append(dl);
+  }
+  box.append(officialLinks(route), text("small", "核查 " + route.checkedAt + " · 未列费用/时长的项目仍待核实。", "policy-checked"));
+  return box;
+}
+function renderPolicyCard() {
+  const card = $("policy-card"); card.replaceChildren(); card.hidden = !policyDb;
+  if (!policyDb) return;
+  const entry = policyDb.countries[selected], route = policyCache.get(selected)?.route;
+  card.append(text("span", "护照入境参考", "policy-eyebrow"));
+  if (!route) {
+    card.append(text("h3", entry?.routes.length ? "原政策已到期，需重新核实" : "本轮尚未核实"), text("p", "未确认当前适用的入境方式，暂不标为免签或电子签。"));
+  } else {
+    card.append(text("h3", route.label), text("span", EVIDENCE_LABELS[route.level], "evidence-badge " + route.level), text("p", route.stay, "policy-stay"));
+    if (route.validFrom || route.validUntil) card.append(text("p", `${route.validFrom || "未列起始日"} — ${route.validUntil || "未列截止日"} · ${routeState(route, policyDay)}`, "policy-period"));
+    const details = document.createElement("details"); details.open = policyView;
+    details.append(text("summary", "条件与官方来源"), routeDetails(route)); card.append(details);
+  }
+  const other = (entry?.routes || []).filter(r => r !== route);
+  if (other.length) {
+    const details = document.createElement("details"); details.append(text("summary", "其他途径 / 到期政策（" + other.length + "）"));
+    for (const r of other) details.append(text("h4", r.label + " · " + routeState(r, policyDay)), text("p", r.stay), routeDetails(r));
+    card.append(details);
+  }
+}
+function renderDestinations() {
+  $("discover-section").hidden = !policyView;
+  if (!policyView) return;
+  const candidates = countries.filter(c => belongs(c) && matchesFilter(c.id) && ["free", "evisa", "orange", "purple"].includes(category(c.id)))
+    .sort((a,b) => ["free", "evisa", "orange", "purple"].indexOf(category(a.id)) - ["free", "evisa", "orange", "purple"].indexOf(category(b.id)) || a.name.localeCompare(b.name, "zh-CN")).slice(0, 6);
+  $("destination-cards").replaceChildren(...candidates.map(c => {
+    const button = text("button", "", "destination-card"); button.type = "button";
+    const route = policyCache.get(c.id)?.route;
+    button.append(flag(c), text("strong", c.name), text("span", route.label), text("small", route.stay));
+    button.style.setProperty("--destination-color", fill(c.id));
+    button.onclick = () => selectCountry(c.id, true); return button;
+  }));
+  if (!candidates.length) $("destination-cards").append(text("p", "当前筛选没有已确认的便利入境目的地，可查看清单中的其他国家。", "empty-state"));
+}
 function renderStats() {
   const all = Object.values(data.countries);
   const visited = all.filter((r) => r.status === "visited").length;
   $("visited-count").textContent = visited;
-  $("free-count").textContent = all.filter((r) => r.status === "free").length;
+  $("free-count").textContent = countries.filter(c => category(c.id) === "free").length;
   $("notes-count").textContent = all.filter((r) => r.note.trim()).length;
   const progress = (100 * visited) / countries.length;
   $("progress-count").replaceChildren(
@@ -359,7 +458,7 @@ function renderStats() {
 }
 function renderLegend() {
   $("legend").replaceChildren(
-    ...[...data.palette, { id: "none", label: "未分类", color: "" }].map(
+    ...mapPalette().map(
       (p) => {
         const button = text(
           "button",
@@ -373,7 +472,7 @@ function renderLegend() {
           document.createTextNode(p.label),
           text(
             "small",
-            countries.filter((c) => belongs(c) && record(c.id).status === p.id)
+            countries.filter((c) => belongs(c) && category(c.id) === p.id)
               .length,
           ),
         );
@@ -382,6 +481,7 @@ function renderLegend() {
           renderLegend();
           recolor();
           renderList();
+          renderDestinations();
         };
         return button;
       },
@@ -390,7 +490,7 @@ function renderLegend() {
   $("filter-caption").hidden = !colorFilter;
   $("filter-caption").textContent =
     "正在筛选：" +
-    (palette(colorFilter)?.label || "未分类") +
+    (mapPalette().find(p => p.id === colorFilter)?.label || "未分类") +
     " · 再点图例恢复全部";
 }
 function renderCountry() {
@@ -408,9 +508,10 @@ function renderCountry() {
     text("span", country.id),
   );
   $("country-status").replaceChildren(
-    swatch(p?.color, !p),
+    swatch(p?.color, category(selected) === "none"),
     document.createTextNode(p?.label || "尚未分类"),
   );
+  renderPolicyCard();
   $("view-date").textContent = formattedDate(r.date);
   $("view-note").textContent =
     r.note || "还没有旅行笔记。\n那些值得记住的小事，留在这里。";
@@ -438,7 +539,7 @@ function renderCountry() {
   );
   $("view-fields").hidden = api.unlocked;
   $("editor").hidden = !api.unlocked;
-  $("visa-source").hidden = !r.source;
+  $("visa-source").hidden = !!policyDb || !r.source;
   if (r.source) {
     $("source-link").href = r.source;
     $("source-date").textContent =
@@ -457,7 +558,8 @@ function renderList() {
       (filter === "all" ||
         (filter === "notes" && record(c.id).note.trim()) ||
         (filter === "dated" && record(c.id).date) ||
-        record(c.id).status === filter),
+        (filter === "unverified" && (!policyCache.get(c.id)?.route || ["channel", "unknown"].includes(policyCache.get(c.id).route.level))) ||
+        category(c.id) === filter),
   );
   const query = $("country-search").value.trim();
   if (query) matches = searchCountries(matches, query);
@@ -482,7 +584,7 @@ function renderList() {
       );
       button.append(
         details,
-        swatch(fill(c.id), record(c.id).status === "none"),
+        swatch(fill(c.id), category(c.id) === "none"),
       );
       button.onclick = () => selectCountry(c.id, true);
       return button;
@@ -530,6 +632,8 @@ function renderJourney() {
   }
 }
 function renderAll() {
+  renderPolicyControls();
+  renderDestinations();
   renderProfile();
   renderStats();
   renderLegend();
@@ -570,10 +674,12 @@ function recolor() {
 }
 function tooltip(event, country) {
   const t = $("tooltip");
-  t.replaceChildren(
-    document.createTextNode(country.name),
-    text("small", status(country.id)?.label || "尚未分类"),
-  );
+  const caption = status(country.id)?.label || "尚未分类";
+  const key = country.id + caption;
+  if (t.dataset.country !== key) {
+    t.dataset.country = key;
+    t.replaceChildren(document.createTextNode(country.name), text("small", caption));
+  }
   t.hidden = false;
   const bounds = $("map-stage").getBoundingClientRect();
   t.style.left =
@@ -629,11 +735,18 @@ function updateLabels() {
     .style("stroke-width", 3 / k + "px")
     .text((c) => c.name)
     .attr("display", $("show-labels").checked ? null : "none");
-  recolor();
+  root.selectAll(".country-label")
+    .classed("selected", c => c.id === selected)
+    .classed("filtered-out", c => !matchesFilter(c.id));
 }
-function drawMap() {
+function scheduleLabels() {
+  if (!labelFrame) labelFrame = requestAnimationFrame(() => { labelFrame = 0; updateLabels(); });
+}
+function drawMap(preserveView = false) {
   if (!geometry || !data) return;
   const stage = $("map-stage");
+  const oldWidth = width, oldHeight = height, oldTransform = transform;
+  if (preserveView && width === stage.clientWidth && height === stage.clientHeight) return;
   width = stage.clientWidth;
   height = stage.clientHeight;
   if (width < 1 || height < 1) return;
@@ -690,12 +803,12 @@ function drawMap() {
     )
     .attr("role", (f) => (belongs(info(f.properties.id)) ? "button" : null))
     .on("click", (event, f) => {
-      if (belongs(info(f.properties.id))) selectCountry(f.properties.id);
+      if (belongs(info(f.properties.id))) selectCountry(f.properties.id, true);
     })
     .on("keydown", (event, f) => {
       if (event.key === "Enter" || event.key === " ") {
         event.preventDefault();
-        selectCountry(f.properties.id);
+        selectCountry(f.properties.id, true);
       }
     })
     .on("pointermove", (event, f) => {
@@ -729,11 +842,11 @@ function drawMap() {
     .attr("tabindex", 0)
     .attr("role", "button")
     .attr("aria-label", (c) => c.name)
-    .on("click", (event, c) => selectCountry(c.id))
+    .on("click", (event, c) => selectCountry(c.id, true))
     .on("keydown", (event, c) => {
       if (event.key === "Enter" || event.key === " ") {
         event.preventDefault();
-        selectCountry(c.id);
+        selectCountry(c.id, true);
       }
     })
     .on("pointermove", (event, c) => tooltip(event, c))
@@ -753,12 +866,14 @@ function drawMap() {
       root.attr("transform", transform);
       root.selectAll(".micro-country").attr("r", 4 / transform.k);
       $("tooltip").hidden = true;
-      updateLabels();
+      scheduleLabels();
     });
+  const initialTransform = preserveView && oldWidth && oldHeight && oldTransform ? d3.zoomIdentity.translate(oldTransform.x * width / oldWidth, oldTransform.y * height / oldHeight).scale(oldTransform.k) : d3.zoomIdentity;
   svg
     .call(zoom)
     .on("dblclick.zoom", null)
-    .call(zoom.transform, d3.zoomIdentity);
+    .call(zoom.transform, initialTransform);
+  recolor();
   updateLabels();
 }
 function focusCountry() {
@@ -845,6 +960,7 @@ async function confirmAction(title, description, label = "确认") {
   });
 }
 async function openAuth(reconfigure = false) {
+  if (!cloudReady) { toast("正在同步云端旅行记录，完成后即可管理。地图已可浏览。"); return; }
   flushEditor();
   if (api.unlocked && !reconfigure) { toast("管理已解锁，可以直接编辑或发布。"); return; }
   clearAuthFields();
@@ -1108,7 +1224,7 @@ function exportMap() {
   );
   let x = 20,
     y = height + 42;
-  data.palette.forEach((p) => {
+  mapPalette().filter(p => p.id !== "none").forEach((p) => {
     const itemWidth =
       22 +
       [...p.label].reduce(
@@ -1354,6 +1470,19 @@ async function pollPublished(expected) {
 }
 
 function wireEvents() {
+  $("policy-view").onclick = () => switchView(true);
+  $("travel-view").onclick = () => switchView(false);
+  $("edit-travel-layer").onclick = () => switchView(false);
+  $("policy-date").onchange = () => {
+    flushEditor();
+    if (!validDate($("policy-date").value)) { $("policy-date").value = policyDay; return; }
+    automaticDay = false; policyDay = $("policy-date").value; cachePolicies(); renderAll(); writeLocation();
+  };
+  $("today-button").onclick = () => { flushEditor(); automaticDay = true; policyDay = policyDate(); cachePolicies(); renderAll(); writeLocation(); };
+  $("find-country").onclick = () => { $("country-search").scrollIntoView({behavior: reduceMotion ? "auto" : "smooth", block: "center"}); $("country-search").focus({preventScroll:true}); };
+  $("back-to-map").onclick = () => $("map-card").scrollIntoView({behavior: reduceMotion ? "auto" : "smooth", block: "start"});
+  $("show-destinations").onclick = () => { showTab("list"); if (innerWidth <= 860) $("country-list-panel").scrollIntoView({behavior: reduceMotion ? "auto" : "smooth", block: "start"}); };
+  document.addEventListener("visibilitychange", () => { if (!document.hidden && automaticDay && policyDay !== policyDate()) { flushEditor(); policyDay = policyDate(); cachePolicies(); renderAll(); } });
   $("continents").replaceChildren(
     ...CONTINENTS.map(([id, name]) => {
       const button = text("button", name);
@@ -1535,6 +1664,7 @@ function wireEvents() {
     renderLegend();
     recolor();
     renderList();
+    renderDestinations();
   };
   $("free-stat").onclick = () => {
     setContinent("world");
@@ -1544,6 +1674,7 @@ function wireEvents() {
     renderLegend();
     recolor();
     renderList();
+    renderDestinations();
   };
   $("notes-stat").onclick = $("show-journal").onclick = () => {
     flushEditor();
@@ -1621,13 +1752,17 @@ function wireEvents() {
   });
   new ResizeObserver(() => {
     clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(drawMap, 120);
+    resizeTimer = setTimeout(() => drawMap(true), 120);
   }).observe($("map-stage"));
   addEventListener("hashchange", () => {
     if (location.hash === "#admin") openAuth();
     else {
       const p = new URLSearchParams(location.hash.slice(1));
+      if (p.get("view") === "travel") policyView = false;
+      if (p.get("view") === "policy" && policyDb) policyView = true;
+      if (validDate(p.get("date"))) { automaticDay = false; policyDay = p.get("date"); cachePolicies(); }
       if (info(p.get("country"))) selectCountry(p.get("country"));
+      renderAll();
     }
   });
 }
@@ -1642,6 +1777,12 @@ async function init() {
     setTheme("light");
   }
   try {
+    try { policyView = localStorage.getItem("travel-atlas-view") !== "travel"; } catch {}
+    const initialParams = new URLSearchParams(location.hash.slice(1));
+    if (["policy", "travel"].includes(initialParams.get("view"))) policyView = initialParams.get("view") === "policy";
+    if (validDate(initialParams.get("date"))) { automaticDay = false; policyDay = initialParams.get("date"); }
+    const cloudRequest = api.read(DATA_PATH).then(value => ({value}), error => ({error}));
+    const policyRequest = fetch("./data/visa-policies.json?v=20261014v3").then(r => { if (!r.ok) throw Error("policy"); return r.json(); }).catch(() => null);
     const responses = await Promise.all([
       fetch("./data/countries.json"),
       fetch("./data/world.geojson"),
@@ -1655,8 +1796,9 @@ async function init() {
     countryIds = new Set(countryById.keys());
     features = new Map(geometry.features.map((f) => [f.properties.id, f]));
     data = valid(await responses[2].json());
-    try { const cloud = await api.read(DATA_PATH); data = valid(cloud.data); }
-    catch { notice("暂时无法读取云端，正在显示初始地图。管理发布需要连接服务器。"); }
+    policyDb = await policyRequest;
+    if (!policyDb?.countries) { policyDb = null; policyView = false; }
+    cachePolicies();
     baseline = clone(data);
     published = clone(data);
     try {
@@ -1693,7 +1835,20 @@ async function init() {
       query.get("region") || info(selected).continents[0] || "world",
     );
     $("map-loading").hidden = true;
-    $("save-status").textContent = "已加载公开地图";
+    $("save-status").textContent = "地图已就绪 · 正在同步旅行记录";
+    $("admin-mode").disabled = true;
+    $("edit-country").disabled = true;
+    const cloud = await cloudRequest;
+    if (cloud.value) {
+      data = valid(cloud.value.data); baseline = clone(data); published = clone(data); renderAll();
+      $("save-status").textContent = "旅行记录已同步";
+    } else {
+      notice("暂时无法读取云端，正在显示初始旅行记录。可继续浏览签证参考，稍后刷新同步。");
+      $("save-status").textContent = "初始旅行记录 · 云端未连接";
+    }
+    cloudReady = true;
+    $("admin-mode").disabled = false;
+    $("edit-country").disabled = false;
     if (initialAdmin) openAuth();
   } catch (error) {
     $("map-loading").hidden = true;

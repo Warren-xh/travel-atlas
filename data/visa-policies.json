@@ -1,0 +1,3295 @@
+{
+  "version": 2,
+  "checkedAt": "2026-10-13",
+  "passport": "中国大陆普通护照",
+  "purpose": "短期旅游",
+  "profile": "爱尔兰学生身份；尚未取得IRP；无英国或申根签证",
+  "countries": {
+    "ALB": {
+      "name": "阿尔巴尼亚",
+      "routes": [
+        {
+          "kind": "visa_free",
+          "label": "免签",
+          "stay": "每180日累计90日",
+          "conditions": "护照离境时有效期至少3个月；住宿、回程票及资金证明。不住酒店需邀请函。",
+          "sources": [
+            "https://cs.mfa.gov.cn/zggmcg/ljmdd/oz_652287/aebny_652289/rjjl_652299/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "DZA": {
+      "name": "阿尔及利亚",
+      "routes": [
+        {
+          "kind": "conditional",
+          "label": "特定南部地区旅游团落地签",
+          "stay": "按批准",
+          "conditions": "须由阿官方指定旅行社组织；不能推广为全国自由行免签。",
+          "sources": [
+            "https://cs.mfa.gov.cn/zggmcg/ljmdd/fz_648564/aejly_648566/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长"
+        }
+      ]
+    },
+    "AFG": {
+      "name": "阿富汗",
+      "routes": [
+        {
+          "kind": "unknown",
+          "label": "待核实电子签候选",
+          "stay": "本轮未核实具体停留上限；以批准或入境许可为准",
+          "conditions": "第三方清单列eVisa；未找到可核实的官方中国普通护照旅游资格，不列为已确认。",
+          "sources": [],
+          "level": "unknown",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "ARG": {
+      "name": "阿根廷",
+      "routes": []
+    },
+    "ARE": {
+      "name": "阿拉伯联合酋长国",
+      "routes": [
+        {
+          "kind": "visa_free",
+          "label": "免签",
+          "stay": "本轮未核实具体停留上限；以批准或入境许可为准",
+          "conditions": "有单次及累计停留限制；不适用于工作和长期学习。",
+          "sources": [
+            "https://cs.mfa.gov.cn/zggmcgx/cgqzapecswlxk/ylb/202607/t20260716_11984014.html"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "ABW": {
+      "name": "阿鲁巴",
+      "routes": []
+    },
+    "OMN": {
+      "name": "阿曼",
+      "routes": [
+        {
+          "kind": "visa_free",
+          "label": "免签",
+          "stay": "14天",
+          "conditions": "14日免签须酒店、返程票及健康保险等；超过14日的无担保电子签可能要求美英加澳/申根签证，本人无这些签证，不能默认适用。",
+          "sources": [
+            "https://cs.mfa.gov.cn/zggmcg/ljmdd/yz_645708/am_645834/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        },
+        {
+          "kind": "conditional",
+          "label": "电子签",
+          "stay": "旅游签可选30天等",
+          "conditions": "无担保旅游电子签需满足指定第三国签证等条件；本人无英签/申根签，其他签证未提供，不能按普遍可用标色。",
+          "sources": [
+            "https://cs.mfa.gov.cn/zggmcg/ljmdd/yz_645708/am_645834/rjjl_645844/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "AZE": {
+      "name": "阿塞拜疆",
+      "routes": [
+        {
+          "kind": "visa_free",
+          "label": "免签",
+          "stay": "单次30日；每180日累计90日",
+          "conditions": "2025-07-16协定生效；超过期限或工作、学习等另办签证。",
+          "sources": [
+            "https://cs.mfa.gov.cn/zggmcg/ljmdd/yz_645708/asbj_645896/rjjl_645906/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "ATC": {
+      "name": "阿什莫尔和卡捷岛",
+      "routes": []
+    },
+    "EGY": {
+      "name": "埃及",
+      "routes": [
+        {
+          "kind": "evisa",
+          "label": "电子签/在线入境批准",
+          "stay": "以批件为准",
+          "conditions": "官方中国资格已确认；护照入境时至少6个月、打印电子签、行程和酒店证明。",
+          "sources": [
+            "https://www.visa2egypt.gov.eg/eVisa/FAQ"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "单次旅游30美元；多次65美元（当前门户）",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "ETH": {
+      "name": "埃塞俄比亚",
+      "routes": [
+        {
+          "kind": "evisa",
+          "label": "电子签/在线入境批准",
+          "stay": "按所选签证",
+          "conditions": "官方旅游eVisa向所有国籍开放，须满足护照等要求。",
+          "sources": [
+            "https://www.evisa.gov.et/information/tourist"
+          ],
+          "level": "channel",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "IRL": {
+      "name": "爱尔兰",
+      "routes": [
+        {
+          "kind": "regular",
+          "label": "当前居住地；回程证件须确认",
+          "stay": "按本人有效居留许可",
+          "conditions": "尚未取得IRP。有效在期IRP可免办再入境签；未有卡者必须检查现有爱尔兰签证的入境次数/有效期或符合条件的再入境安排。学生身份本身不等于回程登机证件。",
+          "sources": [
+            "https://www.irishimmigration.ie/registering-your-immigration-permission/travel-and-re-entry-visas/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长"
+        }
+      ]
+    },
+    "EST": {
+      "name": "爱沙尼亚",
+      "routes": [
+        {
+          "kind": "regular",
+          "label": "须申根签证",
+          "stay": "获批期限内；申根区合计每180日最多90日",
+          "conditions": "中国普通护照无现有申根签，需预先申请；爱尔兰学生身份/IRP不能代替申根签。预约等待不计入官方审理时间。",
+          "sources": [
+            "https://home-affairs.ec.europa.eu/policies/schengen/visa-policy/applying-schengen-visa_en",
+            "https://cs.mfa.gov.cn/zggmcg/ljmdd/oz_652287/bl_652909/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "成人签证费90欧元＋适用签证中心服务费",
+          "processing": "通常15个自然日；可延至45日；预约等待另计"
+        }
+      ]
+    },
+    "AND": {
+      "name": "安道尔",
+      "routes": [
+        {
+          "kind": "unknown",
+          "label": "须先核实经申根区的入境路线",
+          "stay": "本轮未核实具体停留上限；以批准或入境许可为准",
+          "conditions": "常规陆路路线经申根区；本人无申根签，不能只凭微型国家可能免签就认为可到达。",
+          "sources": [],
+          "level": "unknown",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长"
+        }
+      ]
+    },
+    "AGO": {
+      "name": "安哥拉",
+      "routes": [
+        {
+          "kind": "visa_free",
+          "label": "免签",
+          "stay": "单次30日；每年累计90日",
+          "conditions": "旅游（含短期商务访问）多次入境；材料、护照及出境票按规定准备。",
+          "sources": [
+            "https://cs.mfa.gov.cn/gyls/lsgz/fwxx/202310/t20231017_11162002.shtml"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "AIA": {
+      "name": "安圭拉",
+      "routes": []
+    },
+    "ATG": {
+      "name": "安提瓜和巴布达",
+      "routes": [
+        {
+          "kind": "visa_free",
+          "label": "免签",
+          "stay": "本轮未核实具体停留上限；以批准或入境许可为准",
+          "conditions": "有单次及累计停留限制；不适用于工作和长期学习。",
+          "sources": [
+            "https://cs.mfa.gov.cn/zggmcgx/cgqzapecswlxk/ylb/202607/t20260716_11984014.html"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "AUT": {
+      "name": "奥地利",
+      "routes": [
+        {
+          "kind": "regular",
+          "label": "须申根签证",
+          "stay": "获批期限内；申根区合计每180日最多90日",
+          "conditions": "中国普通护照无现有申根签，需预先申请；爱尔兰学生身份/IRP不能代替申根签。预约等待不计入官方审理时间。",
+          "sources": [
+            "https://home-affairs.ec.europa.eu/policies/schengen/visa-policy/applying-schengen-visa_en",
+            "https://cs.mfa.gov.cn/zggmcg/ljmdd/oz_652287/bl_652909/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "成人签证费90欧元＋适用签证中心服务费",
+          "processing": "通常15个自然日；可延至45日；预约等待另计"
+        }
+      ]
+    },
+    "ALA": {
+      "name": "奥兰群岛",
+      "routes": []
+    },
+    "AUS": {
+      "name": "澳大利亚",
+      "routes": [
+        {
+          "kind": "regular",
+          "label": "普通访客签电子出签",
+          "stay": "以批准为准",
+          "conditions": "可在线申请、电子出签；不同于简化ETA/eVisitor资格，可能需生物信息。",
+          "sources": [
+            "https://cs.mfa.gov.cn/zggmcg/ljmdd/dyz_658636/adly_658638/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "BRB": {
+      "name": "巴巴多斯",
+      "routes": [
+        {
+          "kind": "visa_free",
+          "label": "免签",
+          "stay": "30日",
+          "conditions": "护照至少6个月、有效回程票、出入境卡及资金证明；延期须向移民局申请。",
+          "sources": [
+            "https://cs.mfa.gov.cn/zggmcg/ljmdd/bmz_655327/bbds_655515/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "PNG": {
+      "name": "巴布亚新几内亚",
+      "routes": [
+        {
+          "kind": "evisa",
+          "label": "电子签/在线入境批准",
+          "stay": "按所选类别",
+          "conditions": "中国普通护照需按对应旅游/商务类别核对电子申请资格。",
+          "sources": [
+            "https://evisa.ica.gov.pg/evisa/account/Apply"
+          ],
+          "level": "channel",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "BHS": {
+      "name": "巴哈马",
+      "routes": [
+        {
+          "kind": "visa_free",
+          "label": "免签",
+          "stay": "30日",
+          "conditions": "普通护照适用；工作、学习、居留或超30日须事先批准。",
+          "sources": [
+            "https://cs.mfa.gov.cn/zggmcg/ljmdd/bmz_655327/bhm_655577/rjjl_655587/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "PAK": {
+      "name": "巴基斯坦",
+      "routes": [
+        {
+          "kind": "evisa",
+          "label": "电子签/在线入境批准",
+          "stay": "多次入境；停留不超过90日",
+          "conditions": "2024年8月起中国在120国免费电子签方案内，需线上申请获批；免费不等于免签。",
+          "sources": [
+            "https://cs.mfa.gov.cn/zggmcg/ljmdd/yz_645708/bjst_645958/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "领事资料列免费电子签",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "PRY": {
+      "name": "巴拉圭",
+      "routes": []
+    },
+    "PSE": {
+      "name": "巴勒斯坦",
+      "routes": []
+    },
+    "BHR": {
+      "name": "巴林",
+      "routes": [
+        {
+          "kind": "evisa",
+          "label": "电子签/在线入境批准",
+          "stay": "按申请类型",
+          "conditions": "中国领事资料指向巴林内政部eVisa资格系统，须查具体类型。",
+          "sources": [
+            "https://cs.mfa.gov.cn/zggmcg/ljmdd/yz_645708/bl_646082/rjjl_646092/"
+          ],
+          "level": "channel",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "PAN": {
+      "name": "巴拿马",
+      "routes": []
+    },
+    "BRA": {
+      "name": "巴西",
+      "routes": [
+        {
+          "kind": "visa_free",
+          "label": "临时免签",
+          "stay": "每移民年度累计30天",
+          "conditions": "2026-05-11生效；不可延期；移民年度从首次入境起计算12个月。",
+          "sources": [
+            "https://www.gov.br/mre/pt-br/consulado-cantao/EN/visas/info"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": "2026-12-31",
+          "validFrom": "2026-05-11"
+        }
+      ]
+    },
+    "BLR": {
+      "name": "白俄罗斯",
+      "routes": [
+        {
+          "kind": "visa_free",
+          "label": "免签",
+          "stay": "单次30日；每日历年累计90日",
+          "conditions": "须有效医疗保险（赔付额至少1万欧元）；口岸和俄白跨境规则须另核。",
+          "sources": [
+            "https://cs.mfa.gov.cn/zggmcg/ljmdd/oz_652287/bels_652599/rjjl_652609/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "BMU": {
+      "name": "百慕大",
+      "routes": []
+    },
+    "BGR": {
+      "name": "保加利亚",
+      "routes": [
+        {
+          "kind": "regular",
+          "label": "须申根签证",
+          "stay": "获批期限内；申根区合计每180日最多90日",
+          "conditions": "中国普通护照无现有申根签，需预先申请；爱尔兰学生身份/IRP不能代替申根签。预约等待不计入官方审理时间。",
+          "sources": [
+            "https://home-affairs.ec.europa.eu/policies/schengen/visa-policy/applying-schengen-visa_en",
+            "https://cs.mfa.gov.cn/zggmcg/ljmdd/oz_652287/bl_652909/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "成人签证费90欧元＋适用签证中心服务费",
+          "processing": "通常15个自然日；可延至45日；预约等待另计"
+        }
+      ]
+    },
+    "MNP": {
+      "name": "北马里亚纳群岛",
+      "routes": []
+    },
+    "MKD": {
+      "name": "北馬其頓",
+      "routes": []
+    },
+    "CYN": {
+      "name": "北塞浦路斯",
+      "routes": []
+    },
+    "BEN": {
+      "name": "贝宁",
+      "routes": [
+        {
+          "kind": "visa_free",
+          "label": "免签",
+          "stay": "每90天内30天",
+          "conditions": "仅在允许的短期入境目的和材料条件下适用。",
+          "sources": [
+            "https://cs.mfa.gov.cn/zggmcg/ljmdd/fz_648564/bn_648814/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "BEL": {
+      "name": "比利时",
+      "routes": [
+        {
+          "kind": "regular",
+          "label": "须申根签证",
+          "stay": "获批期限内；申根区合计每180日最多90日",
+          "conditions": "中国普通护照无现有申根签，需预先申请；爱尔兰学生身份/IRP不能代替申根签。预约等待不计入官方审理时间。",
+          "sources": [
+            "https://home-affairs.ec.europa.eu/policies/schengen/visa-policy/applying-schengen-visa_en",
+            "https://cs.mfa.gov.cn/zggmcg/ljmdd/oz_652287/bl_652909/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "成人签证费90欧元＋适用签证中心服务费",
+          "processing": "通常15个自然日；可延至45日；预约等待另计"
+        }
+      ]
+    },
+    "ISL": {
+      "name": "冰岛",
+      "routes": [
+        {
+          "kind": "regular",
+          "label": "须申根签证",
+          "stay": "获批期限内；申根区合计每180日最多90日",
+          "conditions": "中国普通护照无现有申根签，需预先申请；爱尔兰学生身份/IRP不能代替申根签。预约等待不计入官方审理时间。",
+          "sources": [
+            "https://home-affairs.ec.europa.eu/policies/schengen/visa-policy/applying-schengen-visa_en",
+            "https://cs.mfa.gov.cn/zggmcg/ljmdd/oz_652287/bl_652909/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "成人签证费90欧元＋适用签证中心服务费",
+          "processing": "通常15个自然日；可延至45日；预约等待另计"
+        }
+      ]
+    },
+    "PRI": {
+      "name": "波多黎各",
+      "routes": []
+    },
+    "BIH": {
+      "name": "波黑",
+      "routes": [
+        {
+          "kind": "visa_free",
+          "label": "免签",
+          "stay": "每180日累计90日",
+          "conditions": "普通护照适用；长期学习、工作、居留等另办签证。",
+          "sources": [
+            "https://ba.china-embassy.gov.cn/qzfw/201805/t20180528_2317748.htm"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "POL": {
+      "name": "波兰",
+      "routes": [
+        {
+          "kind": "regular",
+          "label": "须申根签证",
+          "stay": "获批期限内；申根区合计每180日最多90日",
+          "conditions": "中国普通护照无现有申根签，需预先申请；爱尔兰学生身份/IRP不能代替申根签。预约等待不计入官方审理时间。",
+          "sources": [
+            "https://home-affairs.ec.europa.eu/policies/schengen/visa-policy/applying-schengen-visa_en",
+            "https://cs.mfa.gov.cn/zggmcg/ljmdd/oz_652287/bl_652909/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "成人签证费90欧元＋适用签证中心服务费",
+          "processing": "通常15个自然日；可延至45日；预约等待另计"
+        }
+      ]
+    },
+    "BOL": {
+      "name": "玻利维亚",
+      "routes": []
+    },
+    "BLZ": {
+      "name": "伯利兹",
+      "routes": []
+    },
+    "BWA": {
+      "name": "博茨瓦纳",
+      "routes": [
+        {
+          "kind": "online_approval",
+          "label": "线上申请签证（可能涉及护照手续）",
+          "stay": "单次旅游最多1个月；多次最多3个月",
+          "conditions": "使馆名单列China须签证，指向evisa.gov.bw；同时写明可能需原护照，不能保证全程无需线下。无IRP时居住国返程/居留证明需确认。",
+          "sources": [
+            "https://botswanaembassy.org/page/guidelines-for-completing-a-visa-application",
+            "https://botswanaembassy.org/page/fees-for-consular-and-immigration-services"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "使馆参考单次30美元/多次50美元",
+          "processing": "使馆建议预留至少21个工作日"
+        }
+      ]
+    },
+    "BTN": {
+      "name": "不丹",
+      "routes": [
+        {
+          "kind": "evisa",
+          "label": "电子签/在线入境批准",
+          "stay": "按批准行程",
+          "conditions": "旅游可直接网上申请，也可由持牌旅行商/酒店代办；须缴可适用的可持续发展费与签证费；以批准行程为准。",
+          "sources": [
+            "https://www.mfa.gov.bt/rbedelhi/consular-services/visa-for-coming-to-bhutan/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "BFA": {
+      "name": "布基纳法索",
+      "routes": [
+        {
+          "kind": "evisa",
+          "label": "电子短期旅游签",
+          "stay": "最多90日，按批准",
+          "conditions": "政府迁移部门说明适用于因旅游来访的外国人；短期电子签线上签发。法英费用页不一致，本轮不报价。",
+          "sources": [
+            "https://www.visaburkina.bf/",
+            "https://www.visaburkina.bf/les-visas-dentree-au-burkina-faso-le-visa-court-sejour/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长"
+        }
+      ]
+    },
+    "BDI": {
+      "name": "布隆迪",
+      "routes": [
+        {
+          "kind": "online_approval",
+          "label": "线上申请证明＋机场入境手续",
+          "stay": "按批准类别",
+          "conditions": "官方流程是线上申请付款、下载申请证明并在入境点出示；不等于已完整签发旅游eVisa。",
+          "sources": [
+            "https://migration.gov.bi/Services",
+            "https://migration.gov.bi/Apply/step1/8"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长"
+        }
+      ]
+    },
+    "BVT": {
+      "name": "布维岛",
+      "routes": []
+    },
+    "PRK": {
+      "name": "朝鲜",
+      "routes": []
+    },
+    "GNQ": {
+      "name": "赤道几内亚",
+      "routes": [
+        {
+          "kind": "evisa",
+          "label": "电子签/在线入境批准",
+          "stay": "以批件为准",
+          "conditions": "中方目的地资料确认普通护照可网上申办。",
+          "sources": [
+            "https://cs.mfa.gov.cn/zggmcg/ljmdd/fz_648564/cdjny_649062/rjjl_649072/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "DNK": {
+      "name": "丹麦",
+      "routes": [
+        {
+          "kind": "regular",
+          "label": "须申根签证",
+          "stay": "获批期限内；申根区合计每180日最多90日",
+          "conditions": "中国普通护照无现有申根签，需预先申请；爱尔兰学生身份/IRP不能代替申根签。预约等待不计入官方审理时间。",
+          "sources": [
+            "https://home-affairs.ec.europa.eu/policies/schengen/visa-policy/applying-schengen-visa_en",
+            "https://cs.mfa.gov.cn/zggmcg/ljmdd/oz_652287/bl_652909/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "成人签证费90欧元＋适用签证中心服务费",
+          "processing": "通常15个自然日；可延至45日；预约等待另计"
+        }
+      ]
+    },
+    "DEU": {
+      "name": "德国",
+      "routes": [
+        {
+          "kind": "regular",
+          "label": "须申根签证",
+          "stay": "获批期限内；申根区合计每180日最多90日",
+          "conditions": "中国普通护照无现有申根签，需预先申请；爱尔兰学生身份/IRP不能代替申根签。预约等待不计入官方审理时间。",
+          "sources": [
+            "https://home-affairs.ec.europa.eu/policies/schengen/visa-policy/applying-schengen-visa_en",
+            "https://cs.mfa.gov.cn/zggmcg/ljmdd/oz_652287/bl_652909/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "成人签证费90欧元＋适用签证中心服务费",
+          "processing": "通常15个自然日；可延至45日；预约等待另计"
+        }
+      ]
+    },
+    "TLS": {
+      "name": "东帝汶",
+      "routes": []
+    },
+    "TGO": {
+      "name": "多哥",
+      "routes": [
+        {
+          "kind": "evisa",
+          "label": "电子签/在线入境批准",
+          "stay": "可选15、30、90天等，以批准为准",
+          "conditions": "所有空港、陆路口岸实行电子签，中国公民按事由提前申请；不再办理落地签。",
+          "sources": [
+            "https://cs.mfa.gov.cn/zggmcg/ljmdd/fz_648564/dg_649124/",
+            "https://voyage.gouv.tg/about"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "领事资料建议至少提前一周；平台最低提前5日",
+          "validUntil": null
+        }
+      ]
+    },
+    "DMA": {
+      "name": "多米尼克",
+      "routes": [
+        {
+          "kind": "visa_free",
+          "label": "免签",
+          "stay": "本轮未核实具体停留上限；以批准或入境许可为准",
+          "conditions": "有单次及累计停留限制；不适用于工作和长期学习。",
+          "sources": [
+            "https://cs.mfa.gov.cn/zggmcgx/cgqzapecswlxk/ylb/202607/t20260716_11984014.html"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "DOM": {
+      "name": "多明尼加",
+      "routes": []
+    },
+    "RUS": {
+      "name": "俄罗斯",
+      "routes": [
+        {
+          "kind": "visa_free",
+          "label": "临时免签",
+          "stay": "30天",
+          "conditions": "短期旅游等30日；2026年7月延长至2027-12-31。出行口岸、登记手续及航线单独核对。",
+          "sources": [
+            "https://ru.china-embassy.gov.cn/chn/dshd/202608/t20260831_12013089.htm"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": "2027-12-31"
+        }
+      ]
+    },
+    "ECU": {
+      "name": "厄瓜多尔",
+      "routes": [
+        {
+          "kind": "evisa",
+          "label": "电子签/在线入境批准",
+          "stay": "旅游签可申请90天，以批准为准",
+          "conditions": "中国普通护照已不适用旧免签政策；普通旅游签可走外交部100%线上流程，材料审核仍完整。",
+          "sources": [
+            "https://www.cancilleria.gob.ec/estadosunidos/2024/07/19/portal-evisas-visas-electronicas-para-ecuador/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "ERI": {
+      "name": "厄立特里亚",
+      "routes": []
+    },
+    "FRA": {
+      "name": "法国",
+      "routes": [
+        {
+          "kind": "regular",
+          "label": "须申根签证",
+          "stay": "获批期限内；申根区合计每180日最多90日",
+          "conditions": "中国普通护照无现有申根签，需预先申请；爱尔兰学生身份/IRP不能代替申根签。预约等待不计入官方审理时间。",
+          "sources": [
+            "https://home-affairs.ec.europa.eu/policies/schengen/visa-policy/applying-schengen-visa_en",
+            "https://cs.mfa.gov.cn/zggmcg/ljmdd/oz_652287/bl_652909/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "成人签证费90欧元＋适用签证中心服务费",
+          "processing": "通常15个自然日；可延至45日；预约等待另计"
+        }
+      ]
+    },
+    "ATF": {
+      "name": "法国南部和南极土地",
+      "routes": []
+    },
+    "FRO": {
+      "name": "法罗群岛",
+      "routes": []
+    },
+    "PYF": {
+      "name": "法属波利尼西亚",
+      "routes": []
+    },
+    "GUF": {
+      "name": "法属圭亚那",
+      "routes": []
+    },
+    "VAT": {
+      "name": "梵蒂冈",
+      "routes": [
+        {
+          "kind": "unknown",
+          "label": "须先核实经申根区的入境路线",
+          "stay": "本轮未核实具体停留上限；以批准或入境许可为准",
+          "conditions": "常规陆路路线经申根区；本人无申根签，不能只凭微型国家可能免签就认为可到达。",
+          "sources": [],
+          "level": "unknown",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长"
+        }
+      ]
+    },
+    "PHL": {
+      "name": "菲律宾",
+      "routes": [
+        {
+          "kind": "visa_free",
+          "label": "临时免签",
+          "stay": "14天",
+          "conditions": "仅经NAIA或麦克坦—宿务机场，旅游/商务14日；须护照在停留后仍有效6个月、酒店、后续票、eTravel；不可延期或转签。",
+          "sources": [
+            "https://immigration.gov.ph/wp-content/uploads/2026/01/OPERATIONS-ORDER-No.-2026-%E2%80%93-001.pdf"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": "2027-01-15",
+          "validFrom": "2026-01-16"
+        }
+      ]
+    },
+    "FJI": {
+      "name": "斐济",
+      "routes": [
+        {
+          "kind": "visa_free",
+          "label": "免签",
+          "stay": "30日",
+          "conditions": "护照至少6个月；回程或后续机票和足够资金。超过期限需申请延期。",
+          "sources": [
+            "https://fj.china-embassy.gov.cn/chn/lsfw/tzgg/202312/t20231221_11209197.htm"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "FIN": {
+      "name": "芬兰",
+      "routes": [
+        {
+          "kind": "regular",
+          "label": "须申根签证",
+          "stay": "获批期限内；申根区合计每180日最多90日",
+          "conditions": "中国普通护照无现有申根签，需预先申请；爱尔兰学生身份/IRP不能代替申根签。预约等待不计入官方审理时间。",
+          "sources": [
+            "https://home-affairs.ec.europa.eu/policies/schengen/visa-policy/applying-schengen-visa_en",
+            "https://cs.mfa.gov.cn/zggmcg/ljmdd/oz_652287/bl_652909/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "成人签证费90欧元＋适用签证中心服务费",
+          "processing": "通常15个自然日；可延至45日；预约等待另计"
+        }
+      ]
+    },
+    "CPV": {
+      "name": "佛得角",
+      "routes": []
+    },
+    "FLK": {
+      "name": "福克兰群岛",
+      "routes": []
+    },
+    "GMB": {
+      "name": "冈比亚",
+      "routes": []
+    },
+    "COG": {
+      "name": "刚果",
+      "routes": [
+        {
+          "kind": "regular",
+          "label": "需事先领事签证",
+          "stay": "按批准",
+          "conditions": "领事资料明确不颁发落地签或电子签。",
+          "sources": [
+            "https://cs.mfa.gov.cn/zggmcg/ljmdd/fz_648564/ggb_649434/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长"
+        }
+      ]
+    },
+    "COL": {
+      "name": "哥伦比亚",
+      "routes": []
+    },
+    "CRI": {
+      "name": "哥斯达黎加",
+      "routes": []
+    },
+    "GRD": {
+      "name": "格林纳达",
+      "routes": [
+        {
+          "kind": "visa_free",
+          "label": "免签",
+          "stay": "本轮未核实具体停留上限；以批准或入境许可为准",
+          "conditions": "有单次及累计停留限制；不适用于工作和长期学习。",
+          "sources": [
+            "https://cs.mfa.gov.cn/zggmcgx/cgqzapecswlxk/ylb/202607/t20260716_11984014.html"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "GRL": {
+      "name": "格陵兰",
+      "routes": []
+    },
+    "GEO": {
+      "name": "格鲁吉亚",
+      "routes": [
+        {
+          "kind": "visa_free",
+          "label": "免签",
+          "stay": "单次30日；每180日累计90日",
+          "conditions": "2024-05-28双边协定生效；长期工作、学习等另办签证。",
+          "sources": [
+            "https://cs.mfa.gov.cn/zggmcg/ljmdd/yz_645708/gljy_646392/rjjl_646402/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "GGY": {
+      "name": "根西岛",
+      "routes": []
+    },
+    "CUB": {
+      "name": "古巴",
+      "routes": [
+        {
+          "kind": "visa_free",
+          "label": "免签",
+          "stay": "本轮未核实具体停留上限；以批准或入境许可为准",
+          "conditions": "具体停留期、入境申报和其他条件需行前核对。",
+          "sources": [
+            "https://www.mfa.gov.cn/web/gjhdq_676201/gj_676203/bmz_679954/1206_680302/1206x2_680322/202405/t20240520_11307421.shtml"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "GLP": {
+      "name": "瓜德罗普岛",
+      "routes": []
+    },
+    "GUM": {
+      "name": "关岛",
+      "routes": []
+    },
+    "GUY": {
+      "name": "圭亚那",
+      "routes": [
+        {
+          "kind": "online_approval",
+          "label": "落地签事先在线批准",
+          "stay": "按批准",
+          "conditions": "官方Visitor Visa表明确要求Letter requesting visa on arrival；还需出生证明、护照、照片和邀请/担保资料。非自动电子旅游签。",
+          "sources": [
+            "https://eservices.iss.gov.gy/visitor-visa"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长"
+        }
+      ]
+    },
+    "KAZ": {
+      "name": "哈萨克斯坦",
+      "routes": [
+        {
+          "kind": "visa_free",
+          "label": "免签",
+          "stay": "单次30日；每180日累计90日",
+          "conditions": "普通护照适用；短期旅游等。长期学习、工作另办相应签证。",
+          "sources": [
+            "https://cs.mfa.gov.cn/gyls/szzc/xgxw/202311/t20231103_11172619.shtml"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "HTI": {
+      "name": "海地",
+      "routes": [
+        {
+          "kind": "visa_free",
+          "label": "免签",
+          "stay": "本轮未核实具体停留上限；以批准或入境许可为准",
+          "conditions": "具体停留期、入境申报和其他条件需行前核对。",
+          "sources": [
+            "https://www.mfa.gov.cn/gjhdq_676201/gj_676203/bmz_679954/1206_680352/sbgx_680356/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "KOR": {
+      "name": "韩国",
+      "routes": []
+    },
+    "NLD": {
+      "name": "荷兰",
+      "routes": [
+        {
+          "kind": "regular",
+          "label": "须申根签证",
+          "stay": "获批期限内；申根区合计每180日最多90日",
+          "conditions": "中国普通护照无现有申根签，需预先申请；爱尔兰学生身份/IRP不能代替申根签。预约等待不计入官方审理时间。",
+          "sources": [
+            "https://home-affairs.ec.europa.eu/policies/schengen/visa-policy/applying-schengen-visa_en",
+            "https://cs.mfa.gov.cn/zggmcg/ljmdd/oz_652287/bl_652909/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "成人签证费90欧元＋适用签证中心服务费",
+          "processing": "通常15个自然日；可延至45日；预约等待另计"
+        }
+      ]
+    },
+    "BES": {
+      "name": "荷蘭加勒比區",
+      "routes": []
+    },
+    "HMD": {
+      "name": "赫德岛和麦当劳群岛",
+      "routes": []
+    },
+    "MNE": {
+      "name": "黑山",
+      "routes": [
+        {
+          "kind": "conditional",
+          "label": "旅行社团组附条件免签",
+          "stay": "30日",
+          "conditions": "普通护照需已支付行程、离境票和旅行社证明，以旅游团组集体出行；自由行不能直接使用。",
+          "sources": [
+            "https://cs.mfa.gov.cn/zggmcg/ljmdd/oz_652287/hs_653529/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长"
+        }
+      ]
+    },
+    "HND": {
+      "name": "洪都拉斯",
+      "routes": []
+    },
+    "KIR": {
+      "name": "基里巴斯",
+      "routes": [
+        {
+          "kind": "visa_free",
+          "label": "免签",
+          "stay": "初次30日；每12个月累计90日",
+          "conditions": "超过单次30日需申请延期，最长再60日；不是直接单次90日。",
+          "sources": [
+            "https://cs.mfa.gov.cn/zggmcg/ljmdd/dyz_658636/jlbs_659072/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "DJI": {
+      "name": "吉布提",
+      "routes": [
+        {
+          "kind": "evisa",
+          "label": "电子签",
+          "stay": "短期类别90日（领事资料）",
+          "conditions": "中国普通护照赴吉前办妥；照片、护照、机票和酒店/邀请。具体口岸及费用以当前批准为准。",
+          "sources": [
+            "https://cs.mfa.gov.cn/zggmcg/ljmdd/fz_648564/jbt_649559/rjjl_649569/",
+            "https://www.evisa.gouv.dj/applicant-api/index.html"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长"
+        }
+      ]
+    },
+    "KGZ": {
+      "name": "吉尔吉斯斯坦",
+      "routes": [
+        {
+          "kind": "evisa",
+          "label": "电子签（需当地法人邀请）",
+          "stay": "以批件为准",
+          "conditions": "中方公告确认恢复签发；须上传吉境内法人邀请函。",
+          "sources": [
+            "https://kg.china-embassy.gov.cn/lsqws/lsfw/202511/t20251101_11745253.htm"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "GIN": {
+      "name": "几内亚",
+      "routes": [
+        {
+          "kind": "evisa",
+          "label": "电子签/在线入境批准",
+          "stay": "以批件为准",
+          "conditions": "官方边境警察电子签渠道，获批准后方可使用。",
+          "sources": [
+            "https://www.paf.gov.gn/visa"
+          ],
+          "level": "channel",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "GNB": {
+      "name": "几内亚比绍",
+      "routes": []
+    },
+    "CAN": {
+      "name": "加拿大",
+      "routes": []
+    },
+    "GHA": {
+      "name": "加纳",
+      "routes": [
+        {
+          "kind": "evisa",
+          "label": "电子签/在线入境批准",
+          "stay": "90日内入境；边检许可停留最多60日",
+          "conditions": "当前门户包含China；单次旅游B2，资金、全程住宿、机票和黄热病证书；补件会暂停计时。",
+          "sources": [
+            "https://evisa.immigration.gov.gh/",
+            "https://evisa.immigration.gov.gh/applicant-guide.html"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "标准260美元；优先338美元；快速442美元",
+          "processing": "标准96小时；优先48小时；快速5小时，均为官方估计",
+          "validUntil": null
+        }
+      ]
+    },
+    "GAB": {
+      "name": "加蓬",
+      "routes": [
+        {
+          "kind": "online_approval",
+          "label": "电子批准＋机场贴签",
+          "stay": "按批准",
+          "conditions": "领事资料确认中国普通护照可线上申请，获批后仅利伯维尔国际机场办理贴纸签；本轮门户读取失败，实际受理需再确认。",
+          "sources": [
+            "https://cs.mfa.gov.cn/zggmcg/ljmdd/fz_648564/jp_649807/rjjl_649817/"
+          ],
+          "level": "channel",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长"
+        }
+      ]
+    },
+    "KHM": {
+      "name": "柬埔寨",
+      "routes": [
+        {
+          "kind": "visa_free",
+          "label": "临时免签",
+          "stay": "14天",
+          "conditions": "仅14日旅游临时免签，须e-Arrival；公告截至2026-10-15，本轮未找到续期。到期后改显示电子旅游签渠道。",
+          "sources": [
+            "https://www.evisa.gov.kh/home?vcode=27"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": "2026-10-15",
+          "validFrom": "2026-06-15"
+        },
+        {
+          "kind": "evisa",
+          "label": "电子签",
+          "stay": "30日；批准后90日内入境",
+          "conditions": "与目前至2026-10-15的14天免签并存；免签期结束后复核。",
+          "sources": [
+            "https://cs.mfa.gov.cn/zggmcg/ljmdd/yz_645708/jpz_646640/rjjl_646650/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "CZE": {
+      "name": "捷克",
+      "routes": [
+        {
+          "kind": "regular",
+          "label": "须申根签证",
+          "stay": "获批期限内；申根区合计每180日最多90日",
+          "conditions": "中国普通护照无现有申根签，需预先申请；爱尔兰学生身份/IRP不能代替申根签。预约等待不计入官方审理时间。",
+          "sources": [
+            "https://home-affairs.ec.europa.eu/policies/schengen/visa-policy/applying-schengen-visa_en",
+            "https://cs.mfa.gov.cn/zggmcg/ljmdd/oz_652287/bl_652909/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "成人签证费90欧元＋适用签证中心服务费",
+          "processing": "通常15个自然日；可延至45日；预约等待另计"
+        }
+      ]
+    },
+    "ZWE": {
+      "name": "津巴布韦",
+      "routes": [
+        {
+          "kind": "evisa",
+          "label": "电子签/在线入境批准",
+          "stay": "以批件为准",
+          "conditions": "官方电子签渠道；具体按国籍类别/旅游目的申请。",
+          "sources": [
+            "https://www.evisa.gov.zw/"
+          ],
+          "level": "channel",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "CMR": {
+      "name": "喀麦隆",
+      "routes": [
+        {
+          "kind": "evisa",
+          "label": "电子签/在线入境批准",
+          "stay": "以批件为准",
+          "conditions": "官方电子签门户；按领区、入境口岸和贴签/采集手续办理。",
+          "sources": [
+            "https://www.evisacam.com/ords/dl_portal/r/public_portal/home"
+          ],
+          "level": "channel",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "QAT": {
+      "name": "卡塔尔",
+      "routes": [
+        {
+          "kind": "visa_free",
+          "label": "免签",
+          "stay": "30日",
+          "conditions": "短期旅游、商务、探亲、过境等；工作、定居等须事先批准。",
+          "sources": [
+            "https://cs.mfa.gov.cn/lgk1/201812/t20181214_831234.shtml"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "CYM": {
+      "name": "开曼群岛",
+      "routes": []
+    },
+    "CCK": {
+      "name": "科科斯",
+      "routes": []
+    },
+    "COM": {
+      "name": "科摩罗",
+      "routes": []
+    },
+    "UNK": {
+      "name": "科索沃",
+      "routes": []
+    },
+    "CIV": {
+      "name": "科特迪瓦",
+      "routes": [
+        {
+          "kind": "online_approval",
+          "label": "电子预批＋机场贴签",
+          "stay": "以批件为准",
+          "conditions": "中国普通护照可电子申请，邀请方须先办相关手续；需完成登记证明与机场办签许可，抵科机场采集生物特征并贴签。",
+          "sources": [
+            "https://cs.mfa.gov.cn/zggmcg/ljmdd/fz_648564/ktdw_650117/rjjl_650127/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "KWT": {
+      "name": "科威特",
+      "routes": []
+    },
+    "HRV": {
+      "name": "克罗地亚",
+      "routes": [
+        {
+          "kind": "regular",
+          "label": "须申根签证",
+          "stay": "获批期限内；申根区合计每180日最多90日",
+          "conditions": "中国普通护照无现有申根签，需预先申请；爱尔兰学生身份/IRP不能代替申根签。预约等待不计入官方审理时间。",
+          "sources": [
+            "https://home-affairs.ec.europa.eu/policies/schengen/visa-policy/applying-schengen-visa_en",
+            "https://cs.mfa.gov.cn/zggmcg/ljmdd/oz_652287/bl_652909/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "成人签证费90欧元＋适用签证中心服务费",
+          "processing": "通常15个自然日；可延至45日；预约等待另计"
+        }
+      ]
+    },
+    "KEN": {
+      "name": "肯尼亚",
+      "routes": [
+        {
+          "kind": "eta",
+          "label": "eTA电子旅行授权",
+          "stay": "以入境许可为准",
+          "conditions": "中国普通护照须在出发前取得eTA；原引用的香港领事馆已2026-09-14关闭，本轮换为官方申请入口。",
+          "sources": [
+            "https://etakenya.go.ke/"
+          ],
+          "level": "channel",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "COK": {
+      "name": "库克群岛",
+      "routes": []
+    },
+    "CUW": {
+      "name": "库拉索",
+      "routes": []
+    },
+    "LVA": {
+      "name": "拉脱维亚",
+      "routes": [
+        {
+          "kind": "regular",
+          "label": "须申根签证",
+          "stay": "获批期限内；申根区合计每180日最多90日",
+          "conditions": "中国普通护照无现有申根签，需预先申请；爱尔兰学生身份/IRP不能代替申根签。预约等待不计入官方审理时间。",
+          "sources": [
+            "https://home-affairs.ec.europa.eu/policies/schengen/visa-policy/applying-schengen-visa_en",
+            "https://cs.mfa.gov.cn/zggmcg/ljmdd/oz_652287/bl_652909/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "成人签证费90欧元＋适用签证中心服务费",
+          "processing": "通常15个自然日；可延至45日；预约等待另计"
+        }
+      ]
+    },
+    "LSO": {
+      "name": "莱索托",
+      "routes": [
+        {
+          "kind": "unknown",
+          "label": "待核实电子签候选",
+          "stay": "本轮未核实具体停留上限；以批准或入境许可为准",
+          "conditions": "第三方引用多为旧/存档eVisa页；未确认当前系统运行和中国资格。",
+          "sources": [],
+          "level": "unknown",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "LAO": {
+      "name": "老挝",
+      "routes": [
+        {
+          "kind": "evisa",
+          "label": "电子旅游签（抵达贴签）",
+          "stay": "30日；批准信有效60日",
+          "conditions": "普通护照；打印批准信，限9个官方指定口岸。资格表与申请材料须对应中国国籍。",
+          "sources": [
+            "https://www.laoevisa.gov.la/faq",
+            "https://cs.mfa.gov.cn/zggmcg/ljmdd/yz_645708/lw_646826/rjjl_646836/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "通常3个工作日，补件可延长"
+        }
+      ]
+    },
+    "LBN": {
+      "name": "黎巴嫩",
+      "routes": []
+    },
+    "LTU": {
+      "name": "立陶宛",
+      "routes": [
+        {
+          "kind": "regular",
+          "label": "须申根签证",
+          "stay": "获批期限内；申根区合计每180日最多90日",
+          "conditions": "中国普通护照无现有申根签，需预先申请；爱尔兰学生身份/IRP不能代替申根签。预约等待不计入官方审理时间。",
+          "sources": [
+            "https://home-affairs.ec.europa.eu/policies/schengen/visa-policy/applying-schengen-visa_en",
+            "https://cs.mfa.gov.cn/zggmcg/ljmdd/oz_652287/bl_652909/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "成人签证费90欧元＋适用签证中心服务费",
+          "processing": "通常15个自然日；可延至45日；预约等待另计"
+        }
+      ]
+    },
+    "LBR": {
+      "name": "利比里亚",
+      "routes": []
+    },
+    "LBY": {
+      "name": "利比亚",
+      "routes": [
+        {
+          "kind": "unknown",
+          "label": "待核实电子签候选",
+          "stay": "本轮未核实具体停留上限；以批准或入境许可为准",
+          "conditions": "官方系统存在，本轮未能读取完整旅游申请条件。",
+          "sources": [
+            "https://evisa.gov.ly/"
+          ],
+          "level": "unknown",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "LIE": {
+      "name": "列支敦士登",
+      "routes": [
+        {
+          "kind": "regular",
+          "label": "须申根签证",
+          "stay": "获批期限内；申根区合计每180日最多90日",
+          "conditions": "中国普通护照无现有申根签，需预先申请；爱尔兰学生身份/IRP不能代替申根签。预约等待不计入官方审理时间。",
+          "sources": [
+            "https://home-affairs.ec.europa.eu/policies/schengen/visa-policy/applying-schengen-visa_en",
+            "https://cs.mfa.gov.cn/zggmcg/ljmdd/oz_652287/bl_652909/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "成人签证费90欧元＋适用签证中心服务费",
+          "processing": "通常15个自然日；可延至45日；预约等待另计"
+        }
+      ]
+    },
+    "REU": {
+      "name": "留尼旺岛",
+      "routes": []
+    },
+    "LUX": {
+      "name": "卢森堡",
+      "routes": [
+        {
+          "kind": "regular",
+          "label": "须申根签证",
+          "stay": "获批期限内；申根区合计每180日最多90日",
+          "conditions": "中国普通护照无现有申根签，需预先申请；爱尔兰学生身份/IRP不能代替申根签。预约等待不计入官方审理时间。",
+          "sources": [
+            "https://home-affairs.ec.europa.eu/policies/schengen/visa-policy/applying-schengen-visa_en",
+            "https://cs.mfa.gov.cn/zggmcg/ljmdd/oz_652287/bl_652909/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "成人签证费90欧元＋适用签证中心服务费",
+          "processing": "通常15个自然日；可延至45日；预约等待另计"
+        }
+      ]
+    },
+    "RWA": {
+      "name": "卢旺达",
+      "routes": [
+        {
+          "kind": "evisa",
+          "label": "电子签/在线入境批准",
+          "stay": "电子单次通常30天",
+          "conditions": "中方资料确认普通护照可办理电子签/在线批准及落地签。",
+          "sources": [
+            "https://cs.mfa.gov.cn/zggmcg/ljmdd/fz_648564/lwd_650489/rjjl_650499/"
+          ],
+          "level": "channel",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "ROU": {
+      "name": "罗马尼亚",
+      "routes": [
+        {
+          "kind": "regular",
+          "label": "须申根签证",
+          "stay": "获批期限内；申根区合计每180日最多90日",
+          "conditions": "中国普通护照无现有申根签，需预先申请；爱尔兰学生身份/IRP不能代替申根签。预约等待不计入官方审理时间。",
+          "sources": [
+            "https://home-affairs.ec.europa.eu/policies/schengen/visa-policy/applying-schengen-visa_en",
+            "https://cs.mfa.gov.cn/zggmcg/ljmdd/oz_652287/bl_652909/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "成人签证费90欧元＋适用签证中心服务费",
+          "processing": "通常15个自然日；可延至45日；预约等待另计"
+        }
+      ]
+    },
+    "MDG": {
+      "name": "马达加斯加",
+      "routes": [
+        {
+          "kind": "online_approval",
+          "label": "线上批准/落地旅游签",
+          "stay": "按批准，可选短期旅游类别",
+          "conditions": "不是免签；中国护照可按旅游落地签程序，通常需回程或离境票；本轮未核实新费率。",
+          "sources": [
+            "https://cs.mfa.gov.cn/zggmcg/ljmdd/fz_648564/mdjsj_650551/rjjl_650561/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长"
+        }
+      ]
+    },
+    "IMN": {
+      "name": "马恩岛",
+      "routes": []
+    },
+    "MDV": {
+      "name": "马尔代夫",
+      "routes": [
+        {
+          "kind": "visa_free",
+          "label": "免签",
+          "stay": "30日",
+          "conditions": "短期旅游、商务、探亲、过境；长期工作等需事先批准。入境申报按移民局要求。",
+          "sources": [
+            "https://cs.mfa.gov.cn/lgk1/202302/t20230216_11025677.shtml"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "MLT": {
+      "name": "马耳他",
+      "routes": [
+        {
+          "kind": "regular",
+          "label": "须申根签证",
+          "stay": "获批期限内；申根区合计每180日最多90日",
+          "conditions": "中国普通护照无现有申根签，需预先申请；爱尔兰学生身份/IRP不能代替申根签。预约等待不计入官方审理时间。",
+          "sources": [
+            "https://home-affairs.ec.europa.eu/policies/schengen/visa-policy/applying-schengen-visa_en",
+            "https://cs.mfa.gov.cn/zggmcg/ljmdd/oz_652287/bl_652909/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "成人签证费90欧元＋适用签证中心服务费",
+          "processing": "通常15个自然日；可延至45日；预约等待另计"
+        }
+      ]
+    },
+    "MWI": {
+      "name": "马拉维",
+      "routes": [
+        {
+          "kind": "evisa",
+          "label": "政策冲突：先核实中国所属类别",
+          "stay": "以批件为准",
+          "conditions": "领事资料仍列中国免签30日；移民局门户2026-02-24公告已按Category One/Two区分事先签证与落地签，本轮未确认China所属类别，不按免签标蓝。",
+          "sources": [
+            "https://www.evisa.gov.mw/Index",
+            "https://cs.mfa.gov.cn/zggmcg/ljmdd/fz_648564/mlw_650675/"
+          ],
+          "level": "channel",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "MYS": {
+      "name": "马来西亚",
+      "routes": [
+        {
+          "kind": "visa_free",
+          "label": "免签",
+          "stay": "单次30日；每180日累计90日",
+          "conditions": "2025-07-17双边协定生效；按要求填MDAC，工作、长期学习另办签证。",
+          "sources": [
+            "https://cs.mfa.gov.cn/zggmcg/ljmdd/yz_645708/mlxy_647012/rjjl_647022/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "MLI": {
+      "name": "马里",
+      "routes": []
+    },
+    "MHL": {
+      "name": "马绍尔群岛",
+      "routes": []
+    },
+    "MTQ": {
+      "name": "马提尼克",
+      "routes": []
+    },
+    "MYT": {
+      "name": "马约特",
+      "routes": []
+    },
+    "MUS": {
+      "name": "毛里求斯",
+      "routes": [
+        {
+          "kind": "visa_free",
+          "label": "免签",
+          "stay": "60日",
+          "conditions": "护照、往返票、住宿和资金证明；工作、学习、居留另办签证。",
+          "sources": [
+            "https://cs.mfa.gov.cn/zggmcg/ljmdd/fz_648564/mlqs_650737/rjjl_650747/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "MRT": {
+      "name": "毛里塔尼亚",
+      "routes": [
+        {
+          "kind": "evisa",
+          "label": "电子签/在线入境批准",
+          "stay": "以批件为准",
+          "conditions": "2025-01-05起全面实行电子签；需打印批件并按入境要求缴费。",
+          "sources": [
+            "https://cs.mfa.gov.cn/zggmcg/ljmdd/fz_648564/mltny_650799/rjjl_650809/"
+          ],
+          "level": "channel",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "USA": {
+      "name": "美国",
+      "routes": []
+    },
+    "UMI": {
+      "name": "美国本土外小岛屿",
+      "routes": []
+    },
+    "ASM": {
+      "name": "美属萨摩亚",
+      "routes": []
+    },
+    "VIR": {
+      "name": "美属维尔京群岛",
+      "routes": []
+    },
+    "MNG": {
+      "name": "蒙古",
+      "routes": [
+        {
+          "kind": "evisa",
+          "label": "电子签/在线入境批准",
+          "stay": "以批件为准",
+          "conditions": "中国普通护照须事先办签证，可网上申请；停留期限按旅游类别批准，抵达后48小时内住宿登记。",
+          "sources": [
+            "https://cs.mfa.gov.cn/zggmcg/ljmdd/yz_645708/mg_647074/rjjl_647084/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "MSR": {
+      "name": "蒙特塞拉特",
+      "routes": []
+    },
+    "BGD": {
+      "name": "孟加拉国",
+      "routes": []
+    },
+    "PER": {
+      "name": "秘鲁",
+      "routes": []
+    },
+    "FSM": {
+      "name": "密克罗尼西亚",
+      "routes": [
+        {
+          "kind": "visa_free",
+          "label": "免签",
+          "stay": "30天",
+          "conditions": "须回程或下一目的地机票。",
+          "sources": [
+            "https://cs.mfa.gov.cn/zggmcg/ljmdd/dyz_658636/mklnxy_659444/rjjl_659454/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "MMR": {
+      "name": "缅甸",
+      "routes": [
+        {
+          "kind": "evisa",
+          "label": "电子旅游签",
+          "stay": "按当前批准信",
+          "conditions": "领事资料确认中国可申请电子签；不要直接沿用2014年的费率、口岸与审批时长。",
+          "sources": [
+            "https://cs.mfa.gov.cn/zggmcg/ljmdd/yz_645708/md_647198/rjjl_647208/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长"
+        }
+      ]
+    },
+    "COD": {
+      "name": "民主刚果",
+      "routes": [
+        {
+          "kind": "unknown",
+          "label": "待核实电子签候选",
+          "stay": "本轮未核实具体停留上限；以批准或入境许可为准",
+          "conditions": "已找到官方系统；短期登陆批准与正式旅游签的区别、口岸和国籍资格待复核。",
+          "sources": [
+            "https://evisa.gouv.cd/"
+          ],
+          "level": "unknown",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "MDA": {
+      "name": "摩尔多瓦",
+      "routes": [
+        {
+          "kind": "evisa",
+          "label": "电子签/在线入境批准",
+          "stay": "以批准为准",
+          "conditions": "可电子申请；部分申请人须先取得当地移民部门认可的邀请函。",
+          "sources": [
+            "https://evo.gov.md/acasa/servicii/emigrare-imigrare-vize-calatorii/invitatie-pentru-cetatenii-straini?culture=en"
+          ],
+          "level": "channel",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "MAR": {
+      "name": "摩洛哥",
+      "routes": [
+        {
+          "kind": "visa_free",
+          "label": "免签",
+          "stay": "90天",
+          "conditions": "仅在允许的短期入境目的和材料条件下适用。",
+          "sources": [
+            "https://cs.mfa.gov.cn/zggmcg/ljmdd/fz_648564/mlg_650861/rjjl_650871/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "MCO": {
+      "name": "摩纳哥",
+      "routes": [
+        {
+          "kind": "unknown",
+          "label": "须先核实经申根区的入境路线",
+          "stay": "本轮未核实具体停留上限；以批准或入境许可为准",
+          "conditions": "常规陆路路线经申根区；本人无申根签，不能只凭微型国家可能免签就认为可到达。",
+          "sources": [],
+          "level": "unknown",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长"
+        }
+      ]
+    },
+    "MOZ": {
+      "name": "莫桑比克",
+      "routes": [
+        {
+          "kind": "eta",
+          "label": "免签但须eTA",
+          "stay": "30天",
+          "conditions": "30日旅游/商务豁免仍须预办eTA；官方平台按Tourism/Business、不超过30日类别申请；可按规定申请延期一次。",
+          "sources": [
+            "https://mz.china-embassy.gov.cn/lqfw/202603/t20260327_11882385.htm"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "须至少入境前48小时办妥",
+          "validUntil": null
+        }
+      ]
+    },
+    "MEX": {
+      "name": "墨西哥",
+      "routes": []
+    },
+    "NAM": {
+      "name": "纳米比亚",
+      "routes": [
+        {
+          "kind": "evisa",
+          "label": "须提前取得电子签",
+          "stay": "按批准",
+          "conditions": "官方2025年版Fact Sheet：中国不在落地签名单；未列入名单的国籍必须出发前获得电子签。不是落地签。",
+          "sources": [
+            "https://namibiaembassyusa.org/wp-content/uploads/2025/09/FactSheetVisaRequirementstoNamibia.pdf"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长"
+        }
+      ]
+    },
+    "ZAF": {
+      "name": "南非",
+      "routes": [
+        {
+          "kind": "eta",
+          "label": "ETA/数字旅游签",
+          "stay": "以批准为准",
+          "conditions": "中国旅客可线上ETA取得数字签证；非免签。按eta.dha.gov.za核对支持口岸及批准期限。",
+          "sources": [
+            "https://cs.mfa.gov.cn/zggmcg/ljmdd/fz_648564/nf_651047/rjjl_651057/",
+            "https://www.gov.za/news/speeches/minister-leon-schreiber-launch-south-africa%E2%80%99s-electronic-travel-authorisation-12-aug"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "ATA": {
+      "name": "南极洲",
+      "routes": []
+    },
+    "SGS": {
+      "name": "南乔治亚",
+      "routes": []
+    },
+    "SSD": {
+      "name": "南苏丹",
+      "routes": [
+        {
+          "kind": "evisa",
+          "label": "电子签/在线入境批准",
+          "stay": "以批件为准",
+          "conditions": "官方移民电子签渠道。",
+          "sources": [
+            "https://www.evisa.gov.ss/"
+          ],
+          "level": "channel",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "NRU": {
+      "name": "瑙鲁",
+      "routes": []
+    },
+    "NIC": {
+      "name": "尼加拉瓜",
+      "routes": [
+        {
+          "kind": "unknown",
+          "label": "待核实电子签候选",
+          "stay": "本轮未核实具体停留上限；以批准或入境许可为准",
+          "conditions": "第三方清单列eVisa；未核实完整官方旅游电子签渠道。",
+          "sources": [],
+          "level": "unknown",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "NPL": {
+      "name": "尼泊尔",
+      "routes": [
+        {
+          "kind": "voa",
+          "label": "免费落地旅游签",
+          "stay": "15、30或90日",
+          "conditions": "中国公民可在口岸申领免费旅游落地签；可先填写nepaliport在线表，抵达后仍需办理签证。",
+          "sources": [
+            "https://cs.mfa.gov.cn/zggmcg/ljmdd/yz_645708/nbe_647260/rjjl_647270/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "中国游客落地旅游签免费",
+          "processing": "本轮未核实办理时长"
+        }
+      ]
+    },
+    "NER": {
+      "name": "尼日尔",
+      "routes": []
+    },
+    "NGA": {
+      "name": "尼日利亚",
+      "routes": [
+        {
+          "kind": "evisa",
+          "label": "电子签/在线入境批准",
+          "stay": "以批件为准",
+          "conditions": "旅游/商务有电子签类别；须核对适用类别与停留时间。",
+          "sources": [
+            "https://visa.immigration.gov.ng/"
+          ],
+          "level": "channel",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "NIU": {
+      "name": "纽埃",
+      "routes": []
+    },
+    "NOR": {
+      "name": "挪威",
+      "routes": [
+        {
+          "kind": "regular",
+          "label": "须申根签证",
+          "stay": "获批期限内；申根区合计每180日最多90日",
+          "conditions": "中国普通护照无现有申根签，需预先申请；爱尔兰学生身份/IRP不能代替申根签。预约等待不计入官方审理时间。",
+          "sources": [
+            "https://home-affairs.ec.europa.eu/policies/schengen/visa-policy/applying-schengen-visa_en",
+            "https://cs.mfa.gov.cn/zggmcg/ljmdd/oz_652287/bl_652909/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "成人签证费90欧元＋适用签证中心服务费",
+          "processing": "通常15个自然日；可延至45日；预约等待另计"
+        }
+      ]
+    },
+    "NFK": {
+      "name": "诺福克岛",
+      "routes": []
+    },
+    "PLW": {
+      "name": "帕劳",
+      "routes": []
+    },
+    "PCN": {
+      "name": "皮特凯恩群岛",
+      "routes": []
+    },
+    "PRT": {
+      "name": "葡萄牙",
+      "routes": [
+        {
+          "kind": "regular",
+          "label": "须申根签证",
+          "stay": "获批期限内；申根区合计每180日最多90日",
+          "conditions": "中国普通护照无现有申根签，需预先申请；爱尔兰学生身份/IRP不能代替申根签。预约等待不计入官方审理时间。",
+          "sources": [
+            "https://home-affairs.ec.europa.eu/policies/schengen/visa-policy/applying-schengen-visa_en",
+            "https://cs.mfa.gov.cn/zggmcg/ljmdd/oz_652287/bl_652909/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "成人签证费90欧元＋适用签证中心服务费",
+          "processing": "通常15个自然日；可延至45日；预约等待另计"
+        }
+      ]
+    },
+    "JPN": {
+      "name": "日本",
+      "routes": [
+        {
+          "kind": "regular",
+          "label": "居住地限制的电子签",
+          "stay": "以类别为准",
+          "conditions": "爱尔兰未列入目前eVisa适用居住地；居住中国大陆者通常须经指定旅行社。",
+          "sources": [
+            "https://www.mofa.go.jp/j_info/visit/visa/visaonline.html"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "SWE": {
+      "name": "瑞典",
+      "routes": [
+        {
+          "kind": "regular",
+          "label": "须申根签证",
+          "stay": "获批期限内；申根区合计每180日最多90日",
+          "conditions": "中国普通护照无现有申根签，需预先申请；爱尔兰学生身份/IRP不能代替申根签。预约等待不计入官方审理时间。",
+          "sources": [
+            "https://home-affairs.ec.europa.eu/policies/schengen/visa-policy/applying-schengen-visa_en",
+            "https://cs.mfa.gov.cn/zggmcg/ljmdd/oz_652287/bl_652909/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "成人签证费90欧元＋适用签证中心服务费",
+          "processing": "通常15个自然日；可延至45日；预约等待另计"
+        }
+      ]
+    },
+    "CHE": {
+      "name": "瑞士",
+      "routes": [
+        {
+          "kind": "regular",
+          "label": "须申根签证",
+          "stay": "获批期限内；申根区合计每180日最多90日",
+          "conditions": "中国普通护照无现有申根签，需预先申请；爱尔兰学生身份/IRP不能代替申根签。预约等待不计入官方审理时间。",
+          "sources": [
+            "https://home-affairs.ec.europa.eu/policies/schengen/visa-policy/applying-schengen-visa_en",
+            "https://cs.mfa.gov.cn/zggmcg/ljmdd/oz_652287/bl_652909/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "成人签证费90欧元＋适用签证中心服务费",
+          "processing": "通常15个自然日；可延至45日；预约等待另计"
+        }
+      ]
+    },
+    "SLV": {
+      "name": "萨尔瓦多",
+      "routes": []
+    },
+    "WSM": {
+      "name": "萨摩亚",
+      "routes": [
+        {
+          "kind": "visa_free",
+          "label": "免签",
+          "stay": "本轮未核实具体停留上限；以批准或入境许可为准",
+          "conditions": "有单次及累计停留限制；不适用于工作和长期学习。",
+          "sources": [
+            "https://cs.mfa.gov.cn/zggmcgx/cgqzapecswlxk/ylb/202607/t20260716_11984014.html"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "SRB": {
+      "name": "塞尔维亚",
+      "routes": [
+        {
+          "kind": "visa_free",
+          "label": "免签",
+          "stay": "30日",
+          "conditions": "旅游、经商、探亲；入境后办理住宿登记。不是申根区。",
+          "sources": [
+            "https://rs.china-embassy.gov.cn/lsyw/tongzhi/202504/t20250418_11596760.htm"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "SLE": {
+      "name": "塞拉利昂",
+      "routes": [
+        {
+          "kind": "evisa",
+          "label": "电子签/在线入境批准",
+          "stay": "以批件为准",
+          "conditions": "官方移民电子签系统；运行和具体条件以申请页为准。",
+          "sources": [
+            "https://evisa.sl/"
+          ],
+          "level": "channel",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "SEN": {
+      "name": "塞内加尔",
+      "routes": []
+    },
+    "CYP": {
+      "name": "塞浦路斯",
+      "routes": []
+    },
+    "SYC": {
+      "name": "塞舌尔",
+      "routes": [
+        {
+          "kind": "eta",
+          "label": "免签但须旅行授权",
+          "stay": "以入境许可为准",
+          "conditions": "免签不免在线手续：出发前办理Travel Authorisation，通常收费；不是普通旅游eVisa。",
+          "sources": [
+            "https://tourism.gov.sc/?p=8181"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "SAU": {
+      "name": "沙特阿拉伯",
+      "routes": [
+        {
+          "kind": "evisa",
+          "label": "电子签/在线入境批准",
+          "stay": "一年多次；允许停留最多90日",
+          "conditions": "官方资格表含中国普通护照；旅游、探亲与副朝等，排除朝觐、学习等用途。",
+          "sources": [
+            "https://visa.visitsaudi.com/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "BLM": {
+      "name": "圣巴泰勒米",
+      "routes": []
+    },
+    "CXR": {
+      "name": "圣诞岛",
+      "routes": []
+    },
+    "STP": {
+      "name": "圣多美和普林西比",
+      "routes": [
+        {
+          "kind": "evisa",
+          "label": "电子签/在线入境批准",
+          "stay": "以批件为准",
+          "conditions": "官方边境移民局在线预批渠道；批准后仍应遵守入境签发手续。",
+          "sources": [
+            "https://www.smf.st/evisa/"
+          ],
+          "level": "channel",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "SHN": {
+      "name": "圣赫勒拿、阿森松和特里斯坦-达库尼亚",
+      "routes": []
+    },
+    "KNA": {
+      "name": "圣基茨和尼维斯",
+      "routes": [
+        {
+          "kind": "visa_free",
+          "label": "免签",
+          "stay": "90天",
+          "conditions": "具体停留期、入境申报和其他条件需行前核对。",
+          "sources": [
+            "https://cs.mfa.gov.cn/zggmcg/ljmdd/bmz_655327/sjchnws_657269/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "LCA": {
+      "name": "圣卢西亚",
+      "routes": [
+        {
+          "kind": "visa_free",
+          "label": "免签",
+          "stay": "42日",
+          "conditions": "政府当前Word资格表：中国条目为NO（无需入境签证）；需有效护照及后续旅程证明。",
+          "sources": [
+            "https://www.govt.lc/media.govt.lc/www/resources/publications/saint-lucia-visa-requirements-updated.docx",
+            "https://cs.mfa.gov.cn/zggmcg/ljmdd/bmz_655327/slxy_657331/rjjl_657341/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "MAF": {
+      "name": "圣马丁",
+      "routes": []
+    },
+    "SXM": {
+      "name": "圣马丁岛",
+      "routes": []
+    },
+    "SMR": {
+      "name": "圣马力诺",
+      "routes": [
+        {
+          "kind": "conditional",
+          "label": "地理条件限制的免签",
+          "stay": "按入境规定",
+          "conditions": "须能合法进入意大利；中国护照通常仍需申根签证。",
+          "sources": [
+            "https://www.visitsanmarino.com/pub2/VisitSM/en/contenuto/About-San-Marino/FORMALITA--DI-FRONTIERA.html"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "SPM": {
+      "name": "圣皮埃尔和密克隆",
+      "routes": []
+    },
+    "VCT": {
+      "name": "圣文森特和格林纳丁斯",
+      "routes": []
+    },
+    "LKA": {
+      "name": "斯里兰卡",
+      "routes": [
+        {
+          "kind": "eta",
+          "label": "免费旅游ETA",
+          "stay": "30天，双次入境",
+          "conditions": "2026-05-25起中国在40国免费ETA方案中；需出发前取得ETA。",
+          "sources": [
+            "https://eta.gov.lk/slvisa/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "中国游客旅游ETA免费",
+          "processing": "本轮未核实保证处理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "SVK": {
+      "name": "斯洛伐克",
+      "routes": [
+        {
+          "kind": "regular",
+          "label": "须申根签证",
+          "stay": "获批期限内；申根区合计每180日最多90日",
+          "conditions": "中国普通护照无现有申根签，需预先申请；爱尔兰学生身份/IRP不能代替申根签。预约等待不计入官方审理时间。",
+          "sources": [
+            "https://home-affairs.ec.europa.eu/policies/schengen/visa-policy/applying-schengen-visa_en",
+            "https://cs.mfa.gov.cn/zggmcg/ljmdd/oz_652287/bl_652909/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "成人签证费90欧元＋适用签证中心服务费",
+          "processing": "通常15个自然日；可延至45日；预约等待另计"
+        }
+      ]
+    },
+    "SVN": {
+      "name": "斯洛文尼亚",
+      "routes": [
+        {
+          "kind": "regular",
+          "label": "须申根签证",
+          "stay": "获批期限内；申根区合计每180日最多90日",
+          "conditions": "中国普通护照无现有申根签，需预先申请；爱尔兰学生身份/IRP不能代替申根签。预约等待不计入官方审理时间。",
+          "sources": [
+            "https://home-affairs.ec.europa.eu/policies/schengen/visa-policy/applying-schengen-visa_en",
+            "https://cs.mfa.gov.cn/zggmcg/ljmdd/oz_652287/bl_652909/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "成人签证费90欧元＋适用签证中心服务费",
+          "processing": "通常15个自然日；可延至45日；预约等待另计"
+        }
+      ]
+    },
+    "SJM": {
+      "name": "斯瓦尔巴特",
+      "routes": []
+    },
+    "SWZ": {
+      "name": "斯威士兰",
+      "routes": []
+    },
+    "SDN": {
+      "name": "苏丹",
+      "routes": []
+    },
+    "SUR": {
+      "name": "苏里南",
+      "routes": [
+        {
+          "kind": "entry_fee",
+          "label": "免签但须入境费凭证",
+          "stay": "平台列短期90天",
+          "conditions": "平台明确列中国普通护照免签；须按Entry Fee流程办理凭证，免签不代表免入境费。",
+          "sources": [
+            "https://suriname.vfsevisa.com/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "SLB": {
+      "name": "所罗门群岛",
+      "routes": [
+        {
+          "kind": "visa_free",
+          "label": "免签",
+          "stay": "单次30日；每180日累计90日",
+          "conditions": "普通护照协定2024-12-28生效；往返机票、入境登记和检疫申报。",
+          "sources": [
+            "https://cs.mfa.gov.cn/gyls/lsgz/fwxx/202412/t20241204_11538024.shtml"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "SOM": {
+      "name": "索马里",
+      "routes": [
+        {
+          "kind": "evisa",
+          "label": "电子签/在线入境批准",
+          "stay": "以批件为准",
+          "conditions": "2025-09-01起采用出发前电子签/eTAS；地区入境规则另核。",
+          "sources": [
+            "https://usa.mfa.gov.so/tag/somali-evisa-online/"
+          ],
+          "level": "channel",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "SOL": {
+      "name": "索马里兰",
+      "routes": []
+    },
+    "TJK": {
+      "name": "塔吉克斯坦",
+      "routes": [
+        {
+          "kind": "evisa",
+          "label": "电子签/在线入境批准",
+          "stay": "以当前批件为准",
+          "conditions": "勿把visa.gov.tj的网上预审（可能需面签）与evisa.tj混同；特殊地区许可另办。",
+          "sources": [
+            "https://www.evisa.tj/"
+          ],
+          "level": "channel",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "THA": {
+      "name": "泰国",
+      "routes": [
+        {
+          "kind": "visa_free",
+          "label": "免签",
+          "stay": "30天",
+          "conditions": "当前使馆页面规定旅游免签30日；可申请延期最多30日，须获移民官批准。携带资金（每人2万泰铢或每家4万）及按要求填TDAC。",
+          "sources": [
+            "https://washingtondc.thaiembassy.org/en/page/visaexempt-voajul2024"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null,
+          "validFrom": "2026-09-15"
+        }
+      ]
+    },
+    "TZA": {
+      "name": "坦桑尼亚",
+      "routes": [
+        {
+          "kind": "evisa",
+          "label": "电子签/在线入境批准",
+          "stay": "以批件为准",
+          "conditions": "官方有电子签申请；按旅游/商务类型、口岸和是否需转审核验。",
+          "sources": [
+            "https://immigration.go.tz/index.php/regulations?download=15%3Avisa-gui"
+          ],
+          "level": "channel",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "TON": {
+      "name": "汤加",
+      "routes": [
+        {
+          "kind": "visa_free",
+          "label": "免签",
+          "stay": "本轮未核实具体停留上限；以批准或入境许可为准",
+          "conditions": "有单次及累计停留限制；不适用于工作和长期学习。",
+          "sources": [
+            "https://cs.mfa.gov.cn/zggmcgx/cgqzapecswlxk/ylb/202607/t20260716_11984014.html"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "TCA": {
+      "name": "特克斯和凯科斯群岛",
+      "routes": []
+    },
+    "TTO": {
+      "name": "特立尼达和多巴哥",
+      "routes": [
+        {
+          "kind": "evisa",
+          "label": "电子签/在线入境批准",
+          "stay": "以批件为准",
+          "conditions": "官方eVisa渠道，中国驻华使馆页面也指向该系统。",
+          "sources": [
+            "https://homelandsecurity.gov.tt/divisions/immigrationdivision/evisa-online/"
+          ],
+          "level": "channel",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "TUN": {
+      "name": "突尼斯",
+      "routes": [
+        {
+          "kind": "visa_free",
+          "label": "免签",
+          "stay": "本轮未核实具体停留上限；以批准或入境许可为准",
+          "conditions": "仅在允许的短期入境目的和材料条件下适用。",
+          "sources": [
+            "https://cs.mfa.gov.cn/zggmcg/ljmdd/fz_648564/tns_651853/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "TUV": {
+      "name": "图瓦卢",
+      "routes": []
+    },
+    "TUR": {
+      "name": "土耳其",
+      "routes": [
+        {
+          "kind": "visa_free",
+          "label": "免签",
+          "stay": "180天内90天",
+          "conditions": "2026-01-02起，中国普通护照免签。",
+          "sources": [
+            "https://www.mfa.gov.tr/yabancilarin-tabi-oldugu-vize-rejimi.tr.mfa"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "TKM": {
+      "name": "土库曼斯坦",
+      "routes": [
+        {
+          "kind": "unknown",
+          "label": "待核实电子签候选",
+          "stay": "本轮未核实具体停留上限；以批准或入境许可为准",
+          "conditions": "官方宣布2026-10-01启用eVisa；本轮未确认中国个人旅游申请类别、邀请函和实际受理条件。",
+          "sources": [
+            "https://caa.gov.tm/item/4664"
+          ],
+          "level": "unknown",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "TKL": {
+      "name": "托克劳",
+      "routes": []
+    },
+    "WLF": {
+      "name": "瓦利斯和富图纳群岛",
+      "routes": []
+    },
+    "VUT": {
+      "name": "瓦努阿图",
+      "routes": [
+        {
+          "kind": "arrival_permit",
+          "label": "抵达后访客许可",
+          "stay": "以访客许可为准",
+          "conditions": "无需事先办理访客签；抵达后获访客许可。两套资料术语不同，不把它当完全无手续的免签。",
+          "sources": [
+            "https://immigration.gov.vu/visa-exempted-countries/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "GTM": {
+      "name": "危地马拉",
+      "routes": []
+    },
+    "VEN": {
+      "name": "委内瑞拉",
+      "routes": [
+        {
+          "kind": "unknown",
+          "label": "待核实电子签候选",
+          "stay": "本轮未核实具体停留上限；以批准或入境许可为准",
+          "conditions": "官方使馆列旅游签，但本轮未证明普通旅游签可全程电子办理。",
+          "sources": [
+            "https://china.embajada.gob.ve/tramites-a-extranjeros/visas/"
+          ],
+          "level": "unknown",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "BRN": {
+      "name": "文莱",
+      "routes": [
+        {
+          "kind": "visa_free",
+          "label": "免签",
+          "stay": "14天",
+          "conditions": "需填电子入境卡；入境卡不是电子签。",
+          "sources": [
+            "https://cs.mfa.gov.cn/zggmcg/ljmdd/yz_645708/wl_647756/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "UGA": {
+      "name": "乌干达",
+      "routes": [
+        {
+          "kind": "evisa",
+          "label": "电子签/在线入境批准",
+          "stay": "以批件为准",
+          "conditions": "须提前电子申请，按要求提供黄热病接种等资料。",
+          "sources": [
+            "https://cs.mfa.gov.cn/zggmcg/ljmdd/fz_648564/wgd_651915/rjjl_651925/"
+          ],
+          "level": "channel",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "UKR": {
+      "name": "乌克兰",
+      "routes": [
+        {
+          "kind": "evisa",
+          "label": "电子签/在线入境批准",
+          "stay": "以批准为准",
+          "conditions": "外交部2025-02公告恢复电子签；需核对国籍表、开放口岸和实际受理。",
+          "sources": [
+            "https://mfa.gov.ua/events/mfa-resumes-issuing-electronic-visas-e-visa-foreigners"
+          ],
+          "level": "channel",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "URY": {
+      "name": "乌拉圭",
+      "routes": []
+    },
+    "UZB": {
+      "name": "乌兹别克斯坦",
+      "routes": [
+        {
+          "kind": "visa_free",
+          "label": "免签",
+          "stay": "单次30日；每180日累计90日",
+          "conditions": "2025-06-01协定生效；需办理住宿登记，工作、学习另办签证。",
+          "sources": [
+            "https://cs.mfa.gov.cn/zggmcg/ljmdd/yz_645708/wzbkst_647880/rjjl_647890/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "ESP": {
+      "name": "西班牙",
+      "routes": [
+        {
+          "kind": "regular",
+          "label": "须申根签证",
+          "stay": "获批期限内；申根区合计每180日最多90日",
+          "conditions": "中国普通护照无现有申根签，需预先申请；爱尔兰学生身份/IRP不能代替申根签。预约等待不计入官方审理时间。",
+          "sources": [
+            "https://home-affairs.ec.europa.eu/policies/schengen/visa-policy/applying-schengen-visa_en",
+            "https://cs.mfa.gov.cn/zggmcg/ljmdd/oz_652287/bl_652909/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "成人签证费90欧元＋适用签证中心服务费",
+          "processing": "通常15个自然日；可延至45日；预约等待另计"
+        }
+      ]
+    },
+    "ESH": {
+      "name": "西撒哈拉",
+      "routes": []
+    },
+    "GRC": {
+      "name": "希腊",
+      "routes": [
+        {
+          "kind": "regular",
+          "label": "须申根签证",
+          "stay": "获批期限内；申根区合计每180日最多90日",
+          "conditions": "中国普通护照无现有申根签，需预先申请；爱尔兰学生身份/IRP不能代替申根签。预约等待不计入官方审理时间。",
+          "sources": [
+            "https://home-affairs.ec.europa.eu/policies/schengen/visa-policy/applying-schengen-visa_en",
+            "https://cs.mfa.gov.cn/zggmcg/ljmdd/oz_652287/bl_652909/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "成人签证费90欧元＋适用签证中心服务费",
+          "processing": "通常15个自然日；可延至45日；预约等待另计"
+        }
+      ]
+    },
+    "KAS": {
+      "name": "锡亚琴地区",
+      "routes": []
+    },
+    "SGP": {
+      "name": "新加坡",
+      "routes": [
+        {
+          "kind": "visa_free",
+          "label": "免签",
+          "stay": "30日",
+          "conditions": "护照有效期至少6个月；抵达前3天内填写SG Arrival Card。工作、学习等另办准证。",
+          "sources": [
+            "https://cs.mfa.gov.cn/zggmcg/ljmdd/yz_645708/xjp_647942/rjjl_647952/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "NCL": {
+      "name": "新喀里多尼亚",
+      "routes": []
+    },
+    "NZL": {
+      "name": "新西兰",
+      "routes": [
+        {
+          "kind": "regular",
+          "label": "普通访客签电子申请",
+          "stay": "以批准为准",
+          "conditions": "2026-10-01起Visitor Visa须网上申请；中国普通护照NZeTA仅在特定澳签/澳洲出发等条件下适用。",
+          "sources": [
+            "https://www.immigration.govt.nz/visas/visitor-visa/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "HUN": {
+      "name": "匈牙利",
+      "routes": [
+        {
+          "kind": "regular",
+          "label": "须申根签证",
+          "stay": "获批期限内；申根区合计每180日最多90日",
+          "conditions": "中国普通护照无现有申根签，需预先申请；爱尔兰学生身份/IRP不能代替申根签。预约等待不计入官方审理时间。",
+          "sources": [
+            "https://home-affairs.ec.europa.eu/policies/schengen/visa-policy/applying-schengen-visa_en",
+            "https://cs.mfa.gov.cn/zggmcg/ljmdd/oz_652287/bl_652909/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "成人签证费90欧元＋适用签证中心服务费",
+          "processing": "通常15个自然日；可延至45日；预约等待另计"
+        }
+      ]
+    },
+    "SYR": {
+      "name": "叙利亚",
+      "routes": [
+        {
+          "kind": "evisa",
+          "label": "中国公民可提交电子签申请",
+          "stay": "以批件为准",
+          "conditions": "领事资料确认普通护照可电子申请；资料仍包含2024年政权及战时旧内容，本轮无法核实新政权下实时受理，暂不作为已确认可立即申请。",
+          "sources": [
+            "https://cs.mfa.gov.cn/zggmcg/ljmdd/yz_645708/xly_648004/rjjl_648014/"
+          ],
+          "level": "channel",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长"
+        }
+      ]
+    },
+    "JAM": {
+      "name": "牙买加",
+      "routes": [
+        {
+          "kind": "visa_free",
+          "label": "免签",
+          "stay": "30天",
+          "conditions": "具体停留期、入境申报和其他条件需行前核对。",
+          "sources": [
+            "https://cs.mfa.gov.cn/zggmcg/ljmdd/bmz_655327/ymj_657703/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "ARM": {
+      "name": "亚美尼亚",
+      "routes": [
+        {
+          "kind": "visa_free",
+          "label": "免签",
+          "stay": "每180日累计90日",
+          "conditions": "普通护照协定已生效；工作、学习、定居等另办相应许可。",
+          "sources": [
+            "https://cs.mfa.gov.cn/lgk1/201905/t20190529_833938.shtml",
+            "https://cs.mfa.gov.cn/zggmcgx/cgqzapecswlxk/ylb/202607/t20260716_11984014.html"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "YEM": {
+      "name": "也门",
+      "routes": []
+    },
+    "IRQ": {
+      "name": "伊拉克",
+      "routes": [
+        {
+          "kind": "evisa",
+          "label": "提前电子签（联邦地区）",
+          "stay": "按批准",
+          "conditions": "领事资料：2025-03-01停止向中国公民发落地签，须evisa.iq提前申请。库尔德地区与联邦签证规则不同，不可互换。",
+          "sources": [
+            "https://cs.mfa.gov.cn/zggmcg/ljmdd/yz_645708/ylk_648128/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长"
+        }
+      ]
+    },
+    "IRN": {
+      "name": "伊朗",
+      "routes": [
+        {
+          "kind": "visa_free",
+          "label": "免签",
+          "stay": "21日",
+          "conditions": "旅游或商务；护照有效期6个月以上，有以色列签证或章可能被拒入境。",
+          "sources": [
+            "https://cs.mfa.gov.cn/zggmcg/ljmdd/yz_645708/yl_648190/rjjl_648200/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "ISR": {
+      "name": "以色列",
+      "routes": [
+        {
+          "kind": "regular",
+          "label": "需事先访客签证",
+          "stay": "按批准",
+          "conditions": "中国普通护照不适用ETA-IL免签国旅客渠道；需相应访客签证。",
+          "sources": [
+            "https://cs.mfa.gov.cn/zggmcg/ljmdd/yz_645708/ysl_648252/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长"
+        }
+      ]
+    },
+    "ITA": {
+      "name": "意大利",
+      "routes": [
+        {
+          "kind": "regular",
+          "label": "须申根签证",
+          "stay": "获批期限内；申根区合计每180日最多90日",
+          "conditions": "中国普通护照无现有申根签，需预先申请；爱尔兰学生身份/IRP不能代替申根签。预约等待不计入官方审理时间。",
+          "sources": [
+            "https://home-affairs.ec.europa.eu/policies/schengen/visa-policy/applying-schengen-visa_en",
+            "https://cs.mfa.gov.cn/zggmcg/ljmdd/oz_652287/bl_652909/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "成人签证费90欧元＋适用签证中心服务费",
+          "processing": "通常15个自然日；可延至45日；预约等待另计"
+        }
+      ]
+    },
+    "IND": {
+      "name": "印度",
+      "routes": []
+    },
+    "IDN": {
+      "name": "印度尼西亚",
+      "routes": [
+        {
+          "kind": "evoa",
+          "label": "电子落地签eVOA",
+          "stay": "通常30天",
+          "conditions": "属于电子落地签，不能按中国普通护照全国免签处理。",
+          "sources": [
+            "https://jakartapusat.imigrasi.go.id/faqs"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "IOA": {
+      "name": "印度洋澳属岛屿",
+      "routes": []
+    },
+    "GBR": {
+      "name": "英国",
+      "routes": [
+        {
+          "kind": "regular",
+          "label": "普通访客签数字出签",
+          "stay": "以访客签批准为准",
+          "conditions": "2026-02-25起大多数新访客签数字出签；仍需普通访客签审查及身份/生物信息办理。",
+          "sources": [
+            "https://hansard.parliament.uk/commons/2026-02-25/debates/3b50c20e-a792-4cdd-9f7d-c7694cd4abfb/WrittenStatements"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "VGB": {
+      "name": "英属维尔京群岛",
+      "routes": []
+    },
+    "IOT": {
+      "name": "英属印度洋领地",
+      "routes": []
+    },
+    "JOR": {
+      "name": "约旦",
+      "routes": [
+        {
+          "kind": "evisa",
+          "label": "电子签/在线入境批准",
+          "stay": "按批准",
+          "conditions": "有电子签；是否需要前置批准、担保应按国籍/居留条件核对。",
+          "sources": [
+            "https://www.moi.gov.jo/EN/Modules/FAQ"
+          ],
+          "level": "channel",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "VNM": {
+      "name": "越南",
+      "routes": [
+        {
+          "kind": "evisa",
+          "label": "电子旅游签",
+          "stay": "最多90日；单次或多次",
+          "conditions": "须从获准eVisa口岸入境。原门户明确迁至evisa.gov.vn；国籍不限，仍需审查。",
+          "sources": [
+            "https://immigration.gov.vn/trang-chu-ttdt"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长"
+        }
+      ]
+    },
+    "ZMB": {
+      "name": "赞比亚",
+      "routes": [
+        {
+          "kind": "visa_free",
+          "label": "免签",
+          "stay": "本轮未核实具体停留上限；以批准或入境许可为准",
+          "conditions": "仅在允许的短期入境目的和材料条件下适用。",
+          "sources": [
+            "https://www.zambiaimmigration.gov.zm/nationals-who-dont-require-visa/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长",
+          "validUntil": null
+        }
+      ]
+    },
+    "JEY": {
+      "name": "泽西岛",
+      "routes": []
+    },
+    "TCD": {
+      "name": "乍得",
+      "routes": [
+        {
+          "kind": "evisa",
+          "label": "电子签",
+          "stay": "按批准",
+          "conditions": "官方FAQ向所有非免签外国人开放；建议至少提前7日，不得早于90日；护照与黄热病证书。",
+          "sources": [
+            "https://evisa.td/"
+          ],
+          "level": "verified",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "至少提前7日申请；不是7日获批保证"
+        }
+      ]
+    },
+    "GIB": {
+      "name": "直布罗陀",
+      "routes": []
+    },
+    "CHL": {
+      "name": "智利",
+      "routes": []
+    },
+    "CAF": {
+      "name": "中非共和国",
+      "routes": []
+    },
+    "CHN": {
+      "name": "中国",
+      "routes": [
+        {
+          "kind": "domestic",
+          "label": "中国公民回国",
+          "stay": "不适用外国人旅游签",
+          "conditions": "凭有效中国护照按中国入境要求回国；地图不按外国旅游免签计数。",
+          "sources": [],
+          "level": "context",
+          "checkedAt": "2026-10-13",
+          "fee": "本轮未核实当前费用",
+          "processing": "本轮未核实办理时长"
+        }
+      ]
+    },
+    "MAC": {
+      "name": "中国澳门",
+      "routes": []
+    },
+    "TWN": {
+      "name": "中国台湾",
+      "routes": []
+    },
+    "HKG": {
+      "name": "中国香港",
+      "routes": []
+    }
+  },
+  "definitions": {
+    "visa_free": "无需事先签证；电子入境卡仍可能必需",
+    "evisa": "提前电子签审查及批准",
+    "eta": "出发前电子授权（南非ETA属于数字签证）",
+    "voa": "抵达后签发签证",
+    "online_approval": "线上申请/预批，仍可能需抵达后或线下手续",
+    "conditional": "团组、地区、第三国签证或其他附加资格",
+    "regular": "普通签证/居留审查；数字出签不等于简化资格",
+    "unknown": "证据不足或尚未核实，不能据此认定免签或可申请"
+  },
+  "limits": "政策快照，非实时穷尽清单；入境方式不代表旅行安全评估。"
+}
